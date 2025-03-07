@@ -1,28 +1,12 @@
-import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Index() {
+import OnboardingScreen from "@/app/(root)/onBoarding";
+
+export default function index() {
+  
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <SafeAreaView>
+      <OnboardingScreen />
+    </SafeAreaView>
   );
 }
-
-// import { SafeAreaView } from "react-native-safe-area-context";
-
-// import OnboardingScreen from "./(root)/OnboardingScreen";
-
-// export default function index() {
-  
-//   return (
-//     <SafeAreaView>
-//       <OnboardingScreen />
-//     </SafeAreaView>
-//   );
-// }
