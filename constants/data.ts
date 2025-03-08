@@ -5,17 +5,29 @@ export const slides = [
     {
         image: images.onboarding,
         title: 'All Restaurants in One Place',
-        description: ['Discover all your favorite restaurants in one place—easy \n browsing, quick orders, and a variety of options to satisfy \n every craving!'
+        description: [
+            'Discover ',
+            { text: 'all your favorite restaurants', highlight: true },
+            ' in one place—easy \n browsing, quick orders, and a variety of options to satisfy \n every craving!'
+        ]
     },
     {
         image: images.onboarding2,
         title: 'Top Rated Delicacies',
-        description: 'Enjoy the best dishes, loved by everyone! Discover top- \n rated meals for a delicious experience.'
+        description: [
+            'Enjoy the ',
+            { text: 'best dishes, loved by everyone!', highlight: true },
+            ' Discover top- \n rated meals for a delicious experience.'
+        ]
     },
     {
         image: images.onboarding3,
         title: 'Schedule Food Delivery',
-        description: 'Get food delivered when you want, and enjoy fresh, tasty \n meals on time—no more last-minute stress! Just set it up, \n relax, and enjoy!'
+        description: [
+            'Get food delivered when you want, and enjoy fresh, tasty \n meals on time—',
+            { text: 'no more last-minute stress!', highlight: true },
+            ' Just set it up, \n relax, and enjoy!'
+        ]
     },
     
 ]

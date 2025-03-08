@@ -76,15 +76,25 @@ const OnboardingScreen = () => {
                                 ) }
                             </Text>
                             <Text style={{fontSize: 18, color: "#667085", padding: 10}}>          
-                                {slide.description}
+                                {Array.isArray(slide.description) ? (
+                                    slide.description.map((part, index) =>
+                                        typeof part === 'string' ? (
+                                            part
+                                        ) : (
+                                            <Text key={index} style={{ color: part.highlight ? '#E58945' : '#667085' }}>
+                                                {part.text}
+                                            </Text>
+                                        )
+                                    )
+                                ) : (
+                                    slide.description
+                                )}
                             </Text>
                         </View>
                     </View>    
                 )
             }
         </ScrollView>
-
-        {/* <Text>Hello</Text> */}
         
         {/* <GlobalProvider> */}
             <SignInOutCard />
