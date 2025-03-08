@@ -1,31 +1,15 @@
 import { View, Text, Dimensions, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { Link, Redirect, router, useRouter } from 'expo-router';
-// import { useGlobalContext } from '@/lib/global-provider';
-// import { login } from '@/lib/appwrite';
 
 const { width } = Dimensions.get('window');
 const { height } = Dimensions.get('window');
 
 export const SignInOutCard = () => {
   const router = useRouter();
-  // Just added this files
-  // const { refetch, loading, isLoggedIn } = useGlobalContext(); 
 
-  // if (!loading && isLoggedIn) {
-  //   // return <Redirect href={'/auth/SignIn'} />;
-  //   router.replace('/auth/SignUp');
-  //   return null;
-  // }
-
-  const handleLogin = async () => {
-    // const result = await login();
-
-    // if (result) {
-    //   refetch();
-    // } else {
-    //   Alert.alert('Error', 'Failed to login');
-    // }
+  const handleLogin = () => {
+    router.replace('/(root)/login/savedNumber');
   }
 
   const handleGetStarted = () => {
