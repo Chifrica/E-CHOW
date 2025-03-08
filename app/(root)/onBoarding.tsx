@@ -2,7 +2,7 @@ import { View, Text, Image, Dimensions, ScrollView, StyleSheet, NativeSyntheticE
 import React, { useState, useEffect, useRef } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { slides } from '@/constants/data'
-// import { SignInOutCard } from '@/components/signInOutCard'
+import { SignInOutCard } from '@/components/signInOutCard'
 // import GlobalProvider from '@/lib/global-provider'
 
 const { width } = Dimensions.get('window')
@@ -32,6 +32,7 @@ const OnboardingScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+        
         <ScrollView 
             onScroll={onchange}
             showsHorizontalScrollIndicator={false}
@@ -53,6 +54,17 @@ const OnboardingScreen = () => {
                             }}
                         />
 
+                        <View style={styles.dotContainer}>
+                            {
+                                slides.map((slide, index) => 
+                                    <Text key={index} style={imgActive == index ? styles.dotActive : styles.dotInActive}>
+                                        {/* { imgActive == index ? '⬬' : '●' } */}
+                                        ●
+                                    </Text>
+                                )
+                            }
+                        </View>
+
                         <View style={{marginTop: 2}}>
                             <Text style={{fontWeight: '700', fontSize: 30, fontFamily: 'sans', padding: 10}}>          
                                 {typeof slide.title == 'string' ? (
@@ -63,7 +75,7 @@ const OnboardingScreen = () => {
                                     </>
                                 ) }
                             </Text>
-                            <Text style={{fontSize: 18, color: "gray", padding: 10}}>          
+                            <Text style={{fontSize: 18, color: "#667085", padding: 10}}>          
                                 {slide.description}
                             </Text>
                         </View>
@@ -72,20 +84,10 @@ const OnboardingScreen = () => {
             }
         </ScrollView>
 
-        <View style={styles.dotContainer}>
-            {
-                slides.map((slide, index) => 
-                    <Text key={index} style={imgActive == index ? styles.dotActive : styles.dotInActive}>
-                        { imgActive == index ? '⬬' : '●' }
-                    </Text>
-                )
-            }
-        </View>
-
         {/* <Text>Hello</Text> */}
         
         {/* <GlobalProvider> */}
-            {/* <SignInOutCard /> */}
+            <SignInOutCard />
         {/* </GlobalProvider> */}
 
     </SafeAreaView>
@@ -96,7 +98,8 @@ export default OnboardingScreen;
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10,
+        // margin: 10,
+        backgroundColor: '#F9FAFB',
     },
     dotContainer: {
         position: 'relative', 
@@ -107,7 +110,7 @@ const styles = StyleSheet.create({
     dotActive: {
         margin: 3,
         color: '#E58945',
-        fontSize: 25,
+        fontSize: 20,
         borderRadius: 10
     },
     dotInActive: {

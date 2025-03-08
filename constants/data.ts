@@ -5,7 +5,7 @@ export const slides = [
     {
         image: images.onboarding,
         title: 'All Restaurants in One Place',
-        description: 'Discover all your favorite restaurants in one place—easy \n browsing, quick orders, and a variety of options to satisfy \n every craving!'
+        description: ['Discover all your favorite restaurants in one place—easy \n browsing, quick orders, and a variety of options to satisfy \n every craving!'
     },
     {
         image: images.onboarding2,
