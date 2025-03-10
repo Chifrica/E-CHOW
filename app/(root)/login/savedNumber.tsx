@@ -1,6 +1,7 @@
 import { View, Text, SafeAreaView, TextInput, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native'
 import React, { useState } from 'react';
 import Checkbox from 'expo-checkbox';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -8,9 +9,14 @@ const SavedNumber = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
+  const router = useRouter();
+
+  const handleSignUp = () => {
+    router.push('../registration');
+  };
+
   const handleContinue = () => {
     if (isChecked) {
-      // Handle the continue action
       console.log('Phone number:', phoneNumber);
     }
   };
@@ -58,7 +64,9 @@ const SavedNumber = () => {
 
             <Text style={styles.signupText}>
                 Don't have an account?  
-                <Text style={{ color: '#E58945', fontWeight: 'bold' }}> Sign Up</Text>
+                <TouchableOpacity onPress={handleSignUp}> 
+                    <Text style={{ color: '#E58945', fontWeight: 'bold', fontSize: 18, }}> Sign Up</Text>
+                </TouchableOpacity>
             </Text>
         </ScrollView>
     </SafeAreaView>
