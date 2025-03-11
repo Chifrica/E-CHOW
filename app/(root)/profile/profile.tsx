@@ -35,14 +35,14 @@ const Profile = () => {
 
         <View style={styles.inputContainer}>
             <Text style={styles.label}>State of Residence</Text> 
-            <View style={styles.input}>
+            <View style={pickerSelectStyles.inputAndroid}>
                 <RNPickerSelect
                     onValueChange={(value) => {
                       setSelectedState(value);
                       setSelectedLga(''); // Reset LGA when state changes
                     }}
                     items={stateItems}
-                    style={pickerSelectStyles}
+                    // style={pickerSelectStyles.inputAndroid}
                     placeholder={{ label: 'Select State', value: null }}
                     value={selectedState}
                 />
@@ -51,11 +51,11 @@ const Profile = () => {
 
         <View style={styles.inputContainer}>
             <Text style={styles.label}>Local Government Area</Text> 
-            <View style={styles.input}>
+            <View style={pickerSelectStyles.inputAndroid}>
                 <RNPickerSelect
                     onValueChange={(value) => setSelectedLga(value)}
                     items={lgaItems}
-                    style={pickerSelectStyles}
+                    // style={pickerSelectStyles}
                     placeholder={{ label: 'Select LGA', value: null }}
                     value={selectedLga}
                     disabled={!selectedState} // Disable LGA picker if no state is selected
@@ -86,14 +86,14 @@ const Profile = () => {
 
         <View style={styles.inputContainer}>
             <Text style={styles.label}>Gender</Text> 
-            <View style={styles.input}>
+            <View style={pickerSelectStyles.inputAndroid}>
                 <RNPickerSelect
                     onValueChange={(value) => setGender(value)}
                     items={[
                         { label: 'Male', value: 'male' },
                         { label: 'Female', value: 'female' },
                     ]}
-                    style={pickerSelectStyles}
+                    // style={pickerSelectStyles}
                     placeholder={{ label: 'Select', value: null }}
                     value={gender}
                 />
@@ -117,20 +117,18 @@ const Profile = () => {
 }
 
 const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 50,
-    color: 'black',
-    paddingRight: 30,
-  },
+//   inputIOS: {
+//     fontSize: 16,
+//     paddingVertical: 12,
+//     paddingHorizontal: 10,
+//     borderWidth: 1,
+//     borderColor: '#D1D5DB',
+//     borderRadius: 50,
+//     color: 'black',
+//     paddingRight: 30,
+//   },
   inputAndroid: {
     fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
     borderWidth: 1,
     borderColor: '#D1D5DB',
     borderRadius: 50,
