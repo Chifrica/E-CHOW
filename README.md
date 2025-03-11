@@ -62,5 +62,5 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 
 Join our community of developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Channel on Whatsapp](https://whatsapp.com/channel/0029Vb4618d11ulU0Ij7tm1G): View our Channel to view our updates.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
