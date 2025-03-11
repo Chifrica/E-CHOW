@@ -1,4 +1,5 @@
 import GoogleAppleSignup from "@/components/googleAppleSignup";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 
@@ -6,6 +7,12 @@ const Registration = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
+
+    const router = useRouter();
+
+    const handleContinue = () => {
+        router.push('/(root)/profile/profile');
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -52,7 +59,7 @@ const Registration = () => {
 
                 <TouchableOpacity
                     style={styles.button}
-                    // onPress={handleContinue}
+                    onPress={handleContinue}
                     // disabled={!isChecked}
                 >
                     <Text style={styles.buttonText}>Continue</Text>
