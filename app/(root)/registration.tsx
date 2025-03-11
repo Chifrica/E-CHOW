@@ -1,3 +1,4 @@
+import GoogleAppleSignup from "@/components/googleAppleSignup";
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, TextInput, StyleSheet, ScrollView } from "react-native"
 
@@ -46,6 +47,8 @@ const Registration = () => {
                         keyboardType='default'
                     />   
                 </View>
+
+                <GoogleAppleSignup />
            </ScrollView>
         </SafeAreaView>
     )
