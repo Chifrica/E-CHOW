@@ -1,6 +1,6 @@
 import GoogleAppleSignup from "@/components/googleAppleSignup";
 import React, { useState } from "react";
-import { SafeAreaView, View, Text, TextInput, StyleSheet, ScrollView } from "react-native"
+import { SafeAreaView, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 
 const Registration = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -49,6 +49,23 @@ const Registration = () => {
                 </View>
 
                 <GoogleAppleSignup />
+
+                <TouchableOpacity
+                    style={styles.button}
+                    // onPress={handleContinue}
+                    // disabled={!isChecked}
+                >
+                    <Text style={styles.buttonText}>Continue</Text>
+                </TouchableOpacity>
+                
+                <Text style={styles.signupText}>
+                    Already have an account?  
+                    <TouchableOpacity 
+                        // onPress={handleSignUp}
+                    > 
+                        <Text style={{ color: '#E58945', fontWeight: 'bold', fontSize: 18, }}> Login Here </Text>
+                    </TouchableOpacity>
+                </Text>
            </ScrollView>
         </SafeAreaView>
     )
@@ -103,4 +120,23 @@ const styles = StyleSheet.create({
         padding: 12,
         fontSize: 16,
     },
+    button: {
+        backgroundColor: '#E58945',
+        padding: 16,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 50
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    signupText: {
+        marginTop: 8,
+        fontSize: 18,
+        fontWeight: 400,
+        color: '#667085',
+        textAlign: 'center',
+    }
 })
