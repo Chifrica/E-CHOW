@@ -100,10 +100,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
+    color: '#6B7280'
   },
   input: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#D1D5DB',
     borderRadius: 50,
     padding: 12,
     fontSize: 16,
