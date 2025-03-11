@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { statesAndLgas } from '@/lib/databank/statesAndLgas';
 
 const { width } = Dimensions.get('window');
 
@@ -10,12 +11,17 @@ const Profile = () => {
   const [gender, setGender] = useState('');
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedLga, setSelectedLga] = useState('');
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
   };
+
+  const stateItems = Object.keys(statesAndLgas).map(state => ({ label: state, value: state }));
+  const lgaItems = selectedState ? statesAndLgas[selectedState].map((lga: any) => ({ label: lga, value: lga })) : [];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,20 +35,32 @@ const Profile = () => {
 
         <View style={styles.inputContainer}>
             <Text style={styles.label}>State of Residence</Text> 
-            <TextInput 
-                style={styles.input}
-                placeholder='Select' 
-                keyboardType='default'
-            />   
+            <View style={styles.input}>
+                <RNPickerSelect
+                    onValueChange={(value) => {
+                      setSelectedState(value);
+                      setSelectedLga(''); // Reset LGA when state changes
+                    }}
+                    items={stateItems}
+                    style={pickerSelectStyles}
+                    placeholder={{ label: 'Select State', value: null }}
+                    value={selectedState}
+                />
+            </View>
         </View>
 
         <View style={styles.inputContainer}>
             <Text style={styles.label}>Local Government Area</Text> 
-            <TextInput 
-                style={styles.input}
-                placeholder='Select' 
-                keyboardType='default'
-            />   
+            <View style={styles.input}>
+                <RNPickerSelect
+                    onValueChange={(value) => setSelectedLga(value)}
+                    items={lgaItems}
+                    style={pickerSelectStyles}
+                    placeholder={{ label: 'Select LGA', value: null }}
+                    value={selectedLga}
+                    disabled={!selectedState} // Disable LGA picker if no state is selected
+                />
+            </View>
         </View>
 
         <View style={styles.inputContainer}>
@@ -75,21 +93,7 @@ const Profile = () => {
                         { label: 'Male', value: 'male' },
                         { label: 'Female', value: 'female' },
                     ]}
-                    style={{
-                      ...pickerSelectStyles,
-                      inputIOS: {
-                        ...styles.input,
-                        paddingVertical: 12,
-                        paddingHorizontal: 10,
-                        paddingRight: 30, // to ensure the text is never behind the icon
-                      },
-                      inputAndroid: {
-                        ...styles.input,
-                        paddingVertical: 8,
-                        paddingHorizontal: 10,
-                        paddingRight: 30, // to ensure the text is never behind the icon
-                      },
-                    }}
+                    style={pickerSelectStyles}
                     placeholder={{ label: 'Select', value: null }}
                     value={gender}
                 />
