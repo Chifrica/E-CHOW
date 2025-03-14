@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { statesAndLgas } from '@/lib/databank/statesAndLgas';
 import { useRouter } from "expo-router";
 
+
 const { width } = Dimensions.get('window');
 
 const Profile = () => {
@@ -23,11 +24,10 @@ const Profile = () => {
     setDate(currentDate);
   };
 
-    //   This handle is temporary
+  //   This handle is temporary
   const handleSkip = () => {
-    router.push('../../src/currentLocation')
+    router.push('/(root)/src/location/addLocation');
   }
-
   const stateItems = Object.keys(statesAndLgas).map(state => ({ label: state, value: state }));
   const lgaItems = selectedState ? statesAndLgas[selectedState].map((lga: any) => ({ label: lga, value: lga })) : [];
 
@@ -36,6 +36,7 @@ const Profile = () => {
       <ScrollView>
         <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginBottom: 50 }}>
           <Text>Profile Picture</Text>
+
           <Image source={require('@/assets/icons/profile.png')}
             style={{ width: 50, height: 50, borderRadius: 50, marginLeft: 20 }}
            />
