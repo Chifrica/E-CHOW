@@ -1,0 +1,41 @@
+# Code Citations
+
+## License: unknown
+https://github.com/tduyile04/ivn-backend/tree/28273c7891daff2b0f76e486907c7e56e20b88b9/lib/databank/states.js
+
+```
+', 'Isiala Ngwa South', 'Isuikwuato', 'Obi Ngwa', 'Ohafia', 'Osisioma', 'Ugwunagbo', 'Ukwa East', 'Ukwa West', 'Umuahia North', 'Umuahia South', 'Umu Nneochi'],
+```
+
+
+## License: unknown
+https://github.com/nisha689/guestsuites/tree/29e554ed1cb7508148c28bc61332e56ba8ff6a73/app/Http/Controllers/CommonController.php
+
+```
+'Aba North', 'Aba South', 'Arochukwu', 'Bende', 'Ikwuano', 'Isiala Ngwa North', 'Isiala Ngwa South', 'Isuikwuato', 'Obi Ngwa', 'Ohafia', 'Osisioma', 'Ugwunagbo',
+```
+
+
+## License: unknown
+https://github.com/nditech/org.ndi.nigerialgas/tree/3cba7c4e7beecdcde23e5e657576041aa348ffce/nigerialgas.php
+
+```
+'Ganye', 'Gayuk', 'Gombi', 'Grie', 'Hong', 'Jada', 'Lamurde', 'Madagali', 'Maiha', 'Mayo Belwa', 'Michika', 'Mubi North', 'Mubi South',
+```
+
+
+## License: GPL_3_0
+https://github.com/nkenna/electioncaster/tree/3073064395085a5ef5ee8c9c45eefe0944b88bad/resources/views/auth/register.blade.php
+
+```
+', 'Madagali', 'Maiha', 'Mayo Belwa', 'Michika', 'Mubi North', 'Mubi South', 'Numan', 'Shelleng', 'Song', 'Toungo', 'Yola North', 'Yola South']
+```
+
+
+## License: GPL_3_0
+https://github.com/okeworo/Nigerian-States-Capital-and-Local-Governmental-Area/tree/63d76bc9297c63725527406621be29a2e46495f1/States%2C%20Capital%20and%20LGA
+
+```
+, 'Hong', 'Jada', 'Lamurde', 'Madagali', 'Maiha', 'Mayo Belwa', 'Michika', 'Mubi North', 'Mubi South', 'Numan', 'Shelleng', 'Song', 'Toungo'
+```
+

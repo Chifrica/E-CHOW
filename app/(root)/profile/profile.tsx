@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { statesAndLgas } from '@/lib/databank/statesAndLgas';
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get('window');
 
@@ -13,12 +14,19 @@ const Profile = () => {
   const [show, setShow] = useState(false);
   const [selectedState, setSelectedState] = useState('');
   const [selectedLga, setSelectedLga] = useState('');
+  
+  const router = useRouter()
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
   };
+
+    //   This handle is temporary
+  const handleSkip = () => {
+    router.push('../../src/currentLocation')
+  }
 
   const stateItems = Object.keys(statesAndLgas).map(state => ({ label: state, value: state }));
   const lgaItems = selectedState ? statesAndLgas[selectedState].map((lga: any) => ({ label: lga, value: lga })) : [];
@@ -108,6 +116,7 @@ const Profile = () => {
 
         <TouchableOpacity
             style={styles.buttonSkip}
+            onPress={handleSkip}
         >
             <Text style={styles.buttonTextSkip}>Skip</Text>
         </TouchableOpacity>
