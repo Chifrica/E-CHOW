@@ -26,7 +26,7 @@ const Profile = () => {
 
   //   This handle is temporary
   const handleSkip = () => {
-    router.push('/(root)/src/location/addLocation');
+    router.push('/(root)/src/location/currentLocation');
   }
   const stateItems = Object.keys(statesAndLgas).map(state => ({ label: state, value: state }));
   const lgaItems = selectedState ? statesAndLgas[selectedState].map((lga: any) => ({ label: lga, value: lga })) : [];
