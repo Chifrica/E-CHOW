@@ -19,7 +19,7 @@ const AddLocation = () => {
   const [location, setLocation] = useState('');
   const [locationName, setLocationName] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
-  const [markerPosition, setMarkerPosition] = useState(null); // State to store marker position
+  const [markerPosition, setMarkerPosition] = useState<{ latitude: number; longitude: number } | null>(null); // State to store marker position
   const router = useRouter();
 
   useEffect(() => {
