@@ -23,7 +23,8 @@ const CurrentLocation = () => {
           <Feather name="chevron-left" size={24} color="black" style={styles.headerIcon} onPress={handleBack}/>
           <Text style={styles.headerText}>Location</Text>
         </View>
-
+        
+        {/* Current location placeholder */}
         <View style={styles.yourLocation}>
           <Ionicons name="location-outline" size={24} color="black"/>
           <View>
