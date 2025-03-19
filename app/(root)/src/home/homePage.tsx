@@ -25,11 +25,14 @@ const HomePage = () => {
             </View>
         </View>
 
+        {/* Stories */}
         <FlatList
             data={[
-                require('../../assets/images/food1.png'),
-                require('../../assets/images/food2.png'),
-                require('../../assets/images/food3.png')
+                require('../../assets/images/Bellonis.png'),
+                require('../../assets/images/Nao.png'),
+                require('../../assets/images/Tasty.png'),
+                require('../../assets/images/Igbo-kitchen.png')
+
             ]}
             renderItem={({item}) => <Image source={item} />}
             keyExtractor={(item, index) => index.toString()}
