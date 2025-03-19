@@ -1,8 +1,9 @@
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 // import "./global.css";
 
 import {useFonts} from "expo-font";
 import { useEffect } from "react";
+import { LocationProvider } from "./(root)/src/context/locationContext";
 // import GlobalProvider from "@/lib/global-provider";
 
 export default function RootLayout() {
@@ -19,8 +20,12 @@ export default function RootLayout() {
 
   return (
     // <GlobalProvider>
-     <Stack screenOptions={{ headerShown: false }}/>
-    // </GlobalProvider>
+
+      <LocationProvider>
+      {/* <Stack screenOptions={{ headerShown: false }} /> */}
+        <Slot />
+      </LocationProvider>
+  
     // <Stack />
   )
 }

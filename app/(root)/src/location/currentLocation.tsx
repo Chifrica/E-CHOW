@@ -2,11 +2,14 @@ import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, StyleSheet, Dim
 import React from 'react'
 import { Feather, Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { useLocation } from '../context/locationContext'
 
 const width = Dimensions.get('window').width
 
 const CurrentLocation = () => {
   const router = useRouter();
+  const { currentLocation } = useLocation();
+
 
   const handleAddLocation = () => {
     router.push('/(root)/src/location/addLocation'); 
@@ -25,12 +28,20 @@ const CurrentLocation = () => {
         </View>
         
         {/* Current location placeholder */}
-        <View style={styles.yourLocation}>
+        {/* <View style={styles.yourLocation}>
           <Ionicons name="location-outline" size={24} color="black"/>
           <View>
             <Text style={styles.yourLocationText}>General (Current location)</Text>
             <Text>Rosebud, Oke lla, Ado Ekiti</Text>
             </View>
+        </View> */}
+
+        <View style={styles.yourLocation}>
+          <Ionicons name="location-outline" size={24} color="black" />
+          <View>
+            <Text style={styles.yourLocationText}>{currentLocation.description}</Text>
+            <Text>{currentLocation.name}</Text>
+          </View>
         </View>
 
         <TouchableOpacity style={styles.addNewLocation} onPress={handleAddLocation}>  

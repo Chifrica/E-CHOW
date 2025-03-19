@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons'
 import { useRouter } from 'expo-router';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { useLocation } from '../context/locationContext';
 
 const width = Dimensions.get('window').width;
 
@@ -22,6 +23,8 @@ const AddLocation = () => {
   const [markerPosition, setMarkerPosition] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isZoomed, setIsZoomed] = useState(false); // State to track if the map has zoomed
   const router = useRouter();
+  const { setCurrentLocation } = useLocation();
+
 
   useEffect(() => {
     const requestPermissions = async () => {
@@ -88,6 +91,12 @@ const AddLocation = () => {
       Alert.alert('Error', 'Location details are missing.');
       return;
     }
+
+    // Save the location to the shared context
+    setCurrentLocation({
+      name: locationName,
+      description: location,
+    });
 
     // Simulate saving the location (you can replace this with an API call or state update)
     const savedLocation = {
