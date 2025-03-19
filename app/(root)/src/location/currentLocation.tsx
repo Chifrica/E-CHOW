@@ -38,7 +38,7 @@ const CurrentLocation = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Save and Login</Text>
+          <Text style={styles.buttonText}>Proceed to Login</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

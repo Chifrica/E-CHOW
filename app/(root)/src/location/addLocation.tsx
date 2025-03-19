@@ -19,7 +19,8 @@ const AddLocation = () => {
   const [location, setLocation] = useState('');
   const [locationName, setLocationName] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
-  const [markerPosition, setMarkerPosition] = useState<{ latitude: number; longitude: number } | null>(null); // State to store marker position
+  const [markerPosition, setMarkerPosition] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isZoomed, setIsZoomed] = useState(false); // State to track if the map has zoomed
   const router = useRouter();
 
   useEffect(() => {
@@ -68,17 +69,38 @@ const AddLocation = () => {
         {
           latitude,
           longitude,
-          latitudeDelta: 0.01, // Smaller delta for zooming in
+          latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         },
-        1000 // Animation duration in milliseconds
+        1000
       );
 
-      Alert.alert('Success', `Location "${locationName}" saved and zoomed in.`);
+      // Change button state to "Save"
+      setIsZoomed(true);
     } catch (error) {
       Alert.alert('Error', 'An error occurred while processing the location.');
       console.error(error);
     }
+  };
+
+  const handleSave = () => {
+    if (!markerPosition || !locationName) {
+      Alert.alert('Error', 'Location details are missing.');
+      return;
+    }
+
+    // Simulate saving the location (you can replace this with an API call or state update)
+    const savedLocation = {
+      name: locationName,
+      description: location,
+      coordinates: markerPosition,
+    };
+
+    // Pass the saved location back to the previous screen (or save it globally)
+    Alert.alert('Success', `Location "${locationName}" saved.`);
+
+    // Navigate back to the previous screen
+    router.back();
   };
 
   return (
@@ -105,7 +127,7 @@ const AddLocation = () => {
                 coordinate={markerPosition}
                 title={locationName}
                 description={location}
-                pinColor="red" // Red pointer
+                pinColor="red"
               />
             )}
           </MapView>
@@ -137,13 +159,19 @@ const AddLocation = () => {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={[styles.button, (!location || !locationName) && styles.buttonDisabled]}
-          onPress={handleSaveAndZoom}
-          disabled={!location || !locationName} // Disable button if inputs are empty
-        >
-          <Text style={styles.buttonText}>Save and Zoom</Text>
-        </TouchableOpacity>
+        {!isZoomed ? (
+          <TouchableOpacity
+            style={[styles.button, (!location || !locationName) && styles.buttonDisabled]}
+            onPress={handleSaveAndZoom}
+            disabled={!location || !locationName}
+          >
+            <Text style={styles.buttonText}>Save and Zoom</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
