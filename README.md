@@ -14,8 +14,8 @@ E-CHOW is a web application developed using TypeScript. It aims to provide a sea
 
 ### Prerequisites
 
-- Node.js (version X.X.X)
-- npm (version X.X.X)
+- Node.js (version X.X.X) it uses the updated node
+- npm (version X.X.X) check the node
 
 1. Install dependencies
 
