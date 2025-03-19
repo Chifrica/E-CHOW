@@ -2,8 +2,17 @@ import { View, Text, StyleSheet, ScrollView, FlatList, Image } from 'react-nativ
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign, Feather } from '@expo/vector-icons'
+// import images from '@/constants/images'
+
+const images = {
+    bellonis: require('../../../../assets/images/Bellonis.png'),
+    nao: require('../../../../assets/images/Nao.png'),
+    igboKitchen: require('../../../../assets/images/Igbo-kitchen.png'),
+    tasty: require('../../../../assets/images/Tasty.png'),
+  };
 
 const HomePage = () => {
+    
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -28,17 +37,26 @@ const HomePage = () => {
         {/* Stories */}
         <FlatList
             data={[
-                require('../../assets/images/Bellonis.png'),
-                require('../../assets/images/Nao.png'),
-                require('../../assets/images/Tasty.png'),
-                require('../../assets/images/Igbo-kitchen.png')
+                { image: images.bellonis, label: 'Bellonis' },
+                { image: images.nao, label: 'Nao' },
+                { image: images.igboKitchen, label: 'Igbo Kitchen' },
+                { image: images.tasty, label: 'Tasty' },
+                { image: images.nao, label: 'Nao' },
 
             ]}
-            renderItem={({item}) => <Image source={item} />}
+            renderItem={({ item }) => (
+                <View style={styles.imageContainer}>
+                    <Image source={item.image} style={styles.image} />
+                    <Text style={styles.imageLabel}>{item.label}</Text>
+                </View>
+            )}
             keyExtractor={(item, index) => index.toString()}
             horizontal
+            showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+
         />
-            {/* <Text style={styles.headerText}>Home</Text> */}
+        
+        <Text style={styles.headerText}>Home</Text>
         
       
       </ScrollView>
@@ -51,7 +69,6 @@ export default HomePage
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     padding: 16,
   },
     scrollView: {
@@ -62,6 +79,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 10,
         justifyContent: 'space-between',
+        marginBottom: 20,
     },
     miniHeader: {
         flexDirection: 'row',
@@ -80,6 +98,25 @@ const styles = StyleSheet.create({
         padding: 8,
         elevation: 1,
         marginRight: 10,
+    },
+    imageContainer: {
+        alignItems: 'center',
+        marginRight: 10,
+        padding: 5,
+    },
+    image: {
+        width: 70,
+        height: 70,
+        resizeMode: 'cover',
+        borderRadius: 50,
+        borderColor: '#E58945',
+        borderWidth: 2,
+    },
+    imageLabel: {
+        marginTop: 5,
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#333',
     },
     headerText: {
         fontSize: 25,
