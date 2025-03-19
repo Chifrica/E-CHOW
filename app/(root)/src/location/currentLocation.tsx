@@ -19,6 +19,10 @@ const CurrentLocation = () => {
     router.back();
   }
 
+  const handleProceed = () => {
+    router.push('/(root)/src/home/homePage');
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -49,7 +53,7 @@ const CurrentLocation = () => {
           <Text style={styles.addNewLocationText}>Add New Location</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleProceed}>
           <Text style={styles.buttonText}>Proceed to Login</Text>
         </TouchableOpacity>
       </ScrollView>
