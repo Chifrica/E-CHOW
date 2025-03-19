@@ -17,3 +17,5 @@ declare module "*.svg" {
     const calue: any;
     export default value;
 }
+
+// any image format can be added
