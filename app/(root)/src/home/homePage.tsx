@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, FlatList, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign, Feather } from '@expo/vector-icons'
+import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons'
 // import images from '@/constants/images'
 
 const images = {
@@ -9,7 +9,15 @@ const images = {
     nao: require('../../../../assets/images/Nao.png'),
     igboKitchen: require('../../../../assets/images/Igbo-kitchen.png'),
     tasty: require('../../../../assets/images/Tasty.png'),
-  };
+};
+
+const icons = {
+    rice: require('../../../../assets/icons/BowlFood.png'),
+    beverages: require('../../../../assets/icons/BeerBottle.png'),
+    seaFood: require('../../../../assets/icons/Shrimp.png'),
+    soup: require('../../../../assets/icons/CookingPot.png'),
+    bakery: require('../../../../assets/icons/Cookie.png'),
+};
 
 const HomePage = () => {
     
@@ -55,7 +63,39 @@ const HomePage = () => {
             showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
 
         />
-        
+        <View>
+        <View style={styles.categoryHeader}>
+            <Text style={styles.categoryTitle}>Category</Text>
+            <Text style={styles.categorySeeAll}>See All</Text>
+        </View>
+
+        <View style={styles.categoryContainer}>
+            <View style={styles.categoryItem}>
+                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
+                <Text style={styles.categoryLabel}>Rice</Text>
+            </View>
+            <View style={styles.categoryItem}>
+                <FontAwesome6 name="wine-bottle" size={30} color="#E58945" style={styles.categoryIcon} />
+                <Text style={styles.categoryLabel}>Rice</Text>
+            </View>
+            <View style={styles.categoryItem}>
+                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
+                <Text style={styles.categoryLabel}>Rice</Text>
+            </View>
+            <View style={styles.categoryItem}>
+                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
+                <Text style={styles.categoryLabel}>Rice</Text>
+            </View>
+            <View style={styles.categoryItem}>
+                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
+                <Text style={styles.categoryLabel}>Rice</Text>
+            </View>
+            <View style={styles.categoryItem}>
+                <FontAwesome6 name="cookie-bite" size={24} color="#E58945" style={styles.categoryIcon} />
+                <Text style={styles.categoryLabel}>Rice</Text>
+            </View>
+        </View>
+        </View>
         <Text style={styles.headerText}>Home</Text>
         
       
@@ -125,5 +165,42 @@ const styles = StyleSheet.create({
         fontFamily: 'Switzerland',
         letterSpacing: -0.41,
         // lineHeight: 100,
+    },
+    categoryHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: 20,
+    },
+    categoryTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    categorySeeAll: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#E58945',
+    },
+    categoryContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+    },
+    categoryItem: {
+        alignItems: 'center',
+        marginRight: 20,
+        marginBottom: 20,
+    },
+    categoryIcon: {
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+    },
+    categoryLabel: {
+        marginTop: 5,
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#333',
     },
 })
