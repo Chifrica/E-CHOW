@@ -28,10 +28,10 @@ const HomePage = () => {
             <View style={styles.miniHeader}>
                 <AntDesign name="menu-fold" size={24} color="#FFFFFF" style={styles.headerIcon}/>
                 <View>
-                    <Text>Deliver to: 
+                    <Text style={{color: '#475467', fontSize: 16}}>Deliver to: 
                         <Text style={{fontWeight: 700}}> Office</Text>
                     </Text>
-                    <Text style={{justifyContent: 'center'}}>33, Rosebud, Oke... 
+                    <Text style={{justifyContent: 'center', fontWeight: 'bold', color: '#101828', fontSize: 18}}>33, Rosebud, Oke... 
                         <Feather name="chevron-down" size={24} color="#61605F" />
                     </Text>
                 </View>
@@ -63,38 +63,38 @@ const HomePage = () => {
             showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
 
         />
-        <View>
-        <View style={styles.categoryHeader}>
-            <Text style={styles.categoryTitle}>Category</Text>
-            <Text style={styles.categorySeeAll}>See All</Text>
-        </View>
+        <View style={{padding: 10}}>
+            <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>Category</Text>
+                <Text style={styles.categorySeeAll}>See All</Text>
+            </View>
 
-        <View style={styles.categoryContainer}>
-            <View style={styles.categoryItem}>
-                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
-                <Text style={styles.categoryLabel}>Rice</Text>
+            <View style={styles.categoryContainer}>
+                <View style={styles.categoryItem}>
+                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
+                    <Text style={styles.categoryLabel}>Rice</Text>
+                </View>
+                <View style={styles.categoryItem}>
+                    <FontAwesome6 name="wine-bottle" size={20} color="#E58945" style={styles.categoryIcon} />
+                    <Text style={styles.categoryLabel}>Beverages</Text>
+                </View>
+                <View style={styles.categoryItem}>
+                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
+                    <Text style={styles.categoryLabel}>Swallow</Text>
+                </View>
+                <View style={styles.categoryItem}>
+                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
+                    <Text style={styles.categoryLabel}>Seafood</Text>
+                </View>
+                <View style={styles.categoryItem}>
+                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
+                    <Text style={styles.categoryLabel}>Soup</Text>
+                </View>
+                <View style={styles.categoryItem}>
+                    <FontAwesome6 name="cookie-bite" size={20} color="#E58945" style={styles.categoryIcon} />
+                    <Text style={styles.categoryLabel}>Bakery</Text>
+                </View>
             </View>
-            <View style={styles.categoryItem}>
-                <FontAwesome6 name="wine-bottle" size={30} color="#E58945" style={styles.categoryIcon} />
-                <Text style={styles.categoryLabel}>Rice</Text>
-            </View>
-            <View style={styles.categoryItem}>
-                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
-                <Text style={styles.categoryLabel}>Rice</Text>
-            </View>
-            <View style={styles.categoryItem}>
-                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
-                <Text style={styles.categoryLabel}>Rice</Text>
-            </View>
-            <View style={styles.categoryItem}>
-                <FontAwesome6 name="bowl-rice" size={30} color="#E58945" style={styles.categoryIcon} />
-                <Text style={styles.categoryLabel}>Rice</Text>
-            </View>
-            <View style={styles.categoryItem}>
-                <FontAwesome6 name="cookie-bite" size={24} color="#E58945" style={styles.categoryIcon} />
-                <Text style={styles.categoryLabel}>Rice</Text>
-            </View>
-        </View>
         </View>
         <Text style={styles.headerText}>Home</Text>
         
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 50,
         borderColor: '#E58945',
-        borderWidth: 2,
+        borderWidth: 3,
     },
     imageLabel: {
         marginTop: 5,
@@ -189,18 +189,29 @@ const styles = StyleSheet.create({
     },
     categoryItem: {
         alignItems: 'center',
-        marginRight: 20,
+        flexDirection: 'row',
+        marginRight: 10,
         marginBottom: 20,
+        borderRadius: 50,
+        elevation: 5,
+        backgroundColor: '#EAEAEA',
+        padding: 5
     },
     categoryIcon: {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         resizeMode: 'contain',
+        backgroundColor: '#fff',
+        padding: 10,
+        elevation: 1,
+        borderRadius: 50
     },
     categoryLabel: {
         marginTop: 5,
-        fontSize: 14,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#333',
+        paddingLeft: 5,
+        paddingRight: 5
     },
 })
