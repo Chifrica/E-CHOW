@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, FlatList, Image } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, FlatList, Image, Dimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons'
 // import images from '@/constants/images'
+const width = Dimensions.get('screen').width;
 
 const images = {
     bellonis: require('../../../../assets/images/Bellonis.png'),
@@ -11,6 +12,13 @@ const images = {
     tasty: require('../../../../assets/images/Tasty.png'),
 };
 
+const videos = {
+    video1: require('../../../../assets/images/video1.png')
+}
+
+const recommended = {
+    recommended1: require('../../../../assets/images/recommended1.png')
+}
 // const icons = {
 //     rice: require('../../../../assets/icons/BowlFood.png'),
 //     beverages: require('../../../../assets/icons/BeerBottle.png'),
@@ -96,6 +104,54 @@ const HomePage = () => {
                 </View>
             </View>
         </View>
+
+        <FlatList
+            data={[
+                { videos: videos.video1, title: 'This Week', label: 'See Top Related Restaurants' },
+                { videos: videos.video1, label: 'video1' },
+                { videos: videos.video1, label: 'video1' },
+            ]}
+            renderItem={({ item }) => (
+                <View style={styles.videoContainer}>
+                    <Image source={item.videos} style={styles.videos} />
+                    <View style={styles.videoOverlay}>
+                        <Text style={styles.videoTitle}>{item.title}</Text>
+                        <Text style={styles.videoLabel}>{item.label}</Text>
+                    </View>
+                </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+        />
+
+        <View>
+            <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>Recommended for you</Text>
+                <Text style={styles.categorySeeAll}>See All</Text>
+            </View>
+        </View>
+
+        <FlatList
+                data={[
+                    { recommended: recommended.recommended1, title: 'Caramello Spaghetti', label: 'Caramello Spaghetti' },
+                    { recommended: recommended.recommended1, label: 'recommended1' },
+                    { recommended: recommended.recommended1, label: 'recommended1' },
+                ]}
+                renderItem={({ item }) => (
+                    <View style={styles.videoContainer}>
+                        <Image source={item.recommended} style={styles.videos} />
+                        <View style={styles.videoOverlay}>
+                            <Text style={styles.videoTitle}>{item.title}</Text>
+                            <Text style={styles.videoLabel}>{item.label}</Text>
+                        </View>
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+        />
+
         <Text style={styles.headerText}>Home</Text>
         
       
@@ -158,6 +214,41 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
     },
+    videoContainer: {
+        marginRight: 10,
+        // position: 'relative', // Ensure the overlay is positioned relative to the video
+      },
+      videos: {
+        width: 333,
+        height: 167,
+        resizeMode: 'cover',
+        borderRadius: 10,
+      },
+      videoOverlay: {
+        position: 'absolute',
+        marginLeft: 10,
+        alignItems: 'flex-start',
+      },
+      videoTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        marginBottom: 5,
+        borderRadius: 100,
+        borderColor: '#FFFFFF',
+        borderWidth: 1,
+        padding: 5,
+        marginTop: 80
+      },
+      videoLabel: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        textAlign: 'center',
+        marginTop: 10,
+        // marginLeft: 10,
+      },
     headerText: {
         fontSize: 25,
         fontWeight: '700',
@@ -186,6 +277,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
+        
     },
     categoryItem: {
         alignItems: 'center',
@@ -194,7 +286,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 50,
         elevation: 5,
-        backgroundColor: '#EAEAEA',
+        backgroundColor: '#F9F9F9',
         padding: 5
     },
     categoryIcon: {

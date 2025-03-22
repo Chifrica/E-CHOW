@@ -64,7 +64,7 @@ const SavedNumber = () => {
     });
 
     if (biometricAuth.success) {
-      router.push('/(root)/src/home/homePage');
+      router.push('/(root)/src/location/currentLocation');
     } else {
       Alert.alert("Authentication Failed", "Please try again.");
     }
