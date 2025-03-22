@@ -105,13 +105,16 @@ const SavedNumber = () => {
           <Text style={styles.checkboxLabel}>Save Phone Number</Text>
         </View>
 
-        <Image
+        {/* <Image
           source={require('@/assets/icons/facial recogn.png')}
           style={{ alignSelf: 'center', marginTop: '50%', marginBottom: 40 }}
-        />
+        /> */}
 
-        <TouchableOpacity onPress={handleBiometric}>
-          <Entypo name="fingerprint" size={30} color="red" />
+        <TouchableOpacity 
+          onPress={handleBiometric}
+          style={{ alignSelf: 'center', marginTop: '50%', marginBottom: 40 }}
+        >
+          <Entypo name="fingerprint" size={50} color="#E58945" />
         </TouchableOpacity>
 
         <TouchableOpacity
