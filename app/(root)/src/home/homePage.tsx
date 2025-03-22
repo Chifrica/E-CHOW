@@ -11,13 +11,13 @@ const images = {
     tasty: require('../../../../assets/images/Tasty.png'),
 };
 
-const icons = {
-    rice: require('../../../../assets/icons/BowlFood.png'),
-    beverages: require('../../../../assets/icons/BeerBottle.png'),
-    seaFood: require('../../../../assets/icons/Shrimp.png'),
-    soup: require('../../../../assets/icons/CookingPot.png'),
-    bakery: require('../../../../assets/icons/Cookie.png'),
-};
+// const icons = {
+//     rice: require('../../../../assets/icons/BowlFood.png'),
+//     beverages: require('../../../../assets/icons/BeerBottle.png'),
+//     seaFood: require('../../../../assets/icons/Shrimp.png'),
+//     soup: require('../../../../assets/icons/CookingPot.png'),
+//     bakery: require('../../../../assets/icons/Cookie.png'),
+// };
 
 const HomePage = () => {
     

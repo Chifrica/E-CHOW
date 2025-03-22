@@ -1,90 +1,150 @@
-import { View, Text, SafeAreaView, TextInput, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native'
-import React, { useState } from 'react';
+import { View, Text, SafeAreaView, TextInput, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Checkbox from 'expo-checkbox';
 import { useRouter } from 'expo-router';
+import { Entypo } from '@expo/vector-icons';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 const { width } = Dimensions.get('window');
 
 const SavedNumber = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 
   const router = useRouter();
 
-  const handleSignUp = () => {
-    router.push('../registration');
+  // Finger print and Face Identification
+
+  const fallBackToDefaultAuth = () => {
+    console.log("fall back to password authentication");
   };
 
-  const handleContinue = () => {
-    if (isChecked) {
-      console.log('Phone number:', phoneNumber);
+  const alertComponent = (title: string, mess: string | undefined, btnTxt: string, btnFunc: () => void) => {
+    return Alert.alert(title, mess, [
+      {
+        text: btnTxt,
+        onPress: btnFunc,
+      },
+    ]);
+  };
+
+  const handleBiometric = async () => {
+    const isBiometricSupported = await LocalAuthentication.hasHardwareAsync();
+
+    if (!isBiometricSupported) {
+      return alertComponent(
+        "Please enter your password",
+        "Biometric not supported",
+        "OK",
+        () => fallBackToDefaultAuth(),
+      );
+    }
+
+    let supportedBiometrics;
+    if (isBiometricSupported) {
+      supportedBiometrics = await LocalAuthentication.supportedAuthenticationTypesAsync();
+    }
+
+    const savedBiometricRecords = await LocalAuthentication.isEnrolledAsync();
+
+    if (!savedBiometricRecords) {
+      return alertComponent(
+        "Biometric record not found",
+        "Please login with your password",
+        "OK",
+        () => fallBackToDefaultAuth()
+      );
+    }
+
+    const biometricAuth = await LocalAuthentication.authenticateAsync({
+      promptMessage: "Authenticate to continue",
+      cancelLabel: "Cancel",
+      disableDeviceFallback: true,
+    });
+
+    if (biometricAuth.success) {
+      router.push('/(root)/src/home/homePage');
+    } else {
+      Alert.alert("Authentication Failed", "Please try again.");
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      const isBiometricSupported = await LocalAuthentication.hasHardwareAsync();
+      setIsBiometricSupported(isBiometricSupported);
+    })();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollView} showsHorizontalScrollIndicator  >
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Welcome back</Text>
-                <Text style={styles.subHeaderText}>Log in to your account</Text>
-            </View>
+      <ScrollView contentContainerStyle={styles.scrollView} showsHorizontalScrollIndicator>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Welcome back</Text>
+          <Text style={styles.subHeaderText}>Log in to your account</Text>
+        </View>
 
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Enter your phone number</Text> 
-                <TextInput 
-                  style={styles.input}
-                  placeholder='e.g 08139684024' 
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  keyboardType='phone-pad'
-                />   
-            </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Enter your phone number</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g 08139684024"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            keyboardType="phone-pad"
+          />
+        </View>
 
-            <View style={styles.checkboxContainer}>
-                <Checkbox
-                    value={isChecked}
-                    onValueChange={setIsChecked}
-                    style={[styles.checkbox, { backgroundColor: isChecked ? 'blue' : 'white' }]}
-                />
-                <Text style={styles.checkboxLabel}>Save Phone Number</Text>
-            </View>
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            value={isChecked}
+            onValueChange={setIsChecked}
+            style={[styles.checkbox, { backgroundColor: isChecked ? 'blue' : 'white' }]}
+          />
+          <Text style={styles.checkboxLabel}>Save Phone Number</Text>
+        </View>
 
-            <Image 
-                source={require('@/assets/icons/facial recogn.png')}
-                style={{ alignSelf: 'center', marginTop: '50%', marginBottom: 40 }}
-            />
+        <Image
+          source={require('@/assets/icons/facial recogn.png')}
+          style={{ alignSelf: 'center', marginTop: '50%', marginBottom: 40 }}
+        />
 
-            <TouchableOpacity
-                style={[styles.button, !isChecked && styles.buttonDisabled]}
-                onPress={handleContinue}
-                disabled={!isChecked}
-            >
-                <Text style={styles.buttonText}>Continue</Text>
-            </TouchableOpacity>
+        <TouchableOpacity onPress={handleBiometric}>
+          <Entypo name="fingerprint" size={30} color="red" />
+        </TouchableOpacity>
 
-            <Text style={styles.signupText}>
-                Don't have an account?  
-                <TouchableOpacity onPress={handleSignUp}> 
-                    <Text style={{ color: '#E58945', fontWeight: 'bold', fontSize: 18, }}> Sign Up</Text>
-                </TouchableOpacity>
-            </Text>
-        </ScrollView>
+        <TouchableOpacity
+          style={[styles.button, !isChecked && styles.buttonDisabled]}
+          onPress={() => console.log('Continue pressed')}
+          disabled={!isChecked}
+        >
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.signupText}>
+          Don't have an account?
+          <TouchableOpacity onPress={() => router.push('../registration')}>
+            <Text style={{ color: '#E58945', fontWeight: 'bold', fontSize: 18 }}> Sign Up</Text>
+          </TouchableOpacity>
+        </Text>
+      </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#F9FAFB"
+    backgroundColor: "#F9FAFB",
   },
   scrollView: {
     flexGrow: 1,
   },
   header: {
     marginBottom: 50,
-    marginTop: 15
+    marginTop: 15,
   },
   headerText: {
     fontSize: 30,
@@ -100,7 +160,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
-    color: '#6B7280'
+    color: '#6B7280',
   },
   input: {
     borderWidth: 1,
@@ -113,17 +173,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 24,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   checkbox: {
     backgroundColor: 'blue',
     borderRadius: 4,
-    borderColor: 'gray'
+    borderColor: 'gray',
   },
   checkboxLabel: {
     fontSize: 18,
-    fontWeight: 400,
-    paddingLeft: 5
+    fontWeight: '400',
+    paddingLeft: 5,
   },
   button: {
     backgroundColor: '#E58945',
@@ -142,10 +202,10 @@ const styles = StyleSheet.create({
   signupText: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: 400,
+    fontWeight: '400',
     color: '#667085',
     textAlign: 'center',
-  }
+  },
 });
 
 export default SavedNumber;
