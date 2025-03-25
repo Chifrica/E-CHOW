@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, ScrollView, FlatList, Image, Dimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons'
+import { AntDesign, Feather, FontAwesome6, Ionicons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
 // import images from '@/constants/images'
 const width = Dimensions.get('screen').width;
 
@@ -31,7 +32,7 @@ const HomePage = () => {
     
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
             <View style={styles.miniHeader}>
                 <AntDesign name="menu-fold" size={24} color="#FFFFFF" style={styles.headerIcon}/>
@@ -134,7 +135,7 @@ const HomePage = () => {
 
         <FlatList
                 data={[
-                    { recommended: recommended.recommended1, title: 'Caramello Spaghetti', label: 'Caramello Spaghetti' },
+                    { recommended: recommended.recommended1, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
                     { recommended: recommended.recommended1, label: 'recommended1' },
                     { recommended: recommended.recommended1, label: 'recommended1' },
                 ]}
@@ -142,14 +143,17 @@ const HomePage = () => {
                     <View style={styles.videoContainer}>
                         <Image source={item.recommended} style={styles.videos} />
                         <View style={styles.videoOverlay}>
-                            <Text style={styles.videoTitle}>{item.title}</Text>
-                            <Text style={styles.videoLabel}>{item.label}</Text>
+                            <LinearGradient style={styles.recommendationHeader} colors={['#3579DD', '#24DA36']}>
+                                <Ionicons name="star" size={15} color="#E58945" />
+                                <Text style={styles.recommendationText}>{item.title}</Text>
+                            </LinearGradient>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
                             <View>
                                 <Text>Caramello Spaghetti</Text>
-                                <View>
-                                    <Text>4.8</Text>
+                                <View  style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Ionicons name="star" size={15} color="#E58945" />
+                                    <Text style={{marginLeft: 5}}>4.8</Text>
                                     <Text>10min away</Text>
                                 </View>
                             </View>
@@ -177,7 +181,9 @@ export default HomePage
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    top: 10,
   },
     scrollView: {
         flexGrow: 1,
@@ -229,19 +235,19 @@ const styles = StyleSheet.create({
     videoContainer: {
         marginRight: 10,
         // position: 'relative', // Ensure the overlay is positioned relative to the video
-      },
-      videos: {
+    },
+    videos: {
         width: 333,
         height: 167,
         resizeMode: 'cover',
         borderRadius: 10,
-      },
-      videoOverlay: {
+    },
+    videoOverlay: {
         position: 'absolute',
         marginLeft: 10,
         alignItems: 'flex-start',
-      },
-      videoTitle: {
+    },
+    videoTitle: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#fff',
@@ -252,15 +258,32 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 5,
         marginTop: 80
-      },
-      videoLabel: {
+    },
+    videoLabel: {
         fontSize: 24,
         fontWeight: 'bold',
         color: '#FFFFFF',
         textAlign: 'center',
         marginTop: 10,
-        // marginLeft: 10,
-      },
+    },
+    recommendationHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+        borderRadius: 100,
+        borderColor: '#FFFFFF',
+        borderWidth: 1,
+        marginTop: 20,
+        alignItems: 'center',
+        paddingLeft: 5,
+        paddingRight: 5,
+    },
+    recommendationText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        padding: 5,
+    },
     headerText: {
         fontSize: 25,
         fontWeight: '700',
