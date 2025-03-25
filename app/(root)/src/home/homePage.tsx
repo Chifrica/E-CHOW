@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, FlatList, Image, Dimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign, Feather, FontAwesome6, Ionicons } from '@expo/vector-icons'
+import { AntDesign, Feather, FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 // import images from '@/constants/images'
 const width = Dimensions.get('screen').width;
@@ -19,6 +19,13 @@ const videos = {
 
 const recommended = {
     recommended1: require('../../../../assets/images/recommended1.png')
+}
+
+const fastSelling = {
+    burger: require('../../../../assets/images/burger.png'),
+    whiteRice: require('../../../../assets/images/burger.png'),
+    neapolitain: require('../../../../assets/images/burger.png'),
+    gbegiriSoup: require('../../../../assets/images/burger.png')
 }
 // const icons = {
 //     rice: require('../../../../assets/icons/BowlFood.png'),
@@ -115,8 +122,8 @@ const HomePage = () => {
             renderItem={({ item }) => (
                 <View style={styles.videoContainer}>
                     <Image source={item.videos} style={styles.videos} />
-                    <View style={styles.videoOverlay}>
-                        <Text style={styles.videoTitle}>{item.title}</Text>
+                    <View style={styles.videoOverlayTop}>
+                        <Text style={styles.videoTitleTop}>{item.title}</Text>
                         <Text style={styles.videoLabel}>{item.label}</Text>
                     </View>
                 </View>
@@ -149,7 +156,8 @@ const HomePage = () => {
                                 start={{ x: 0, y: 0 }} // Start from the left
                                 end={{ x: 1, y: 0 }}
                             >
-                                <Ionicons name="star" size={15} color="#FFFFFF" />
+
+                                 <FontAwesome6 name="crown" size={15} color="#FFFFFF" />
                                 <Text style={styles.recommendationText}>{item.title}</Text>
                             </LinearGradient>
 
@@ -177,6 +185,43 @@ const HomePage = () => {
                 showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
         />
 
+        <View>
+            <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>Fast Selling</Text>
+                <Text style={styles.categorySeeAll}>See All</Text>
+            </View>
+        </View>
+
+        <FlatList
+            data={[
+                { fastSelling: fastSelling.burger, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
+                { fastSelling: fastSelling.whiteRice, label: '.fastSelling1' },
+                { fastSelling: fastSelling.gbegiriSoup, label: '.fastSelling1' },
+            ]}
+            renderItem={({ item }) => (
+                <View style={styles.gridItem}>
+                    <Image source={item.fastSelling} style={styles.gridItemImages} />
+                    <View style={styles.videoOverlay}>
+                        <LinearGradient 
+                            style={styles.recommendationHeader} 
+                            colors={['#3579DD', '#24DA36']}
+                            start={{ x: 0, y: 0 }} // Start from the left
+                            end={{ x: 1, y: 0 }}
+                        >
+                            <FontAwesome6 name="crown" size={15} color="#FFFFFF" />
+                            <Text style={styles.recommendationText}>{item.title}</Text>
+                        </LinearGradient>
+                        <View>
+                            <Ionicons name="heart-outline" size={20} color="#E58945" />
+                        </View>
+                    </View>
+                
+                </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={2}
+                // showsVerticalScrollIndicator={false} // Hide horizontal scroll indicator
+        />
         <Text style={styles.headerText}>Home</Text>
         
       
@@ -251,14 +296,15 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 10,
     },
-    videoOverlay: {
+    videoOverlayTop: {
         position: 'absolute',
         marginLeft: 10,
-        // alignItems: 'flex-start',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        // flexDirection: 'row',
+        // justifyContent: 'space-around',
     },
-    videoTitle: {
+    videoTitleTop: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#fff',
@@ -270,12 +316,31 @@ const styles = StyleSheet.create({
         padding: 5,
         marginTop: 80
     },
+    videoOverlay: {
+        position: 'absolute',
+        marginLeft: 10,
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+    },
+    videoTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        marginBottom: 10,
+        borderRadius: 100,
+        borderColor: '#FFFFFF',
+        borderWidth: 1,
+        padding: 5,
+        marginTop: 80
+    },
     videoLabel: {
         fontSize: 24,
         fontWeight: 'bold',
         color: '#FFFFFF',
         textAlign: 'center',
-        marginTop: 10,
+        alignSelf: 'center', 
+        marginTop: 5,
     },
     recommendationHeader: {
         flexDirection: 'row',
@@ -294,6 +359,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         padding: 5,
+    },
+    gridItem: {
+        flex: 1,
+        alignItems: 'center',
+        marginRight: 10,
+        // position: 'relative', // Ensure the overlay is positioned relative to the video
+    },
+    gridItemImages: {
+        width: 164,
+        height: 179,
+        resizeMode: 'cover',
+        borderRadius: 10, 
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 25,
