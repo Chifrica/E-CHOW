@@ -23,9 +23,9 @@ const recommended = {
 
 const fastSelling = {
     burger: require('../../../../assets/images/burger.png'),
-    whiteRice: require('../../../../assets/images/burger.png'),
-    neapolitain: require('../../../../assets/images/burger.png'),
-    gbegiriSoup: require('../../../../assets/images/burger.png')
+    whiteRice: require('../../../../assets/images/white-rice.png'),
+    neapolitain: require('../../../../assets/images/neapolitain-aza.png'),
+    gbegiriSoup: require('../../../../assets/images/gbebiri-soup.png')
 }
 // const icons = {
 //     rice: require('../../../../assets/icons/BowlFood.png'),
@@ -196,23 +196,17 @@ const HomePage = () => {
             data={[
                 { fastSelling: fastSelling.burger, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
                 { fastSelling: fastSelling.whiteRice, label: '.fastSelling1' },
+                { fastSelling: fastSelling.neapolitain, label: '.fastSelling1' },
                 { fastSelling: fastSelling.gbegiriSoup, label: '.fastSelling1' },
+                { fastSelling: fastSelling.whiteRice, label: '.fastSelling1' },
+                { fastSelling: fastSelling.burger, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
             ]}
             renderItem={({ item }) => (
                 <View style={styles.gridItem}>
                     <Image source={item.fastSelling} style={styles.gridItemImages} />
-                    <View style={styles.videoOverlay}>
-                        <LinearGradient 
-                            style={styles.recommendationHeader} 
-                            colors={['#3579DD', '#24DA36']}
-                            start={{ x: 0, y: 0 }} // Start from the left
-                            end={{ x: 1, y: 0 }}
-                        >
-                            <FontAwesome6 name="crown" size={15} color="#FFFFFF" />
-                            <Text style={styles.recommendationText}>{item.title}</Text>
-                        </LinearGradient>
+                    <View style={styles.gridItemOverlay}>
                         <View>
-                            <Ionicons name="heart-outline" size={20} color="#E58945" />
+                            <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{fontWeight: 700}} />
                         </View>
                     </View>
                 
@@ -372,6 +366,12 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 10, 
         marginBottom: 10,
+    },
+    gridItemOverlay: {
+        position: 'absolute',
+        paddingLeft: 100,
+        marginTop: 10,
+        alignItems: 'flex-end',
     },
     headerText: {
         fontSize: 25,
