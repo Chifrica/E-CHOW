@@ -194,12 +194,12 @@ const HomePage = () => {
 
         <FlatList
             data={[
-                { fastSelling: fastSelling.burger, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
-                { fastSelling: fastSelling.whiteRice, label: '.fastSelling1' },
-                { fastSelling: fastSelling.neapolitain, label: '.fastSelling1' },
-                { fastSelling: fastSelling.gbegiriSoup, label: '.fastSelling1' },
-                { fastSelling: fastSelling.whiteRice, label: '.fastSelling1' },
-                { fastSelling: fastSelling.burger, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
+                { fastSelling: fastSelling.burger, title: 'Burger', price: '2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.whiteRice, title: 'White-Rice', price: '2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.neapolitain, title: 'Neapolitain Pizza', price: '2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.gbegiriSoup, title: 'Gbegiri', price: '2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.whiteRice, title: 'Very Healthy', price: '2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.burger, title: 'Very Healthy', price: '2500', time: '10min away - 128 ordered' },
             ]}
             renderItem={({ item }) => (
                 <View style={styles. gridItem}>
@@ -210,10 +210,10 @@ const HomePage = () => {
                         </View>
                         <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10}}>  
                             <View>
-                                <Text style={{color: '#fff', fontWeight: 700, fontSize: 24}}>{item.label}</Text>
+                                <Text style={{color: '#fff', fontWeight: 700, fontSize: 24}}>{item.title}</Text>
                                 <View >
-                                    <Text style={{color: '#fff'}}>4.8</Text>
-                                    <Text style={{color: '#fff'}}>10min away</Text>
+                                    <Text style={{color: '#fff'}}>{item.time}</Text>
+                                    <Text style={{color: '#fff'}}>{item.price}</Text>
                                 </View>
                             </View>
                         </View>
