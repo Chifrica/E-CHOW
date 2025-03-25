@@ -143,10 +143,19 @@ const HomePage = () => {
                     <View style={styles.videoContainer}>
                         <Image source={item.recommended} style={styles.videos} />
                         <View style={styles.videoOverlay}>
-                            <LinearGradient style={styles.recommendationHeader} colors={['#3579DD', '#24DA36']}>
-                                <Ionicons name="star" size={15} color="#E58945" />
+                            <LinearGradient 
+                                style={styles.recommendationHeader} 
+                                colors={['#3579DD', '#24DA36']}
+                                start={{ x: 0, y: 0 }} // Start from the left
+                                end={{ x: 1, y: 0 }}
+                            >
+                                <Ionicons name="star" size={15} color="#FFFFFF" />
                                 <Text style={styles.recommendationText}>{item.title}</Text>
                             </LinearGradient>
+
+                            <View>
+                                <Ionicons name="heart-outline" size={20} color="#E58945" />
+                            </View>
                         </View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
                             <View>
@@ -245,7 +254,9 @@ const styles = StyleSheet.create({
     videoOverlay: {
         position: 'absolute',
         marginLeft: 10,
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     videoTitle: {
         fontSize: 18,
