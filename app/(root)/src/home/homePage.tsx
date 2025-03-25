@@ -202,19 +202,27 @@ const HomePage = () => {
                 { fastSelling: fastSelling.burger, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
             ]}
             renderItem={({ item }) => (
-                <View style={styles.gridItem}>
+                <View style={styles. gridItem}>
                     <Image source={item.fastSelling} style={styles.gridItemImages} />
-                    <View style={styles.gridItemOverlay}>
-                        <View>
+                    {/* <View style={styles.gridItemOverlay}> */}
+                        <View style={styles.gridItemOverlay}>
                             <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{fontWeight: 700}} />
                         </View>
-                    </View>
+                        <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10}}>  
+                            <View>
+                                <Text style={{color: '#fff', fontWeight: 700, fontSize: 24}}>{item.label}</Text>
+                                <View >
+                                    <Text style={{color: '#fff'}}>4.8</Text>
+                                    <Text style={{color: '#fff'}}>10min away</Text>
+                                </View>
+                            </View>
+                        </View>
+                    {/* </View> */}
                 
                 </View>
             )}
             keyExtractor={(item, index) => index.toString()}
             numColumns={2}
-                // showsVerticalScrollIndicator={false} // Hide horizontal scroll indicator
         />
         <Text style={styles.headerText}>Home</Text>
         
@@ -357,7 +365,7 @@ const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         alignItems: 'center',
-        marginRight: 10,
+        // marginRight: 10,
         // position: 'relative', // Ensure the overlay is positioned relative to the video
     },
     gridItemImages: {
