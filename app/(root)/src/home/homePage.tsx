@@ -145,6 +145,18 @@ const HomePage = () => {
                             <Text style={styles.videoTitle}>{item.title}</Text>
                             <Text style={styles.videoLabel}>{item.label}</Text>
                         </View>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
+                            <View>
+                                <Text>Caramello Spaghetti</Text>
+                                <View>
+                                    <Text>4.8</Text>
+                                    <Text>10min away</Text>
+                                </View>
+                            </View>
+                            <View>
+                                <Text>1500</Text>
+                            </View>
+                        </View>
                     </View>
                 )}
                 keyExtractor={(item, index) => index.toString()}
