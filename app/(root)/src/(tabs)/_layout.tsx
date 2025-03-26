@@ -1,31 +1,41 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Image, StyleSheet } from 'react-native';
 
 const AppLayout = () => {
   return (
     <Tabs
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: keyof typeof Ionicons.glyphMap | undefined;
+        tabBarIcon: ({ focused }) => {
+          let iconSource;
 
           if (route.name === 'home') {
-            iconName = focused ? 'home' : 'home-outline';
+            iconSource = focused
+              ? require('../../../../assets/icons/notification.svg') // Active icon
+              : require('../../../../assets/icons/notification.svg'); // Inactive icon
           } else if (route.name === 'explore') {
-            iconName = focused ? 'search' : 'search-outline';
+            iconSource = focused
+              ? require('../../../../assets/icons/explore.svg')
+              : require('../../../../assets/icons/explore.svg');
           } else if (route.name === 'orders') {
-            iconName = focused ? 'cart' : 'cart-outline';
+            iconSource = focused
+              ? require('../../../../assets/icons/orders.svg')
+              : require('../../../../assets/icons/orders.svg');
           } else if (route.name === 'schedule') {
-            iconName = focused ? 'calendar' : 'calendar-outline';
+            iconSource = focused
+              ? require('../../../../assets/icons/schedule.svg')
+              : require('../../../../assets/icons/schedule.svg');
           } else if (route.name === 'notification') {
-            iconName = focused ? 'notifications' : 'notifications-outline';
+            iconSource = focused
+              ? require('../../../../assets/icons/notification.svg')
+              : require('../../../../assets/icons/notification.svg');
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Image source={iconSource} style={styles.icon} />;
         },
         tabBarActiveTintColor: '#E58945',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false
+        headerShown: false,
       })}
     >
       <Tabs.Screen name="home" options={{ title: 'Home' }} />
@@ -36,5 +46,13 @@ const AppLayout = () => {
     </Tabs>
   );
 };
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 24, // Adjust the size of the icon
+    height: 24,
+    resizeMode: 'contain',
+  },
+});
 
 export default AppLayout;

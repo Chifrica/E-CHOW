@@ -3,37 +3,9 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign, Feather, FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-// import images from '@/constants/images'
+import { storiesData, videosData, recommendedData, fastSellingData } from './data';
+
 const width = Dimensions.get('screen').width;
-
-const images = {
-    bellonis: require('../../../../../assets/images/Bellonis.png'),
-    nao: require('../../../../../assets/images/Nao.png'),
-    igboKitchen: require('../../../../../assets/images/Igbo-kitchen.png'),
-    tasty: require('../../../../../assets/images/Tasty.png'),
-};
-
-const videos = {
-    video1: require('../../../../../assets/images/video1.png')
-}
-
-const recommended = {
-    recommended1: require('../../../../../assets/images/recommended1.png')
-}
-
-const fastSelling = {
-    burger: require('../../../../../assets/images/burger.png'),
-    whiteRice: require('../../../../../assets/images/white-rice.png'),
-    neapolitain: require('../../../../../assets/images/neapolitain-aza.png'),
-    gbegiriSoup: require('../../../../../assets/images/gbebiri-soup.png')
-}
-// const icons = {
-//     rice: require('../../../../assets/icons/BowlFood.png'),
-//     beverages: require('../../../../assets/icons/BeerBottle.png'),
-//     seaFood: require('../../../../assets/icons/Shrimp.png'),
-//     soup: require('../../../../assets/icons/CookingPot.png'),
-//     bakery: require('../../../../assets/icons/Cookie.png'),
-// };
 
 const HomePage = () => {
     
@@ -60,14 +32,7 @@ const HomePage = () => {
 
         {/* Stories */}
         <FlatList
-            data={[
-                { image: images.bellonis, label: 'Bellonis' },
-                { image: images.nao, label: 'Nao' },
-                { image: images.igboKitchen, label: 'Igbo Kitchen' },
-                { image: images.tasty, label: 'Tasty' },
-                { image: images.nao, label: 'Nao' },
-
-            ]}
+            data={storiesData}
             renderItem={({ item }) => (
                 <View style={styles.imageContainer}>
                     <Image source={item.image} style={styles.image} />
@@ -114,11 +79,7 @@ const HomePage = () => {
         </View>
 
         <FlatList
-            data={[
-                { videos: videos.video1, title: 'This Week', label: 'See Top Related Restaurants' },
-                { videos: videos.video1, label: 'video1' },
-                { videos: videos.video1, label: 'video1' },
-            ]}
+            data={videosData}
             renderItem={({ item }) => (
                 <View style={styles.videoContainer}>
                     <Image source={item.videos} style={styles.videos} />
@@ -141,11 +102,7 @@ const HomePage = () => {
         </View>
 
         <FlatList
-                data={[
-                    { recommended: recommended.recommended1, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
-                    { recommended: recommended.recommended1, label: 'recommended1' },
-                    { recommended: recommended.recommended1, label: 'recommended1' },
-                ]}
+                data={recommendedData}
                 renderItem={({ item }) => (
                     <View style={styles.videoContainer}>
                         <Image source={item.recommended} style={styles.videos} />
@@ -175,7 +132,7 @@ const HomePage = () => {
                                 </View>
                             </View>
                             <View>
-                                <Text>1500</Text>
+                                <Text>{item.price}</Text>
                             </View>
                         </View>
                     </View>
@@ -193,36 +150,26 @@ const HomePage = () => {
         </View>
 
         <FlatList
-            data={[
-                { fastSelling: fastSelling.burger, title: 'Burger', price: '\u20A6 2500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.whiteRice, title: 'White-Rice', price: '\u20A6 7500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.neapolitain, title: 'Neapolitain Pizza', price: '\u20A62500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.gbegiriSoup, title: 'Gbegiri', price: '\u20A6 10000', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.whiteRice, title: 'Very Healthy', price: '\u20A6 3000', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.burger, title: 'Very Healthy', price: '\u20A6 9500', time: '10min away - 128 ordered' },
-            ]}
+            data={fastSellingData}
             renderItem={({ item }) => (
-                <View style={styles. gridItem}>
-                    <Image source={item.fastSelling} style={styles.gridItemImages} />
-                    {/* <View style={styles.gridItemOverlay}> */}
-                        <View style={styles.gridItemOverlay}>
-                            <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{fontWeight: 700}} />
-                        </View>
-                        <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10}}>  
-                            <View>
-                                <Text style={{color: '#fff', fontWeight: 700, fontSize: 24}}>{item.title}</Text>
-                                <View >
-                                    <Text style={{color: '#fff'}}>{item.time}</Text>
-                                    <Text style={{color: '#fff'}}>{item.price}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    {/* </View> */}
-                
+                <View style={styles.gridItem}>
+                <Image source={item.fastSelling} style={styles.gridItemImages} />
+                <View style={styles.gridItemOverlay}>
+                    <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{ fontWeight: 700 }} />
+                </View>
+                <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10 }}>
+                    <View>
+                    <Text style={{ color: '#fff', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+                    <View>
+                        <Text style={{ color: '#fff' }}>{item.time}</Text>
+                        <Text style={{ color: '#fff' }}>{item.price}</Text>
+                    </View>
+                    </View>
+                </View>
                 </View>
             )}
             keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
+            numColumns={2} // Dynamically set the number of columns
         />
         <Text style={styles.headerText}>Home</Text>
         
