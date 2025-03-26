@@ -1,32 +1,11 @@
 import { View, Text, StyleSheet, ScrollView, FlatList, Image, Dimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign, Feather, FontAwesome6, Ionicons } from '@expo/vector-icons'
+import { AntDesign, Feather, FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-// import images from '@/constants/images'
+import { storiesData, videosData, recommendedData, fastSellingData } from './data';
+
 const width = Dimensions.get('screen').width;
-
-const images = {
-    bellonis: require('../../../../assets/images/Bellonis.png'),
-    nao: require('../../../../assets/images/Nao.png'),
-    igboKitchen: require('../../../../assets/images/Igbo-kitchen.png'),
-    tasty: require('../../../../assets/images/Tasty.png'),
-};
-
-const videos = {
-    video1: require('../../../../assets/images/video1.png')
-}
-
-const recommended = {
-    recommended1: require('../../../../assets/images/recommended1.png')
-}
-// const icons = {
-//     rice: require('../../../../assets/icons/BowlFood.png'),
-//     beverages: require('../../../../assets/icons/BeerBottle.png'),
-//     seaFood: require('../../../../assets/icons/Shrimp.png'),
-//     soup: require('../../../../assets/icons/CookingPot.png'),
-//     bakery: require('../../../../assets/icons/Cookie.png'),
-// };
 
 const HomePage = () => {
     
@@ -53,14 +32,7 @@ const HomePage = () => {
 
         {/* Stories */}
         <FlatList
-            data={[
-                { image: images.bellonis, label: 'Bellonis' },
-                { image: images.nao, label: 'Nao' },
-                { image: images.igboKitchen, label: 'Igbo Kitchen' },
-                { image: images.tasty, label: 'Tasty' },
-                { image: images.nao, label: 'Nao' },
-
-            ]}
+            data={storiesData}
             renderItem={({ item }) => (
                 <View style={styles.imageContainer}>
                     <Image source={item.image} style={styles.image} />
@@ -107,16 +79,12 @@ const HomePage = () => {
         </View>
 
         <FlatList
-            data={[
-                { videos: videos.video1, title: 'This Week', label: 'See Top Related Restaurants' },
-                { videos: videos.video1, label: 'video1' },
-                { videos: videos.video1, label: 'video1' },
-            ]}
+            data={videosData}
             renderItem={({ item }) => (
                 <View style={styles.videoContainer}>
                     <Image source={item.videos} style={styles.videos} />
-                    <View style={styles.videoOverlay}>
-                        <Text style={styles.videoTitle}>{item.title}</Text>
+                    <View style={styles.videoOverlayTop}>
+                        <Text style={styles.videoTitleTop}>{item.title}</Text>
                         <Text style={styles.videoLabel}>{item.label}</Text>
                     </View>
                 </View>
@@ -134,11 +102,7 @@ const HomePage = () => {
         </View>
 
         <FlatList
-                data={[
-                    { recommended: recommended.recommended1, title: 'Very Healthy', label: 'Very Healthy', image: <Ionicons name="star" size={15} color="#E58945" /> },
-                    { recommended: recommended.recommended1, label: 'recommended1' },
-                    { recommended: recommended.recommended1, label: 'recommended1' },
-                ]}
+                data={recommendedData}
                 renderItem={({ item }) => (
                     <View style={styles.videoContainer}>
                         <Image source={item.recommended} style={styles.videos} />
@@ -149,7 +113,8 @@ const HomePage = () => {
                                 start={{ x: 0, y: 0 }} // Start from the left
                                 end={{ x: 1, y: 0 }}
                             >
-                                <Ionicons name="star" size={15} color="#FFFFFF" />
+
+                                 <FontAwesome6 name="crown" size={15} color="#FFFFFF" />
                                 <Text style={styles.recommendationText}>{item.title}</Text>
                             </LinearGradient>
 
@@ -167,7 +132,7 @@ const HomePage = () => {
                                 </View>
                             </View>
                             <View>
-                                <Text>1500</Text>
+                                <Text>{item.price}</Text>
                             </View>
                         </View>
                     </View>
@@ -177,6 +142,35 @@ const HomePage = () => {
                 showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
         />
 
+        <View>
+            <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>Fast Selling</Text>
+                <Text style={styles.categorySeeAll}>See All</Text>
+            </View>
+        </View>
+
+        <FlatList
+            data={fastSellingData}
+            renderItem={({ item }) => (
+                <View style={styles.gridItem}>
+                <Image source={item.fastSelling} style={styles.gridItemImages} />
+                <View style={styles.gridItemOverlay}>
+                    <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{ fontWeight: 700 }} />
+                </View>
+                <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10 }}>
+                    <View>
+                    <Text style={{ color: '#fff', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+                    <View>
+                        <Text style={{ color: '#fff' }}>{item.time}</Text>
+                        <Text style={{ color: '#fff' }}>{item.price}</Text>
+                    </View>
+                    </View>
+                </View>
+                </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={2} // Dynamically set the number of columns
+        />
         <Text style={styles.headerText}>Home</Text>
         
       
@@ -251,14 +245,15 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 10,
     },
-    videoOverlay: {
+    videoOverlayTop: {
         position: 'absolute',
         marginLeft: 10,
-        // alignItems: 'flex-start',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        // flexDirection: 'row',
+        // justifyContent: 'space-around',
     },
-    videoTitle: {
+    videoTitleTop: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#fff',
@@ -270,12 +265,31 @@ const styles = StyleSheet.create({
         padding: 5,
         marginTop: 80
     },
+    videoOverlay: {
+        position: 'absolute',
+        marginLeft: 10,
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+    },
+    videoTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        marginBottom: 10,
+        borderRadius: 100,
+        borderColor: '#FFFFFF',
+        borderWidth: 1,
+        padding: 5,
+        marginTop: 80
+    },
     videoLabel: {
         fontSize: 24,
         fontWeight: 'bold',
         color: '#FFFFFF',
         textAlign: 'center',
-        marginTop: 10,
+        alignSelf: 'center', 
+        marginTop: 5,
     },
     recommendationHeader: {
         flexDirection: 'row',
@@ -294,6 +308,25 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         padding: 5,
+    },
+    gridItem: {
+        flex: 1,
+        alignItems: 'center',
+        // marginRight: 10,
+        // position: 'relative', // Ensure the overlay is positioned relative to the video
+    },
+    gridItemImages: {
+        width: 164,
+        height: 179,
+        resizeMode: 'cover',
+        borderRadius: 10, 
+        marginBottom: 10,
+    },
+    gridItemOverlay: {
+        position: 'absolute',
+        paddingLeft: 100,
+        marginTop: 10,
+        alignItems: 'flex-end',
     },
     headerText: {
         fontSize: 25,
