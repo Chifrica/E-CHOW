@@ -7,25 +7,25 @@ import { LinearGradient } from 'expo-linear-gradient'
 const width = Dimensions.get('screen').width;
 
 const images = {
-    bellonis: require('../../../../assets/images/Bellonis.png'),
-    nao: require('../../../../assets/images/Nao.png'),
-    igboKitchen: require('../../../../assets/images/Igbo-kitchen.png'),
-    tasty: require('../../../../assets/images/Tasty.png'),
+    bellonis: require('../../../../../assets/images/Bellonis.png'),
+    nao: require('../../../../../assets/images/Nao.png'),
+    igboKitchen: require('../../../../../assets/images/Igbo-kitchen.png'),
+    tasty: require('../../../../../assets/images/Tasty.png'),
 };
 
 const videos = {
-    video1: require('../../../../assets/images/video1.png')
+    video1: require('../../../../../assets/images/video1.png')
 }
 
 const recommended = {
-    recommended1: require('../../../../assets/images/recommended1.png')
+    recommended1: require('../../../../../assets/images/recommended1.png')
 }
 
 const fastSelling = {
-    burger: require('../../../../assets/images/burger.png'),
-    whiteRice: require('../../../../assets/images/white-rice.png'),
-    neapolitain: require('../../../../assets/images/neapolitain-aza.png'),
-    gbegiriSoup: require('../../../../assets/images/gbebiri-soup.png')
+    burger: require('../../../../../assets/images/burger.png'),
+    whiteRice: require('../../../../../assets/images/white-rice.png'),
+    neapolitain: require('../../../../../assets/images/neapolitain-aza.png'),
+    gbegiriSoup: require('../../../../../assets/images/gbebiri-soup.png')
 }
 // const icons = {
 //     rice: require('../../../../assets/icons/BowlFood.png'),
@@ -194,12 +194,12 @@ const HomePage = () => {
 
         <FlatList
             data={[
-                { fastSelling: fastSelling.burger, title: 'Burger', price: '2500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.whiteRice, title: 'White-Rice', price: '2500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.neapolitain, title: 'Neapolitain Pizza', price: '2500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.gbegiriSoup, title: 'Gbegiri', price: '2500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.whiteRice, title: 'Very Healthy', price: '2500', time: '10min away - 128 ordered' },
-                { fastSelling: fastSelling.burger, title: 'Very Healthy', price: '2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.burger, title: 'Burger', price: '\u20A6 2500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.whiteRice, title: 'White-Rice', price: '\u20A6 7500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.neapolitain, title: 'Neapolitain Pizza', price: '\u20A62500', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.gbegiriSoup, title: 'Gbegiri', price: '\u20A6 10000', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.whiteRice, title: 'Very Healthy', price: '\u20A6 3000', time: '10min away - 128 ordered' },
+                { fastSelling: fastSelling.burger, title: 'Very Healthy', price: '\u20A6 9500', time: '10min away - 128 ordered' },
             ]}
             renderItem={({ item }) => (
                 <View style={styles. gridItem}>
