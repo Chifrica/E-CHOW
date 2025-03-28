@@ -146,27 +146,6 @@ const AddLocation = () => {
 					<Text style={styles.headerText}>Add New Location</Text>
 				</View>
 
-				<View style={{ flex: 1, height: width, marginTop: 20 }}>
-					{/* Map View */}
-					<MapView
-						style={StyleSheet.absoluteFill}
-						provider={PROVIDER_GOOGLE}
-						initialRegion={INITIAL_REGION}
-						showsUserLocation={true}
-						showsMyLocationButton
-						ref={mapRef}>
-						{/* Add Marker if markerPosition is set */}
-						{markerPosition && (
-							<Marker
-								coordinate={markerPosition}
-								title={locationName}
-								description={location}
-								pinColor="red"
-							/>
-						)}
-					</MapView>
-				</View>
-
 				<View style={{ marginTop: 50 }}>
 					<Text style={styles.location}>Location</Text>
 

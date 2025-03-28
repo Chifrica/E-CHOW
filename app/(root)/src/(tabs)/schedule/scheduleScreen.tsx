@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+"use client";
+
+import type React from "react";
+import { useState } from "react";
 import {
 	View,
 	Text,
@@ -6,25 +9,26 @@ import {
 	TouchableOpacity,
 	SafeAreaView,
 	StatusBar,
+	ScrollView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import DateTimePickerModal, {
-	DateTimeSelection,
+	type DateTimeSelection,
 } from "@/components/DateTimePicket";
 import MealTypeModal from "@/components/MealTypeModal";
 
-interface ScheduleScreenProps {}
+type ScheduleScreenProps = {};
 
 const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
-	const [selectedMealType, setSelectedMealType] =
-		useState<string>("Break Fast");
+	const [selectedMealType, setSelectedMealType] = useState<string>("Breakfast");
 	const [dateTimeModalVisible, setDateTimeModalVisible] =
 		useState<boolean>(false);
 	const [mealTypeModalVisible, setMealTypeModalVisible] =
 		useState<boolean>(false);
 	const [selectedDateTime, setSelectedDateTime] =
 		useState<DateTimeSelection | null>(null);
+	const [errorType, setErrorType] = useState<string | null>(null);
 
 	const handleOpenDateTimePicker = (): void => {
 		setDateTimeModalVisible(true);
@@ -33,6 +37,7 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 	const handleSaveDateTime = (dateTime: DateTimeSelection): void => {
 		setSelectedDateTime(dateTime);
 		setSelectedTime(dateTime.formattedDate);
+		setErrorType(null);
 	};
 
 	const handleOpenMealTypeModal = (): void => {
@@ -41,179 +46,205 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 
 	const handleSelectMealType = (mealType: string): void => {
 		setSelectedMealType(mealType);
+		setErrorType(null);
+	};
+
+	const handleSave = (): void => {
+		if (selectedTime === "Schedule") {
+			setErrorType("time");
+		} else {
+			setErrorType(null);
+			// Add your save logic here
+		}
 	};
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar barStyle="dark-content" />
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={styles.scrollContent}>
+				<StatusBar barStyle="dark-content" />
 
-			{/* Header */}
-			<View style={styles.header}>
-				<TouchableOpacity style={styles.backButton}>
-					<Ionicons
-						name="chevron-back"
-						size={24}
-						color="black"
-					/>
-				</TouchableOpacity>
-				<Text style={styles.headerTitle}>Schedule your meal</Text>
-			</View>
-
-			{/* Meal Info */}
-			<View style={styles.mealInfoContainer}>
-				<Text style={styles.mealName}>Spicy Jollof</Text>
-				<Text style={styles.separator}>—</Text>
-				<Text style={styles.restaurantName}>From Nao Restaurants</Text>
-			</View>
-
-			{/* Delivery Location */}
-			<Text style={styles.sectionLabel}>Delivered to:</Text>
-			<TouchableOpacity style={styles.locationCard}>
-				<Ionicons
-					name="location-outline"
-					size={22}
-					color="black"
-					style={styles.locationIcon}
-				/>
-				<View style={styles.locationTextContainer}>
-					<Text style={styles.locationTitle}>General (Current location)</Text>
-					<Text style={styles.locationAddress}>
-						Rosebud, Oke Ila, Ado Ekiti
-					</Text>
+				{/* Header */}
+				<View style={styles.header}>
+					<TouchableOpacity style={styles.backButton}>
+						<Ionicons
+							name="chevron-back"
+							size={24}
+							color="black"
+						/>
+					</TouchableOpacity>
+					<Text style={styles.headerTitle}>Schedule your meal</Text>
 				</View>
-			</TouchableOpacity>
 
-			{/* Change Location Button */}
-			<TouchableOpacity style={styles.changeLocationButton}>
-				<Ionicons
-					name="location-outline"
-					size={20}
-					color="#FF8C42"
-				/>
-				<Text style={styles.changeLocationText}>Change Location</Text>
-			</TouchableOpacity>
+				{/* Meal Info */}
+				<View style={styles.mealInfoContainer}>
+					<Text style={styles.mealName}>Spicy Jollof</Text>
+					<Text style={styles.separator}>—</Text>
+					<Text style={styles.restaurantName}>From Nao Restaurants</Text>
+				</View>
 
-			{/* Delivery Time */}
-			<Text style={styles.sectionLabel}>Delivery time:</Text>
-			<TouchableOpacity
-				style={styles.selectionCard}
-				onPress={handleOpenDateTimePicker}>
-				<View style={styles.radioButton} />
-				<Text style={styles.selectionText}>{selectedTime}</Text>
-				<View style={styles.rightContainer}>
-					<Text style={styles.rightText}>Set time & date</Text>
+				{/* Delivery Location */}
+				<Text style={styles.sectionLabel}>Delivered to:</Text>
+				<TouchableOpacity style={styles.locationCard}>
+					<Ionicons
+						name="location-outline"
+						size={22}
+						color="black"
+						style={styles.locationIcon}
+					/>
+					<View style={styles.locationTextContainer}>
+						<Text style={styles.locationTitle}>General (Current location)</Text>
+						<Text style={styles.locationAddress}>
+							Rosebud, Oke Ila, Ado Ekiti
+						</Text>
+					</View>
+				</TouchableOpacity>
+
+				{/* Change Location Button */}
+				<TouchableOpacity style={styles.changeLocationButton}>
+					<Ionicons
+						name="location-outline"
+						size={20}
+						color="#FF8C42"
+					/>
+					<Text style={styles.changeLocationText}>Change Location</Text>
+				</TouchableOpacity>
+
+				{/* Delivery Time */}
+				<Text style={styles.sectionLabel}>Delivery time:</Text>
+				<TouchableOpacity
+					style={styles.selectionCard}
+					onPress={handleOpenDateTimePicker}>
+					<View style={styles.radioButton} />
+					<Text style={styles.selectionText}>{selectedTime}</Text>
+					<View style={styles.rightContainer}>
+						<Text style={styles.rightText}>Set time & date</Text>
+						<Ionicons
+							name="chevron-forward"
+							size={20}
+							color="#888"
+						/>
+					</View>
+				</TouchableOpacity>
+
+				{/* Meal Type */}
+				<Text style={styles.sectionLabel}>Meal Type:</Text>
+				<TouchableOpacity
+					style={styles.selectionCard}
+					onPress={handleOpenMealTypeModal}>
+					<View style={styles.radioButton} />
+					<Text style={styles.selectionText}>{selectedMealType}</Text>
 					<Ionicons
 						name="chevron-forward"
 						size={20}
 						color="#888"
-					/>
-				</View>
-			</TouchableOpacity>
-
-			{/* Meal Type */}
-			<Text style={styles.sectionLabel}>Meal Type:</Text>
-			<TouchableOpacity
-				style={styles.selectionCard}
-				onPress={handleOpenMealTypeModal}>
-				<View style={styles.radioButton} />
-				<Text style={styles.selectionText}>{selectedMealType}</Text>
-				<Ionicons
-					name="chevron-forward"
-					size={20}
-					color="#888"
-					style={styles.rightIcon}
-				/>
-			</TouchableOpacity>
-
-			<MealTypeModal
-				visible={mealTypeModalVisible}
-				onClose={() => setMealTypeModalVisible(false)}
-				onSelectMealType={handleSelectMealType}
-				initialMealType={selectedMealType}
-			/>
-
-			{/* Instructions */}
-			<Text style={styles.sectionLabel}>Instructions:</Text>
-			<TouchableOpacity style={styles.instructionRow}>
-				<Feather
-					name="file-text"
-					size={20}
-					color="black"
-				/>
-				<Text style={styles.instructionText}>Notes to Restaurants</Text>
-				<Ionicons
-					name="chevron-forward"
-					size={20}
-					color="#888"
-					style={styles.rightIcon}
-				/>
-			</TouchableOpacity>
-			<View style={styles.divider} />
-
-			<TouchableOpacity style={styles.instructionRow}>
-				<Feather
-					name="user"
-					size={20}
-					color="black"
-				/>
-				<Text style={styles.instructionText}>Riders Instruction</Text>
-				<Ionicons
-					name="chevron-forward"
-					size={20}
-					color="#888"
-					style={styles.rightIcon}
-				/>
-			</TouchableOpacity>
-			<View style={styles.divider} />
-
-			{/* Contact Info */}
-			<Text style={styles.sectionLabel}>Contact Info:</Text>
-			<View style={styles.contactRow}>
-				<Feather
-					name="phone"
-					size={20}
-					color="black"
-				/>
-				<View style={styles.contactTextContainer}>
-					<Text style={styles.contactName}>
-						Israel Ajala <Text style={styles.dot}>•</Text> 09035161685
-					</Text>
-				</View>
-				<TouchableOpacity>
-					<Feather
-						name="edit-2"
-						size={20}
-						color="#888"
+						style={styles.rightIcon}
 					/>
 				</TouchableOpacity>
-			</View>
-			<View style={styles.divider} />
 
-			{/* Billings */}
-			<Text style={styles.sectionLabel}>Billings:</Text>
-			<View style={styles.billingRow}>
-				<Feather
-					name="shopping-bag"
-					size={20}
-					color="black"
+				<MealTypeModal
+					visible={mealTypeModalVisible}
+					onClose={() => setMealTypeModalVisible(false)}
+					onSelectMealType={handleSelectMealType}
+					initialMealType={selectedMealType}
 				/>
-				<Text style={styles.billingText}>Food</Text>
-				<Text style={styles.billingAmount}>₦4,100.00</Text>
-			</View>
-			<View style={styles.divider} />
 
-			{/* Save Button */}
-			<TouchableOpacity style={styles.saveButton}>
-				<Text style={styles.saveButtonText}>Save</Text>
-			</TouchableOpacity>
+				{/* Instructions */}
+				<Text style={styles.sectionLabel}>Instructions:</Text>
+				<TouchableOpacity style={styles.instructionRow}>
+					<Feather
+						name="file-text"
+						size={20}
+						color="black"
+					/>
+					<Text style={styles.instructionText}>Notes to Restaurants</Text>
+					<Ionicons
+						name="chevron-forward"
+						size={20}
+						color="#888"
+						style={styles.rightIcon}
+					/>
+				</TouchableOpacity>
+				<View style={styles.divider} />
 
-			{/* Date Time Picker Modal */}
-			<DateTimePickerModal
-				visible={dateTimeModalVisible}
-				onClose={() => setDateTimeModalVisible(false)}
-				onSave={handleSaveDateTime}
-				initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
-			/>
+				<TouchableOpacity style={styles.instructionRow}>
+					<Feather
+						name="user"
+						size={20}
+						color="black"
+					/>
+					<Text style={styles.instructionText}>Riders Instruction</Text>
+					<Ionicons
+						name="chevron-forward"
+						size={20}
+						color="#888"
+						style={styles.rightIcon}
+					/>
+				</TouchableOpacity>
+				<View style={styles.divider} />
+
+				{/* Contact Info */}
+				<Text style={styles.sectionLabel}>Contact Info:</Text>
+				<View style={styles.contactRow}>
+					<Feather
+						name="phone"
+						size={20}
+						color="black"
+					/>
+					<View style={styles.contactTextContainer}>
+						<Text style={styles.contactName}>
+							Israel Ajala <Text style={styles.dot}>•</Text> 09035161685
+						</Text>
+					</View>
+					<TouchableOpacity>
+						<Feather
+							name="edit-2"
+							size={20}
+							color="#888"
+						/>
+					</TouchableOpacity>
+				</View>
+				<View style={styles.divider} />
+
+				{/* Billings */}
+				<Text style={styles.sectionLabel}>Billings:</Text>
+				<View style={styles.billingRow}>
+					<Feather
+						name="shopping-bag"
+						size={20}
+						color="black"
+					/>
+					<Text style={styles.billingText}>Food</Text>
+					<Text style={styles.billingAmount}>₦4,100.00</Text>
+				</View>
+				<View style={styles.divider} />
+
+				{/* Save Button */}
+				<TouchableOpacity
+					style={styles.saveButton}
+					onPress={handleSave}>
+					<Text style={styles.saveButtonText}>Save</Text>
+				</TouchableOpacity>
+
+				{/* Date Time Picker Modal */}
+				<DateTimePickerModal
+					visible={dateTimeModalVisible}
+					onClose={() => setDateTimeModalVisible(false)}
+					onSave={handleSaveDateTime}
+					initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
+				/>
+			</ScrollView>
+
+			{/* Error Message */}
+			{errorType && (
+				<View style={styles.errorContainer}>
+					<Text style={styles.errorText}>
+						Oops! You haven't selected a delivery time.
+					</Text>
+					<Text style={styles.errorSubText}>Set time and date</Text>
+				</View>
+			)}
 		</SafeAreaView>
 	);
 };
@@ -223,6 +254,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#F8F8F8",
 		padding: 16,
+	},
+	scrollContent: {
+		paddingBottom: 20,
 	},
 	header: {
 		flexDirection: "row",
@@ -381,13 +415,35 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		padding: 16,
 		alignItems: "center",
-		marginTop: "auto",
+		marginTop: 20,
 		marginBottom: 20,
 	},
 	saveButtonText: {
 		color: "white",
 		fontSize: 16,
 		fontWeight: "600",
+	},
+	errorContainer: {
+		position: "absolute",
+		bottom: 80,
+		left: 16,
+		right: 16,
+		backgroundColor: "#FFEBEB",
+		borderRadius: 8,
+		padding: 12,
+		borderWidth: 1,
+		borderColor: "#FF5252",
+		alignItems: "center",
+	},
+	errorText: {
+		color: "#FF0000",
+		fontSize: 14,
+		fontWeight: "500",
+	},
+	errorSubText: {
+		color: "#FF0000",
+		fontSize: 12,
+		marginTop: 2,
 	},
 });
 
