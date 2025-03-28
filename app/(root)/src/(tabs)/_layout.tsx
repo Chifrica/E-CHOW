@@ -1,58 +1,48 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Image, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const AppLayout = () => {
   return (
     <Tabs
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused }) => {
-          let iconSource;
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === 'home') {
-            iconSource = focused
-              ? require('../../../../assets/icons/notification.svg') // Active icon
-              : require('../../../../assets/icons/notification.svg'); // Inactive icon
-          } else if (route.name === 'explore') {
-            iconSource = focused
-              ? require('../../../../assets/icons/explore.svg')
-              : require('../../../../assets/icons/explore.svg');
-          } else if (route.name === 'orders') {
-            iconSource = focused
-              ? require('../../../../assets/icons/orders.svg')
-              : require('../../../../assets/icons/orders.svg');
-          } else if (route.name === 'schedule') {
-            iconSource = focused
-              ? require('../../../../assets/icons/schedule.svg')
-              : require('../../../../assets/icons/schedule.svg');
-          } else if (route.name === 'notification') {
-            iconSource = focused
-              ? require('../../../../assets/icons/notification.svg')
-              : require('../../../../assets/icons/notification.svg');
+          switch (route.name) {
+            case 'homePage':
+              iconName = focused ? 'home' : 'home-outline';
+              break;
+            case 'exploreScreen':
+              iconName = focused ? 'search' : 'search-outline';
+              break;
+            case 'orderScreen':
+              iconName = focused ? 'cart' : 'cart-outline';
+              break;
+            case 'scheduleScreen':
+              iconName = focused ? 'calendar' : 'calendar-outline';
+              break;
+            case 'notificationScreen':
+              iconName = focused ? 'notifications' : 'notifications-outline';
+              break;
+            default:
+              iconName = focused ? 'home' : 'home-outline';
           }
 
-          return <Image source={iconSource} style={styles.icon} />;
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#E58945',
         tabBarInactiveTintColor: 'gray',
         headerShown: false,
       })}
     >
-      <Tabs.Screen name="home" options={{ title: 'Home' }} />
-      <Tabs.Screen name="explore" options={{ title: 'Explore' }} />
-      <Tabs.Screen name="orders" options={{ title: 'My Orders' }} />
-      <Tabs.Screen name="schedule" options={{ title: 'Schedule' }} />
-      <Tabs.Screen name="notification" options={{ title: 'Notification' }} />
+      <Tabs.Screen name="homePage" options={{ title: 'Home' }} />
+      <Tabs.Screen name="exploreScreen" options={{ title: 'Explore' }} />
+      <Tabs.Screen name="orderScreen" options={{ title: 'My Orders' }} />
+      <Tabs.Screen name="scheduleScreen" options={{ title: 'Schedule' }} />
+      <Tabs.Screen name="notificationScreen" options={{ title: 'Notification' }} />
     </Tabs>
   );
 };
-
-const styles = StyleSheet.create({
-  icon: {
-    width: 24, // Adjust the size of the icon
-    height: 24,
-    resizeMode: 'contain',
-  },
-});
 
 export default AppLayout;

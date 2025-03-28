@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign, Feather, FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { storiesData, videosData, recommendedData, fastSellingData } from './data';
+import { storiesData, videosData, recommendedData, fastSellingData, restaurantAllData } from './data';
 
 const width = Dimensions.get('screen').width;
 
@@ -171,9 +171,36 @@ const HomePage = () => {
             keyExtractor={(item, index) => index.toString()}
             numColumns={2} // Dynamically set the number of columns
         />
-        <Text style={styles.headerText}>Home</Text>
-        
-      
+
+        <View>
+            <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>All restaurant</Text>
+                <Text style={styles.categorySeeAll}>See All</Text>
+            </View>
+        </View>
+
+        <FlatList
+            data={restaurantAllData}
+            renderItem={({ item }) => (
+                <View style={styles.restaurantItemOverlay}>
+                    <Image source={item.restaurantAll} style={styles.restaurantItemImages} />
+                    <View style={{ paddingBottom: 5, bottom: 10 }}>
+                        <View>
+                            <Text style={{ color: '#1F2125', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+                            <View  style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Ionicons name="star" size={15} color="#E58945" />
+                                <Text style={{marginLeft: 5, color: '#56585C' }}>{item.time}</Text>
+                            </View>
+                            <View style={{marginTop: '30%'}}>
+                                <Text>{item.price}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+        />    
       </ScrollView>
     </SafeAreaView>
   )
@@ -186,6 +213,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 16,
     paddingRight: 16,
+    paddingBottom: 16,
     top: 10,
   },
     scrollView: {
@@ -327,6 +355,20 @@ const styles = StyleSheet.create({
         paddingLeft: 100,
         marginTop: 10,
         alignItems: 'flex-end',
+    },
+    restaurantItemOverlay: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginBottom: 15
+    },
+    restaurantItemImages: {
+        width: 164,
+        height: 179,
+        resizeMode: 'cover',
+        borderRadius: 10, 
+        marginLeft: 16,
+        marginRight: 16
     },
     headerText: {
         fontSize: 25,

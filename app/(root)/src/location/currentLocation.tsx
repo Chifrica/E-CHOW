@@ -20,7 +20,7 @@ const CurrentLocation = () => {
   }
 
   const handleProceed = () => {
-    router.push('/(root)/src/home/homePage');
+    router.push('/src/home/homePage');
   }
 
   return (
