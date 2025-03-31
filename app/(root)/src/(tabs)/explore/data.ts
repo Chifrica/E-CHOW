@@ -17,7 +17,7 @@ export const exploreData = [
       timeAgo: '5min ago',
       rating: 4.5,
       foodName: 'Spicy Jollof Rice',
-      deliveryTime: '10min away',
+      deliveryTime: '\u20A67000 - \u20A67000 - 10min away',
       image: require('../../../../../assets/images/burger.png'),
     },
     {
@@ -27,7 +27,7 @@ export const exploreData = [
         timeAgo: '5min ago',
         rating: 4.5,
         foodName: 'Spicy Jollof Rice',
-        deliveryTime: '10min away',
+        deliveryTime: '\u20A67000 - 10min away',
         image: require('../../../../../assets/images/burger.png'),
     },
     {
@@ -37,7 +37,7 @@ export const exploreData = [
         timeAgo: '5min ago',
         rating: 4.5,
         foodName: 'Spicy Jollof Rice',
-        deliveryTime: '10min away',
+        deliveryTime: '\u20A67000 - 10min away',
         image: require('../../../../../assets/images/burger.png'),
     },
     {
@@ -47,7 +47,7 @@ export const exploreData = [
         timeAgo: '5min ago',
         rating: 4.5,
         foodName: 'Spicy Jollof Rice',
-        deliveryTime: '10min away',
+        deliveryTime: '\u20A67000 - 10min away',
         image: require('../../../../../assets/images/burger.png'),
     },
 
