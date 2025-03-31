@@ -73,11 +73,9 @@ const ExploreScreen = () => {
   )
 }
 
-// ...existing styles...
-
 export default ExploreScreen
-const styles = StyleSheet.create({
 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingLeft: 16,
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
     top: 10,
   },
   scrollView: {
-      flexGrow: 1,
+    flexGrow: 1,
   },
   header: {
     flexDirection: 'row',
