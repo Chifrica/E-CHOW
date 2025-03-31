@@ -1,6 +1,7 @@
 import { View, Text, SafeAreaView, ScrollView, StyleSheet, Image, Dimensions } from 'react-native'
 import React from 'react'
 import { Feather } from '@expo/vector-icons'
+import { exploreData } from './data'
 
 const width = Dimensions.get('window').width;
 
@@ -9,69 +10,72 @@ const ExploreScreen = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-            <Text style={styles.headerTitle}>Explore</Text>
-            <View style={styles.miniHeader}>
-                <Feather name="search" size={24} color="#61605F" style={styles.headerIcon2}/>
-                <Feather name="shopping-cart" size={24} color="#61605F" style={styles.headerIcon2}/>
-            </View>
+          <Text style={styles.headerTitle}>Explore</Text>
+          <View style={styles.miniHeader}>
+            <Feather name="search" size={24} color="#61605F" style={styles.headerIcon2}/>
+            <Feather name="shopping-cart" size={24} color="#61605F" style={styles.headerIcon2}/>
+          </View>
         </View>
 
-        <View>
-          <View style={styles.imageContainer}>
-            <Image 
-              source={require('@/assets/images/explore1.png')}  
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.imageOverlay}>
-            <View>
-              <View style={styles.topLayerContainer}>
-                <View style={styles.vendorContainer}>
-                  <View style={styles.vendorBadge}>
-                    <Text style={styles.vendorText}>vendor</Text>
+        {exploreData.map((item) => (
+          <View key={item.id} style={{ marginBottom: 20 }}>
+            <View style={styles.imageContainer}>
+              <Image 
+                source={item.image}  
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.imageOverlay}>
+              <View>
+                <View style={styles.topLayerContainer}>
+                  <View style={styles.vendorContainer}>
+                    <View style={styles.vendorBadge}>
+                      <Text style={styles.vendorText}>vendor</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.whiteText}>{item.vendorName}</Text>
+                      <Text style={styles.whiteText}>{item.location}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.ratingContainer}>  
+                    <Feather name="star" size={20} color="#E58945" />
+                    <Text style={styles.ratingText}>{item.timeAgo}</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.bottomLayer}>
+                <View style={styles.actionContainer}>
+                  <View style={styles.iconContainer}>
+                    <Feather name="share" size={24} color="#fff" style={styles.actionIcon}/>
+                    <Feather name="heart" size={24} color="#fff" style={[styles.actionIcon, styles.iconSpacing]}/>
+                    <Feather name="shopping-cart" size={24} color="#fff" style={[styles.actionIcon, styles.iconSpacingDouble]}/>
                   </View>
                   <View>
-                    <Text style={styles.whiteText}>NAO Restaurant</Text>
-                    <Text style={styles.whiteText}>Adebayo road, Ado Ekiti</Text>
+                    <Text style={styles.whiteText}>Click for details</Text>
                   </View>
                 </View>
-                <View style={styles.ratingContainer}>  
-                  <Feather name="star" size={20} color="#E58945" />
-                  <Text style={styles.ratingText}>5min ago</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.bottomLayer}>
-              <View style={styles.actionContainer}>
-                <View style={styles.iconContainer}>
-                  <Feather name="share" size={24} color="#fff" style={styles.actionIcon}/>
-                  <Feather name="heart" size={24} color="#fff" style={[styles.actionIcon, styles.iconSpacing]}/>
-                  <Feather name="shopping-cart" size={24} color="#fff" style={[styles.actionIcon, styles.iconSpacingDouble]}/>
-                </View>
-                <View>
-                  <Text style={styles.whiteText}>Click for details</Text>
-                </View>
-              </View>
-              <View style={styles.foodInfoContainer}>
-                <View>
-                  <Text style={styles.whiteText}>Spicy Jollof Rice</Text>
-                  <Text style={styles.whiteText}>10min away</Text>
-                </View>
-                <View style={styles.orderButton}>
-                  <Text style={styles.whiteText}>Order Now</Text>
+                <View style={styles.foodInfoContainer}>
+                  <View>
+                    <Text style={styles.whiteText}>{item.foodName}</Text>
+                    <Text style={styles.whiteText}>{item.deliveryTime}</Text>
+                  </View>
+                  <View style={styles.orderButton}>
+                    <Text style={styles.whiteText}>Order Now</Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   )
 }
 
-export default ExploreScreen
+// ...existing styles...
 
+export default ExploreScreen
 const styles = StyleSheet.create({
 
   container: {
