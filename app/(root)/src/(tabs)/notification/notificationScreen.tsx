@@ -1,22 +1,6 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
-
-const notifications = [
-	{
-		id: 1,
-		userName: "Wiels",
-		message: "🎉 Hurray! Your Order has arrived",
-		time: "9:35 am",
-		image: require("@/assets/images/user-img.jpg"),
-	},
-	{
-		id: 2,
-		userName: "Alice",
-		message: "🎉 Your subscription is now active!",
-		time: "10:15 am",
-		image: require("@/assets/images/user-img.jpg"),
-	},
-];
+import { notificationData } from "./notification-data";
 
 const NotificationScreen = () => {
 	return (
@@ -24,7 +8,7 @@ const NotificationScreen = () => {
 			<Text style={styles.heading}>Notifications</Text>
 
 			<View style={styles.notifications}>
-				{notifications.map((notification) => (
+				{notificationData.map((notification) => (
 					<View
 						key={notification.id}
 						style={styles.notificationContainer}>
