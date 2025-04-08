@@ -6,7 +6,7 @@ interface ExploreItem {
     rating: number;
     foodName: string;
     deliveryTime: string;
-    image: '.png'; // Use proper type when you have the actual image
+    image: '.png'; 
 }
   
 export const exploreData = [
@@ -50,11 +50,8 @@ export const exploreData = [
         deliveryTime: '\u20A67000 - 10min away',
         image: require('../../../../../assets/images/burger.png'),
     },
-
-    // Add more items as needed
 ];
   
 export const exploreImages = {
     explore1: require('../../../../../assets/images/burger.png'),
-    // Add more images as needed
 };
