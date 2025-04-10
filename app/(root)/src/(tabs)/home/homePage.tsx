@@ -266,73 +266,70 @@ const HomePage = () => {
 					numColumns={2} // Dynamically set the number of columns
 				/>
 				<Text style={styles.headerText}>Home</Text>
-			</ScrollView>
-		</SafeAreaView>
-	);
-};
+			
 
-        <View>
-            <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>Fast Selling</Text>
-                <Text style={styles.categorySeeAll}>See All</Text>
-            </View>
-        </View>
+				<View>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>Fast Selling</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+				</View>
 
-        <FlatList
-            data={fastSellingData}
-            renderItem={({ item }) => (
-                <View style={styles.gridItem}>
-                <Image source={item.fastSelling} style={styles.gridItemImages} />
-                <View style={styles.gridItemOverlay}>
-                    <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{ fontWeight: 700 }} />
-                </View>
-                <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10 }}>
-                    <View>
-                    <Text style={{ color: '#fff', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
-                    <View>
-                        <Text style={{ color: '#fff' }}>{item.time}</Text>
-                        <Text style={{ color: '#fff' }}>{item.price}</Text>
-                    </View>
-                    </View>
-                </View>
-                </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2} // Dynamically set the number of columns
-        />
+				<FlatList
+					data={fastSellingData}
+					renderItem={({ item }) => (
+						<View style={styles.gridItem}>
+						<Image source={item.fastSelling} style={styles.gridItemImages} />
+						<View style={styles.gridItemOverlay}>
+							<Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{ fontWeight: 700 }} />
+						</View>
+						<View style={{ paddingBottom: 5, position: 'absolute', bottom: 10 }}>
+							<View>
+							<Text style={{ color: '#fff', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+							<View>
+								<Text style={{ color: '#fff' }}>{item.time}</Text>
+								<Text style={{ color: '#fff' }}>{item.price}</Text>
+							</View>
+							</View>
+						</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					numColumns={2} // Dynamically set the number of columns
+				/>
 
-        <View>
-            <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>All restaurant</Text>
-                <Text style={styles.categorySeeAll}>See All</Text>
-            </View>
-        </View>
+				<View>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>All restaurant</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+				</View>
 
-        <FlatList
-            data={restaurantAllData}
-            renderItem={({ item }) => (
-                <View style={styles.restaurantItemOverlay}>
-                    <Image source={item.restaurantAll} style={styles.restaurantItemImages} />
-                    <View style={{ paddingBottom: 5, bottom: 10 }}>
-                        <View>
-                            <Text style={{ color: '#1F2125', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
-                            <View  style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Ionicons name="star" size={15} color="#E58945" />
-                                <Text style={{marginLeft: 5, color: '#56585C' }}>{item.time}</Text>
-                            </View>
-                            <View style={{marginTop: '30%'}}>
-                                <Text>{item.price}</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-        />    
-      </ScrollView>
-    </SafeAreaView>
-  )
+				<FlatList
+					data={restaurantAllData}
+					renderItem={({ item }) => (
+						<View style={styles.restaurantItemOverlay}>
+							<Image source={item.restaurantAll} style={styles.restaurantItemImages} />
+							<View style={{ paddingBottom: 5, bottom: 10 }}>
+								<View>
+									<Text style={{ color: '#1F2125', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+									<View  style={{flexDirection: 'row', alignItems: 'center'}}>
+										<Ionicons name="star" size={15} color="#E58945" />
+										<Text style={{marginLeft: 5, color: '#56585C' }}>{item.time}</Text>
+									</View>
+									<View style={{marginTop: '30%'}}>
+										<Text>{item.price}</Text>
+									</View>
+								</View>
+							</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					showsVerticalScrollIndicator={false}
+				/>    
+      		</ScrollView>
+    	</SafeAreaView>
+  	)
 }
 
 export default HomePage
