@@ -19,6 +19,9 @@ import MealTypeModal from "@/components/MealTypeModal";
 
 type ScheduleScreenProps = {};
 
+import { useRouter } from "expo-router";
+
+
 const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
 	const [selectedMealType, setSelectedMealType] = useState<string>("Breakfast");
@@ -58,6 +61,16 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 		}
 	};
 
+	const router = useRouter();
+
+	const handleBack = () => {
+		router.back();
+	}
+
+	const changeLocation = () => {
+        router.push('/src/location/currentLocation');
+    };
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView
@@ -67,7 +80,7 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 
 				{/* Header */}
 				<View style={styles.header}>
-					<TouchableOpacity style={styles.backButton}>
+					<TouchableOpacity style={styles.backButton} onPress={handleBack}>
 						<Ionicons
 							name="chevron-back"
 							size={24}
@@ -102,7 +115,7 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 				</TouchableOpacity>
 
 				{/* Change Location Button */}
-				<TouchableOpacity style={styles.changeLocationButton}>
+				<TouchableOpacity style={styles.changeLocationButton} onPress={changeLocation}>
 					<Ionicons
 						name="location-outline"
 						size={20}
@@ -289,6 +302,7 @@ const styles = StyleSheet.create({
 		color: "#555",
 	},
 	sectionLabel: {
+		paddingTop: 20,
 		fontSize: 16,
 		fontWeight: "500",
 		marginBottom: 8,

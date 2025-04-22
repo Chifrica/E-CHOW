@@ -11,24 +11,24 @@ const AppLayout = () => {
 
 					if (route.name === "home") {
 						iconSource = focused
-							? require("@/assets/icons/notification.svg") // Active icon
-							: require("@/assets/icons/notification.svg"); // Inactive icon
+							? require("../../../../assets/icons/notification.svg") // Active icon
+							: require("../../../../assets/icons/notification.svg"); // Inactive icon
 					} else if (route.name === "explore") {
 						iconSource = focused
-							? require("@/assets/icons/explore.svg")
-							: require("@/assets/icons/explore.svg");
+							? require("../../../../assets/icons/explore.svg")
+							: require("../../../../assets/icons/explore.svg");
 					} else if (route.name === "orders") {
 						iconSource = focused
-							? require("@/assets/icons/orders.svg")
-							: require("@/assets/icons/orders.svg");
+							? require("../../../../assets/icons/orders.svg")
+							: require("../../../../assets/icons/orders.svg");
 					} else if (route.name === "schedule") {
 						iconSource = focused
-							? require("@/assets/icons/schedule.svg")
-							: require("@/assets/icons/schedule.svg");
+							? require("../../../../assets/icons/schedule.svg")
+							: require("../../../../assets/icons/schedule.svg");
 					} else if (route.name === "notification") {
 						iconSource = focused
-							? require("@/assets/icons/notification.svg")
-							: require("@/assets/icons/notification.svg");
+							? require("../../../../assets/icons/notification.svg")
+							: require("../../../../assets/icons/notification.svg");
 					}
 
 					return (

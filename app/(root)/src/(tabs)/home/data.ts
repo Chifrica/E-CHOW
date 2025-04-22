@@ -19,6 +19,10 @@ export const fastSelling = {
     neapolitain: require('../../../../../assets/images/neapolitain-aza.png'),
     gbegiriSoup: require('../../../../../assets/images/gbebiri-soup.png'),
 };
+
+export const restaurantAll = {
+    restuarant1: require('../../../../../assets/images/restaurantAll.png'),
+}
   
 export const storiesData = [
     { 
@@ -115,3 +119,30 @@ export const fastSellingData = [
         time: '10min away - 128 ordered' 
     },
 ];
+
+export const restaurantAllData = [
+    {
+        restaurantAll: restaurantAll.restuarant1,
+        title: 'Caramello Spaghetti', 
+        price: '\u20A6 2500', 
+        time: '10min away - 128 ordered' 
+    },
+    {
+        restaurantAll: restaurantAll.restuarant1,
+        title: 'Caramello Spaghetti', 
+        price: '\u20A6 2500', 
+        time: '10min away - 128 ordered' 
+    },
+    {
+        restaurantAll: restaurantAll.restuarant1,
+        title: 'Caramello Spaghetti', 
+        price: '\u20A6 2500', 
+        time: '10min away - 128 ordered' 
+    },
+    {
+        restaurantAll: restaurantAll.restuarant1,
+        title: 'Caramello Spaghetti', 
+        price: '\u20A6 2500', 
+        time: '10min away - 128 ordered' 
+    },
+]
