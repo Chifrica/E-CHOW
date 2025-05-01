@@ -5,205 +5,331 @@ import { AntDesign, Feather, FontAwesome, FontAwesome6, Ionicons } from '@expo/v
 import { LinearGradient } from 'expo-linear-gradient'
 import { storiesData, videosData, recommendedData, fastSellingData, restaurantAllData } from './data';
 
-const width = Dimensions.get('screen').width;
+const width = Dimensions.get("screen").width;
 
 const HomePage = () => {
-    
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-            <View style={styles.miniHeader}>
-                <AntDesign name="menu-fold" size={24} color="#FFFFFF" style={styles.headerIcon}/>
-                <View>
-                    <Text style={{color: '#475467', fontSize: 16}}>Deliver to: 
-                        <Text style={{fontWeight: 700}}> Office</Text>
-                    </Text>
-                    <Text style={{justifyContent: 'center', fontWeight: 'bold', color: '#101828', fontSize: 18}}>33, Rosebud, Oke... 
-                        <Feather name="chevron-down" size={24} color="#61605F" />
-                    </Text>
-                </View>
-            </View>
-            <View style={styles.miniHeader}>
-                <Feather name="search" size={24} color="#61605F" style={styles.headerIcon2}/>
-                <Feather name="shopping-cart" size={24} color="#61605F" style={styles.headerIcon2}/>
-            </View>
-        </View>
+	return (
+		<SafeAreaView style={styles.container}>
+			<ScrollView
+				style={styles.scrollView}
+				showsVerticalScrollIndicator={false}>
+				<View style={styles.header}>
+					<View style={styles.miniHeader}>
+						<AntDesign
+							name="menu-fold"
+							size={24}
+							color="#FFFFFF"
+							style={styles.headerIcon}
+						/>
+						<View>
+							<Text style={{ color: "#475467", fontSize: 16 }}>
+								Deliver to:
+								<Text style={{ fontWeight: 700 }}> Office</Text>
+							</Text>
+							<Text
+								style={{
+									justifyContent: "center",
+									fontWeight: "bold",
+									color: "#101828",
+									fontSize: 18,
+								}}>
+								33, Rosebud, Oke...
+								<Feather
+									name="chevron-down"
+									size={24}
+									color="#61605F"
+								/>
+							</Text>
+						</View>
+					</View>
+					<View style={styles.miniHeader}>
+						<Feather
+							name="search"
+							size={24}
+							color="#61605F"
+							style={styles.headerIcon2}
+						/>
+						<Feather
+							name="shopping-cart"
+							size={24}
+							color="#61605F"
+							style={styles.headerIcon2}
+						/>
+					</View>
+				</View>
 
-        {/* Stories */}
-        <FlatList
-            data={storiesData}
-            renderItem={({ item }) => (
-                <View style={styles.imageContainer}>
-                    <Image source={item.image} style={styles.image} />
-                    <Text style={styles.imageLabel}>{item.label}</Text>
-                </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+				{/* Stories */}
+				<FlatList
+					data={storiesData}
+					renderItem={({ item }) => (
+						<View style={styles.imageContainer}>
+							<Image
+								source={item.image}
+								style={styles.image}
+							/>
+							<Text style={styles.imageLabel}>{item.label}</Text>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					horizontal
+					showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+				/>
+				<View style={{ padding: 10 }}>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>Category</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
 
-        />
-        <View style={{padding: 10}}>
-            <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>Category</Text>
-                <Text style={styles.categorySeeAll}>See All</Text>
-            </View>
+					<View style={styles.categoryContainer}>
+						<View style={styles.categoryItem}>
+							<FontAwesome6
+								name="bowl-rice"
+								size={20}
+								color="#E58945"
+								style={styles.categoryIcon}
+							/>
+							<Text style={styles.categoryLabel}>Rice</Text>
+						</View>
+						<View style={styles.categoryItem}>
+							<FontAwesome6
+								name="wine-bottle"
+								size={20}
+								color="#E58945"
+								style={styles.categoryIcon}
+							/>
+							<Text style={styles.categoryLabel}>Beverages</Text>
+						</View>
+						<View style={styles.categoryItem}>
+							<FontAwesome6
+								name="bowl-rice"
+								size={20}
+								color="#E58945"
+								style={styles.categoryIcon}
+							/>
+							<Text style={styles.categoryLabel}>Swallow</Text>
+						</View>
+						<View style={styles.categoryItem}>
+							<FontAwesome6
+								name="bowl-rice"
+								size={20}
+								color="#E58945"
+								style={styles.categoryIcon}
+							/>
+							<Text style={styles.categoryLabel}>Seafood</Text>
+						</View>
+						<View style={styles.categoryItem}>
+							<FontAwesome6
+								name="bowl-rice"
+								size={20}
+								color="#E58945"
+								style={styles.categoryIcon}
+							/>
+							<Text style={styles.categoryLabel}>Soup</Text>
+						</View>
+						<View style={styles.categoryItem}>
+							<FontAwesome6
+								name="cookie-bite"
+								size={20}
+								color="#E58945"
+								style={styles.categoryIcon}
+							/>
+							<Text style={styles.categoryLabel}>Bakery</Text>
+						</View>
+					</View>
+				</View>
 
-            <View style={styles.categoryContainer}>
-                <View style={styles.categoryItem}>
-                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
-                    <Text style={styles.categoryLabel}>Rice</Text>
-                </View>
-                <View style={styles.categoryItem}>
-                    <FontAwesome6 name="wine-bottle" size={20} color="#E58945" style={styles.categoryIcon} />
-                    <Text style={styles.categoryLabel}>Beverages</Text>
-                </View>
-                <View style={styles.categoryItem}>
-                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
-                    <Text style={styles.categoryLabel}>Swallow</Text>
-                </View>
-                <View style={styles.categoryItem}>
-                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
-                    <Text style={styles.categoryLabel}>Seafood</Text>
-                </View>
-                <View style={styles.categoryItem}>
-                    <FontAwesome6 name="bowl-rice" size={20} color="#E58945" style={styles.categoryIcon} />
-                    <Text style={styles.categoryLabel}>Soup</Text>
-                </View>
-                <View style={styles.categoryItem}>
-                    <FontAwesome6 name="cookie-bite" size={20} color="#E58945" style={styles.categoryIcon} />
-                    <Text style={styles.categoryLabel}>Bakery</Text>
-                </View>
-            </View>
-        </View>
+				<FlatList
+					data={videosData}
+					renderItem={({ item }) => (
+						<View style={styles.videoContainer}>
+							<Image
+								source={item.videos}
+								style={styles.videos}
+							/>
+							<View style={styles.videoOverlayTop}>
+								<Text style={styles.videoTitleTop}>{item.title}</Text>
+								<Text style={styles.videoLabel}>{item.label}</Text>
+							</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					horizontal
+					showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+				/>
 
-        <FlatList
-            data={videosData}
-            renderItem={({ item }) => (
-                <View style={styles.videoContainer}>
-                    <Image source={item.videos} style={styles.videos} />
-                    <View style={styles.videoOverlayTop}>
-                        <Text style={styles.videoTitleTop}>{item.title}</Text>
-                        <Text style={styles.videoLabel}>{item.label}</Text>
-                    </View>
-                </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
-        />
+				<View>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>Recommended for you</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+				</View>
 
-        <View>
-            <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>Recommended for you</Text>
-                <Text style={styles.categorySeeAll}>See All</Text>
-            </View>
-        </View>
+				<FlatList
+					data={recommendedData}
+					renderItem={({ item }) => (
+						<View style={styles.videoContainer}>
+							<Image
+								source={item.recommended}
+								style={styles.videos}
+							/>
+							<View style={styles.videoOverlay}>
+								<LinearGradient
+									style={styles.recommendationHeader}
+									colors={["#3579DD", "#24DA36"]}
+									start={{ x: 0, y: 0 }} // Start from the left
+									end={{ x: 1, y: 0 }}>
+									<FontAwesome6
+										name="crown"
+										size={15}
+										color="#FFFFFF"
+									/>
+									<Text style={styles.recommendationText}>{item.title}</Text>
+								</LinearGradient>
 
-        <FlatList
-                data={recommendedData}
-                renderItem={({ item }) => (
-                    <View style={styles.videoContainer}>
-                        <Image source={item.recommended} style={styles.videos} />
-                        <View style={styles.videoOverlay}>
-                            <LinearGradient 
-                                style={styles.recommendationHeader} 
-                                colors={['#3579DD', '#24DA36']}
-                                start={{ x: 0, y: 0 }} // Start from the left
-                                end={{ x: 1, y: 0 }}
-                            >
+								<View>
+									<Ionicons
+										name="heart-outline"
+										size={20}
+										color="#E58945"
+									/>
+								</View>
+							</View>
+							<View
+								style={{
+									flexDirection: "row",
+									justifyContent: "space-between",
+									alignItems: "center",
+									padding: 10,
+								}}>
+								<View>
+									<Text>Caramello Spaghetti</Text>
+									<View style={{ flexDirection: "row", alignItems: "center" }}>
+										<Ionicons
+											name="star"
+											size={15}
+											color="#E58945"
+										/>
+										<Text style={{ marginLeft: 5 }}>4.8</Text>
+										<Text>10min away</Text>
+									</View>
+								</View>
+								<View>
+									<Text>{item.price}</Text>
+								</View>
+							</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					horizontal
+					showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+				/>
 
-                                 <FontAwesome6 name="crown" size={15} color="#FFFFFF" />
-                                <Text style={styles.recommendationText}>{item.title}</Text>
-                            </LinearGradient>
+				<View>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>Fast Selling</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+				</View>
 
-                            <View>
-                                <Ionicons name="heart-outline" size={20} color="#E58945" />
-                            </View>
-                        </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
-                            <View>
-                                <Text>Caramello Spaghetti</Text>
-                                <View  style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <Ionicons name="star" size={15} color="#E58945" />
-                                    <Text style={{marginLeft: 5}}>4.8</Text>
-                                    <Text>10min away</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <Text>{item.price}</Text>
-                            </View>
-                        </View>
-                    </View>
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
-        />
+				<FlatList
+					data={fastSellingData}
+					renderItem={({ item }) => (
+						<View style={styles.gridItem}>
+							<Image
+								source={item.fastSelling}
+								style={styles.gridItemImages}
+							/>
+							<View style={styles.gridItemOverlay}>
+								<Ionicons
+									name="heart-outline"
+									size={20}
+									color="#FFFFFF"
+									style={{ fontWeight: 700 }}
+								/>
+							</View>
+							<View
+								style={{ paddingBottom: 5, position: "absolute", bottom: 10 }}>
+								<View>
+									<Text
+										style={{ color: "#fff", fontWeight: "700", fontSize: 24 }}>
+										{item.title}
+									</Text>
+									<View>
+										<Text style={{ color: "#fff" }}>{item.time}</Text>
+										<Text style={{ color: "#fff" }}>{item.price}</Text>
+									</View>
+								</View>
+							</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					numColumns={2} // Dynamically set the number of columns
+				/>
+				<Text style={styles.headerText}>Home</Text>
+			
 
-        <View>
-            <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>Fast Selling</Text>
-                <Text style={styles.categorySeeAll}>See All</Text>
-            </View>
-        </View>
+				<View>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>Fast Selling</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+				</View>
 
-        <FlatList
-            data={fastSellingData}
-            renderItem={({ item }) => (
-                <View style={styles.gridItem}>
-                <Image source={item.fastSelling} style={styles.gridItemImages} />
-                <View style={styles.gridItemOverlay}>
-                    <Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{ fontWeight: 700 }} />
-                </View>
-                <View style={{ paddingBottom: 5, position: 'absolute', bottom: 10 }}>
-                    <View>
-                    <Text style={{ color: '#fff', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
-                    <View>
-                        <Text style={{ color: '#fff' }}>{item.time}</Text>
-                        <Text style={{ color: '#fff' }}>{item.price}</Text>
-                    </View>
-                    </View>
-                </View>
-                </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2} // Dynamically set the number of columns
-        />
+				<FlatList
+					data={fastSellingData}
+					renderItem={({ item }) => (
+						<View style={styles.gridItem}>
+						<Image source={item.fastSelling} style={styles.gridItemImages} />
+						<View style={styles.gridItemOverlay}>
+							<Ionicons name="heart-outline" size={20} color="#FFFFFF" style={{ fontWeight: 700 }} />
+						</View>
+						<View style={{ paddingBottom: 5, position: 'absolute', bottom: 10 }}>
+							<View>
+							<Text style={{ color: '#fff', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+							<View>
+								<Text style={{ color: '#fff' }}>{item.time}</Text>
+								<Text style={{ color: '#fff' }}>{item.price}</Text>
+							</View>
+							</View>
+						</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					numColumns={2} // Dynamically set the number of columns
+				/>
 
-        <View>
-            <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>All restaurant</Text>
-                <Text style={styles.categorySeeAll}>See All</Text>
-            </View>
-        </View>
+				<View>
+					<View style={styles.categoryHeader}>
+						<Text style={styles.categoryTitle}>All restaurant</Text>
+						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+				</View>
 
-        <FlatList
-            data={restaurantAllData}
-            renderItem={({ item }) => (
-                <View style={styles.restaurantItemOverlay}>
-                    <Image source={item.restaurantAll} style={styles.restaurantItemImages} />
-                    <View style={{ paddingBottom: 5, bottom: 10 }}>
-                        <View>
-                            <Text style={{ color: '#1F2125', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
-                            <View  style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Ionicons name="star" size={15} color="#E58945" />
-                                <Text style={{marginLeft: 5, color: '#56585C' }}>{item.time}</Text>
-                            </View>
-                            <View style={{marginTop: '30%'}}>
-                                <Text>{item.price}</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-        />    
-      </ScrollView>
-    </SafeAreaView>
-  )
+				<FlatList
+					data={restaurantAllData}
+					renderItem={({ item }) => (
+						<View style={styles.restaurantItemOverlay}>
+							<Image source={item.restaurantAll} style={styles.restaurantItemImages} />
+							<View style={{ paddingBottom: 5, bottom: 10 }}>
+								<View>
+									<Text style={{ color: '#1F2125', fontWeight: '700', fontSize: 24 }}>{item.title}</Text>
+									<View  style={{flexDirection: 'row', alignItems: 'center'}}>
+										<Ionicons name="star" size={15} color="#E58945" />
+										<Text style={{marginLeft: 5, color: '#56585C' }}>{item.time}</Text>
+									</View>
+									<View style={{marginTop: '30%'}}>
+										<Text>{item.price}</Text>
+									</View>
+								</View>
+							</View>
+						</View>
+					)}
+					keyExtractor={(item, index) => index.toString()}
+					showsVerticalScrollIndicator={false}
+				/>    
+      		</ScrollView>
+    	</SafeAreaView>
+  	)
 }
 
 export default HomePage
