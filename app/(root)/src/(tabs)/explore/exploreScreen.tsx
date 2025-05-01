@@ -25,26 +25,32 @@ const ExploreScreen = () => {
                 style={styles.image}
               />
             </View>
+
             <View style={styles.imageOverlay}>
               <View>
                 <View style={styles.topLayerContainer}>
+                  
                   <View style={styles.vendorContainer}>
                     <View style={styles.vendorBadge}>
                       <Text style={styles.vendorText}>vendor</Text>
                     </View>
+
                     <View>
                       <Text style={styles.whiteText}>{item.vendorName}</Text>
                       <Text style={styles.whiteText}>{item.location}</Text>
                     </View>
                   </View>
+
                   <View style={styles.ratingContainer}>  
                     <Feather name="star" size={20} color="#E58945" />
                     <Text style={styles.ratingText}>{item.timeAgo}</Text>
                   </View>
+
                 </View>
               </View>
 
               <View style={styles.bottomLayer}>
+                
                 <View style={styles.actionContainer}>
                   <View style={styles.iconContainer}>
                     <Feather name="share" size={24} color="#fff" style={styles.actionIcon}/>
@@ -55,6 +61,7 @@ const ExploreScreen = () => {
                     <Text style={styles.whiteText}>Click for details</Text>
                   </View>
                 </View>
+
                 <View style={styles.foodInfoContainer}>
                   <View>
                     <Text style={styles.whiteText}>{item.foodName}</Text>
