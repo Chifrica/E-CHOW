@@ -1,8 +1,13 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import { notificationData } from "./notification-data";
+import { router } from "expo-router";
 
-const NotificationScreen = () => {
+const NotificationScreen: React.FC = () => {
+	const navigateToProfile = () => {
+		router.push("/(root)/src/profile/profileScreen");
+	};
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.heading}>Notifications</Text>
@@ -18,7 +23,11 @@ const NotificationScreen = () => {
 									style={styles.userImg}
 									source={notification.image}
 								/>
-								<Text style={styles.userName}>{notification.userName}</Text>
+								<Text
+									style={styles.userName}
+									onPress={navigateToProfile}>
+									{notification.userName}
+								</Text>
 							</View>
 							<Text style={styles.time}>{notification.time}</Text>
 						</View>

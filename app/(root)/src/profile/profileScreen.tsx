@@ -1,0 +1,245 @@
+import React from "react";
+import {
+	View,
+	Text,
+	StyleSheet,
+	Image,
+	TouchableOpacity,
+	ScrollView,
+} from "react-native";
+import {
+	Ionicons,
+	Feather,
+	MaterialIcons,
+	FontAwesome,
+} from "@expo/vector-icons";
+import { router } from "expo-router";
+
+const ProfileScreen: React.FC = () => {
+	const navigateToProfileDetails = () => {
+		router.push("/(root)/src/profile/profileDetailsScreen");
+	};
+
+	return (
+		<View style={styles.container}>
+			<ScrollView contentContainerStyle={styles.scrollContainer}>
+				<View style={styles.header}>
+					<Image
+						source={require("@/assets/icons/profile.png")}
+						style={styles.avatar}
+					/>
+					<View>
+						<Text style={styles.name}>Israel Ajala</Text>
+						<Text style={styles.email}>Israelajala@gmai.com</Text>
+					</View>
+				</View>
+
+				<View style={styles.walletCard}>
+					<View style={styles.walletLeft}>
+						<Ionicons
+							name="wallet"
+							size={20}
+							color="#fff"
+						/>
+						<Text style={styles.walletText}>Wallet</Text>
+						<Text style={styles.walletAmount}>₦8000.00</Text>
+					</View>
+					<TouchableOpacity style={styles.topUpButton}>
+						<Text style={styles.topUpText}>Top Up</Text>
+					</TouchableOpacity>
+				</View>
+
+				<View style={styles.section}>
+					<Text style={styles.sectionTitle}>Account Information</Text>
+					<Option
+						icon={
+							<Feather
+								name="user"
+								size={20}
+							/>
+						}
+						label="Profile Details"
+						onPress={navigateToProfileDetails}
+					/>
+					<Option
+						icon={
+							<Ionicons
+								name="wallet-outline"
+								size={20}
+							/>
+						}
+						label="Wallet"
+					/>
+					<Option
+						icon={
+							<Feather
+								name="map-pin"
+								size={20}
+							/>
+						}
+						label="Saved Addresses"
+					/>
+					<Option
+						icon={
+							<FontAwesome
+								name="heart-o"
+								size={20}
+							/>
+						}
+						label="Favorites"
+					/>
+				</View>
+
+				<View style={styles.section}>
+					<Text style={styles.sectionTitle}>More</Text>
+					<Option
+						icon={
+							<Ionicons
+								name="chatbox-outline"
+								size={20}
+							/>
+						}
+						label="Help and Support"
+					/>
+					<Option
+						icon={
+							<Feather
+								name="gift"
+								size={20}
+							/>
+						}
+						label="Referrals"
+					/>
+					<Option
+						icon={
+							<Feather
+								name="file-text"
+								size={20}
+							/>
+						}
+						label="Privacy Policy and Terms"
+					/>
+					<Option
+						icon={
+							<Feather
+								name="info"
+								size={20}
+							/>
+						}
+						label="About Us"
+					/>
+					<Option
+						icon={
+							<Feather
+								name="star"
+								size={20}
+							/>
+						}
+						label="Rate Us"
+					/>
+					<Option
+						icon={
+							<Feather
+								name="log-out"
+								size={20}
+							/>
+						}
+						label="Log Out"
+					/>
+				</View>
+			</ScrollView>
+		</View>
+	);
+};
+
+const Option: React.FC<{
+	icon: React.ReactNode;
+	label: string;
+	onPress?: () => void;
+}> = ({ icon, label, onPress }) => (
+	<TouchableOpacity
+		style={styles.option}
+		onPress={onPress}>
+		<View style={styles.optionLeft}>{icon}</View>
+		<Text style={styles.optionText}>{label}</Text>
+		<Feather
+			name="chevron-right"
+			size={20}
+			color="#ccc"
+		/>
+	</TouchableOpacity>
+);
+
+const styles = StyleSheet.create({
+	container: { flex: 1, backgroundColor: "#fff" },
+	scrollContainer: { padding: 20 },
+	header: { flexDirection: "row", alignItems: "center", marginBottom: 20 },
+	avatar: {
+		width: 60,
+		height: 60,
+		borderRadius: 30,
+		marginRight: 15,
+		backgroundColor: "#eee",
+	},
+	name: { fontSize: 18, fontWeight: "bold" },
+	email: { color: "#666" },
+	walletCard: {
+		backgroundColor: "#0F172A",
+		borderRadius: 15,
+		padding: 20,
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginBottom: 30,
+	},
+	walletLeft: {},
+	walletText: { color: "#fff", fontSize: 16, marginTop: 5 },
+	walletAmount: {
+		color: "#fff",
+		fontSize: 24,
+		fontWeight: "bold",
+		marginTop: 10,
+	},
+	topUpButton: {
+		backgroundColor: "#F97316",
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		borderRadius: 10,
+	},
+	topUpText: { color: "#fff", fontWeight: "bold" },
+	section: { marginBottom: 30 },
+	sectionTitle: {
+		fontWeight: "600",
+		fontSize: 14,
+		marginBottom: 10,
+		color: "#333",
+	},
+	option: {
+		flexDirection: "row",
+		alignItems: "center",
+		paddingVertical: 15,
+		borderBottomColor: "#eee",
+		borderBottomWidth: 1,
+	},
+	optionLeft: { width: 30 },
+	optionText: { flex: 1, marginLeft: 10, fontSize: 16 },
+	bottomNav: {
+		flexDirection: "row",
+		justifyContent: "space-around",
+		alignItems: "center",
+		paddingVertical: 15,
+		borderTopColor: "#eee",
+		borderTopWidth: 1,
+		backgroundColor: "#fff",
+	},
+	scheduleButton: {
+		backgroundColor: "#F97316",
+		padding: 10,
+		borderRadius: 30,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	scheduleText: { color: "#fff", fontSize: 10, marginTop: 2 },
+});
+
+export default ProfileScreen;
