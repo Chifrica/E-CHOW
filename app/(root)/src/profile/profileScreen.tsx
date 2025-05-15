@@ -35,13 +35,17 @@ const ProfileScreen: React.FC = () => {
 				</View>
 
 				<View style={styles.walletCard}>
+					<View style={styles.bgCircleOne}></View>
+					<View style={styles.bgCircleTwo}></View>
 					<View style={styles.walletLeft}>
-						<Ionicons
-							name="wallet"
-							size={20}
-							color="#fff"
-						/>
-						<Text style={styles.walletText}>Wallet</Text>
+						<View style={styles.walletIconContainer}>
+							<Ionicons
+								name="wallet"
+								size={20}
+								color="#fff"
+							/>
+							<Text style={styles.walletText}>Wallet</Text>
+						</View>
 						<Text style={styles.walletAmount}>₦8000.00</Text>
 					</View>
 					<TouchableOpacity style={styles.topUpButton}>
@@ -191,8 +195,34 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		alignItems: "center",
 		marginBottom: 30,
+		position: "relative",
+		overflow: "hidden",
+	},
+	bgCircleOne: {
+		position: "absolute",
+		top: -60,
+		right: -40,
+		width: 100,
+		height: 100,
+		backgroundColor: "#FC964C4A",
+		borderRadius: 75,
+	},
+	bgCircleTwo: {
+		position: "absolute",
+		bottom: 10,
+		right: -50,
+		width: 90,
+		height: 90,
+		backgroundColor: "#FC964C4A",
+		borderRadius: 75,
 	},
 	walletLeft: {},
+	walletIconContainer: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 10,
+	},
 	walletText: { color: "#fff", fontSize: 16, marginTop: 5 },
 	walletAmount: {
 		color: "#fff",
@@ -203,7 +233,7 @@ const styles = StyleSheet.create({
 	topUpButton: {
 		backgroundColor: "#F97316",
 		paddingVertical: 8,
-		paddingHorizontal: 16,
+		paddingHorizontal: 25,
 		borderRadius: 10,
 	},
 	topUpText: { color: "#fff", fontWeight: "bold" },

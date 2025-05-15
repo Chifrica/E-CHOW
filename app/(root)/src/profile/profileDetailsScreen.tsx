@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 
 const ProfileDetailsScreen = () => {
 	const originalData = {
@@ -58,7 +59,7 @@ const ProfileDetailsScreen = () => {
 			<ScrollView contentContainerStyle={styles.container}>
 				{/* Header */}
 				<View style={styles.header}>
-					<TouchableOpacity>
+					<TouchableOpacity onPress={() => router.back()}>
 						<Ionicons
 							name="arrow-back"
 							size={24}
