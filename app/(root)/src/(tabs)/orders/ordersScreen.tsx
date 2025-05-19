@@ -10,6 +10,7 @@ import {
 	StatusBar,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import CustomizeOrderModal from "@/components/CustomizeOrderModal";
 
 // Define TypeScript interfaces
 interface OrderItem {
@@ -72,6 +73,7 @@ const OrdersScreen: React.FC = () => {
 	const [activeTab, setActiveTab] = useState<TabType>("Ongoing");
 	const [hasOrders, setHasOrders] = useState<boolean>(true);
 	const [viewType, setViewType] = useState<ViewType>("grid");
+	const [modalVisible, setModalVisible] = useState<boolean>(false);
 
 	const tabs: TabType[] = ["Ongoing", "Delivered", "Canceled"];
 
@@ -130,7 +132,9 @@ const OrdersScreen: React.FC = () => {
 	}: {
 		item: OrderItem;
 	}): React.ReactElement => (
-		<View style={styles.gridItem}>
+		<TouchableOpacity
+			style={styles.gridItem}
+			onPress={() => setModalVisible(true)}>
 			<View style={styles.gridImageContainer}>
 				<Image
 					source={require("@/assets/images/spicy-jollof.png")}
@@ -159,7 +163,7 @@ const OrdersScreen: React.FC = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 
 	const renderListItem = ({
@@ -167,7 +171,9 @@ const OrdersScreen: React.FC = () => {
 	}: {
 		item: OrderItem;
 	}): React.ReactElement => (
-		<View style={styles.listItem}>
+		<TouchableOpacity
+			style={styles.listItem}
+			onPress={() => setModalVisible(true)}>
 			<View style={styles.listImageContainer}>
 				<Image
 					source={require("@/assets/images/spicy-jollof.png")}
@@ -196,7 +202,7 @@ const OrdersScreen: React.FC = () => {
 					<Text style={styles.trackButtonText}>Track Order</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 
 	return (
@@ -249,6 +255,11 @@ const OrdersScreen: React.FC = () => {
 					contentContainerStyle={styles.listContainer}
 				/>
 			)}
+
+			<CustomizeOrderModal
+				visible={modalVisible}
+				onClose={() => setModalVisible(false)}
+			/>
 		</SafeAreaView>
 	);
 };
