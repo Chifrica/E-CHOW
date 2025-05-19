@@ -174,7 +174,7 @@ const AddLocation = () => {
 						<Text style={styles.label}>Enter location</Text>
 						<TextInput
 							style={styles.input}
-							placeholder="e.g 2, Rosebud. Oke ila Ado Ekiti."
+							placeholder="e.g My Office"
 							value={location}
 							onChangeText={setLocation}
 							keyboardType="default"
@@ -185,7 +185,7 @@ const AddLocation = () => {
 						<Text style={styles.label}>Location name</Text>
 						<TextInput
 							style={styles.input}
-							placeholder="e.g My Office"
+							placeholder="e.g 2, Rosebud. Oke ila Ado Ekiti."
 							value={locationName}
 							onChangeText={setLocationName}
 							keyboardType="default"

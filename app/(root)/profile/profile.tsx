@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Dimensions, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RNPickerSelect from 'react-native-picker-select';
@@ -24,9 +24,16 @@ const Profile = () => {
     setDate(currentDate);
   };
 
+  const isContinueDisabled = !gender || !date || !selectedState || !selectedLga;
+
+  const handleContinue = () => {
+    if (!isContinueDisabled) {
+      Alert.alert('The site is under construction, please check back later');
+    }
+};
   //   This handle is temporary
   const handleSkip = () => {
-    router.push('/(root)/src/location/currentLocation');
+    router.push('/(root)/registration');
   }
   const stateItems = Object.keys(statesAndLgas).map(state => ({ label: state, value: state }));
   const lgaItems = selectedState ? statesAndLgas[selectedState].map((lga: any) => ({ label: lga, value: lga })) : [];
@@ -110,9 +117,14 @@ const Profile = () => {
         </View>
 
         <TouchableOpacity
-            style={styles.button}
+          style={[
+            styles.button,
+            isContinueDisabled && styles.buttonDisabled,
+          ]}
+          onPress={handleContinue}
+          disabled={isContinueDisabled}
         >
-            <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

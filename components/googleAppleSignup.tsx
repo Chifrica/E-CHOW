@@ -1,7 +1,23 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { login } from '@/lib/appwrite'
+import { useGlobalContext } from '@/lib/global-provider'
+import { Redirect } from 'expo-router'
 
 const GoogleAppleSignup = () => {
+  const { refetch, loading, isLoggedIn } = useGlobalContext();
+  if(!loading && isLoggedIn) return <Redirect href="/" />
+
+  const handleLogin = async () => {
+    const result = await login();
+
+    if (result) {
+      refetch()
+    } else {
+      Alert.alert('Error', 'Login failed');
+    }
+  }
+   
   return (
     <View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -13,18 +29,20 @@ const GoogleAppleSignup = () => {
         </View>
     
         <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20}}>
-            <View style={{marginRight: 20, backgroundColor: '#D6D6D6', borderRadius: 100, borderWidth: 1, borderColor: '#D6D6D6', justifyContent: 'center', alignItems: 'center'}}>  
+            <TouchableOpacity 
+              onPress={handleLogin}
+              style={{marginRight: 20, backgroundColor: '#D6D6D6', borderRadius: 100, borderWidth: 1, borderColor: '#D6D6D6', justifyContent: 'center', alignItems: 'center'}}>  
                 <Image
                     source={require('../assets/icons/google.png')}
                     style={{width: 24, height: 24, margin: 5, padding: 8}}
                 />
-            </View>
-            <View style={{backgroundColor: '#D6D6D6', borderRadius: 100, borderWidth: 1, borderColor: '#D6D6D6', justifyContent: 'center', alignItems: 'center'}}>  
+            </TouchableOpacity>
+            <TouchableOpacity style={{backgroundColor: '#D6D6D6', borderRadius: 100, borderWidth: 1, borderColor: '#D6D6D6', justifyContent: 'center', alignItems: 'center'}}>  
                 <Image
                     source={require('../assets/icons/apple.png')}
                     style={{width: 24, height: 30, margin: 8}}
                 />
-            </View>
+            </TouchableOpacity>
         </View>
     </View>
   )

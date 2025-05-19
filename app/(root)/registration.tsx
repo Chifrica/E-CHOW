@@ -14,6 +14,10 @@ const Registration = () => {
         router.push('/(root)/profile/profile');
     }
 
+    const handleSignIn = () => {
+        router.push('/(root)/login/savedNumber');
+    }
+
     return (
         <SafeAreaView style={styles.container}>
            <ScrollView style={styles.scrollView}>
@@ -68,7 +72,7 @@ const Registration = () => {
                 <Text style={styles.signupText}>
                     Already have an account?  
                     <TouchableOpacity 
-                        // onPress={handleSignUp}
+                        onPress={handleSignIn}
                     > 
                         <Text style={{ color: '#E58945', fontWeight: 'bold', fontSize: 18, }}> Login Here </Text>
                     </TouchableOpacity>
