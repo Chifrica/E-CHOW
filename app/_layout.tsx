@@ -20,11 +20,12 @@ export default function RootLayout() {
 
 	return (
 		// <GlobalProvider>
-
-		<LocationProvider>
-			{/* <Stack screenOptions={{ headerShown: false }} /> */}
-			<Slot />
-		</LocationProvider>
+		<GlobalProvider>
+			<LocationProvider>
+				{/* <Stack screenOptions={{ headerShown: false }} /> */}
+				<Slot />
+			</LocationProvider>
+		</GlobalProvider>
 
 		// <Stack />
 	);
