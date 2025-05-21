@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
 	View,
 	Text,
@@ -20,7 +20,7 @@ import MealTypeModal from "@/components/MealTypeModal";
 type ScheduleScreenProps = {};
 
 import { useRouter } from "expo-router";
-
+import { useUser } from "@clerk/clerk-expo";
 
 const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
@@ -32,6 +32,31 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 	const [selectedDateTime, setSelectedDateTime] =
 		useState<DateTimeSelection | null>(null);
 	const [errorType, setErrorType] = useState<string | null>(null);
+	const [errorTimeout, setErrorTimeout] = useState<NodeJS.Timeout | null>(null);
+
+	// Clear error after timeout
+	useEffect(() => {
+		if (errorType) {
+			// Clear any existing timeout
+			if (errorTimeout) {
+				clearTimeout(errorTimeout);
+			}
+
+			// Set new timeout to clear error after 3 seconds
+			const timeout = setTimeout(() => {
+				setErrorType(null);
+			}, 3000);
+
+			setErrorTimeout(timeout);
+		}
+
+		// Cleanup function to clear timeout when component unmounts
+		return () => {
+			if (errorTimeout) {
+				clearTimeout(errorTimeout);
+			}
+		};
+	}, [errorType]);
 
 	const handleOpenDateTimePicker = (): void => {
 		setDateTimeModalVisible(true);
@@ -41,6 +66,12 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 		setSelectedDateTime(dateTime);
 		setSelectedTime(dateTime.formattedDate);
 		setErrorType(null);
+
+		// Clear any existing timeout when user takes action
+		if (errorTimeout) {
+			clearTimeout(errorTimeout);
+			setErrorTimeout(null);
+		}
 	};
 
 	const handleOpenMealTypeModal = (): void => {
@@ -50,6 +81,12 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 	const handleSelectMealType = (mealType: string): void => {
 		setSelectedMealType(mealType);
 		setErrorType(null);
+
+		// Clear any existing timeout when user takes action
+		if (errorTimeout) {
+			clearTimeout(errorTimeout);
+			setErrorTimeout(null);
+		}
 	};
 
 	const handleSave = (): void => {
@@ -65,11 +102,13 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 
 	const handleBack = () => {
 		router.back();
-	}
+	};
 
 	const changeLocation = () => {
-        router.push('/src/location/currentLocation');
-    };
+		router.push("/src/location/currentLocation");
+	};
+
+	const { user } = useUser();
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -80,7 +119,9 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 
 				{/* Header */}
 				<View style={styles.header}>
-					<TouchableOpacity style={styles.backButton} onPress={handleBack}>
+					<TouchableOpacity
+						style={styles.backButton}
+						onPress={handleBack}>
 						<Ionicons
 							name="chevron-back"
 							size={24}
@@ -115,7 +156,9 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 				</TouchableOpacity>
 
 				{/* Change Location Button */}
-				<TouchableOpacity style={styles.changeLocationButton} onPress={changeLocation}>
+				<TouchableOpacity
+					style={styles.changeLocationButton}
+					onPress={changeLocation}>
 					<Ionicons
 						name="location-outline"
 						size={20}
@@ -127,10 +170,24 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 				{/* Delivery Time */}
 				<Text style={styles.sectionLabel}>Delivery time:</Text>
 				<TouchableOpacity
-					style={styles.selectionCard}
+					style={[
+						styles.selectionCard,
+						errorType === "time" && styles.errorSelectionCard,
+					]}
 					onPress={handleOpenDateTimePicker}>
-					<View style={styles.radioButton} />
-					<Text style={styles.selectionText}>{selectedTime}</Text>
+					<View
+						style={[
+							styles.radioButton,
+							errorType === "time" && styles.errorRadioButton,
+						]}
+					/>
+					<Text
+						style={[
+							styles.selectionText,
+							errorType === "time" && styles.errorSelectionText,
+						]}>
+						{selectedTime}
+					</Text>
 					<View style={styles.rightContainer}>
 						<Text style={styles.rightText}>Set time & date</Text>
 						<Ionicons
@@ -200,14 +257,16 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 				{/* Contact Info */}
 				<Text style={styles.sectionLabel}>Contact Info:</Text>
 				<View style={styles.contactRow}>
-					<Feather
+					{/* <Feather
 						name="phone"
 						size={20}
 						color="black"
-					/>
+					/> */}
 					<View style={styles.contactTextContainer}>
-						<Text style={styles.contactName}>
-							Israel Ajala <Text style={styles.dot}>•</Text> 09035161685
+						<Text style={styles.contactName}>{user?.fullName}</Text>
+						<Text style={styles.dot}>•</Text>
+						<Text style={styles.contactPhone}>
+							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
 						</Text>
 					</View>
 					<TouchableOpacity>
@@ -249,7 +308,7 @@ const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
 				/>
 			</ScrollView>
 
-			{/* Error Message */}
+			{/* Error Message with Animation */}
 			{errorType && (
 				<View style={styles.errorContainer}>
 					<Text style={styles.errorText}>
@@ -356,6 +415,10 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#E0E0E0",
 	},
+	errorSelectionCard: {
+		borderColor: "#FF5252",
+		backgroundColor: "#FFEBEB10",
+	},
 	radioButton: {
 		width: 20,
 		height: 20,
@@ -364,9 +427,15 @@ const styles = StyleSheet.create({
 		borderColor: "#888",
 		marginRight: 12,
 	},
+	errorRadioButton: {
+		borderColor: "#FF5252",
+	},
 	selectionText: {
 		fontSize: 16,
 		flex: 1,
+	},
+	errorSelectionText: {
+		color: "#FF5252",
 	},
 	rightContainer: {
 		flexDirection: "row",
@@ -397,11 +466,12 @@ const styles = StyleSheet.create({
 	contactRow: {
 		flexDirection: "row",
 		alignItems: "center",
-		paddingVertical: 16,
 	},
 	contactTextContainer: {
+		flexDirection: "row",
 		flex: 1,
 		marginLeft: 12,
+		paddingVertical: 8,
 	},
 	contactName: {
 		fontSize: 16,
@@ -409,6 +479,11 @@ const styles = StyleSheet.create({
 	dot: {
 		color: "#FF8C42",
 		fontWeight: "bold",
+		marginHorizontal: 8,
+	},
+	contactPhone: {
+		fontSize: 16,
+		flex: 1,
 	},
 	billingRow: {
 		flexDirection: "row",
