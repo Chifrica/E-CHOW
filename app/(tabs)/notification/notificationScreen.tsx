@@ -2,11 +2,15 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import { notificationData } from "./notification-data";
 import { router } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
 
 const NotificationScreen: React.FC = () => {
 	const navigateToProfile = () => {
 		router.push("/(root)/src/profile/profileScreen");
 	};
+
+	const { user } = useUser();
+	const profileImage = user?.imageUrl;
 
 	return (
 		<View style={styles.container}>
@@ -21,12 +25,12 @@ const NotificationScreen: React.FC = () => {
 							<View style={styles.userCard}>
 								<Image
 									style={styles.userImg}
-									source={notification.image}
+									source={{ uri: profileImage }}
 								/>
 								<Text
 									style={styles.userName}
 									onPress={navigateToProfile}>
-									{notification.userName}
+									{user?.fullName}
 								</Text>
 							</View>
 							<Text style={styles.time}>{notification.time}</Text>

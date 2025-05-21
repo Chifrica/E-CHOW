@@ -18,6 +18,8 @@ import RidersInstructionModal from "@/components/RidersInstructionModal";
 import DateTimePickerModal, {
 	type DateTimeSelection,
 } from "@/components/DateTimePicket";
+import { useUser } from "@clerk/clerk-expo";
+import { useNavigation } from "@react-navigation/native";
 
 const OrderSummaryScreen: React.FC = () => {
 	const [deliveryTime, setDeliveryTime] = useState<"now" | "schedule">("now");
@@ -51,13 +53,18 @@ const OrderSummaryScreen: React.FC = () => {
 		setErrorType(null);
 	};
 
+	const { user } = useUser();
+	const navigation = useNavigation();
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView
 				style={styles.scrollView}
 				showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
-					<TouchableOpacity style={styles.backButton}>
+					<TouchableOpacity
+						onPress={() => navigation.goBack()}
+						style={styles.backButton}>
 						<Ionicons
 							name="chevron-back"
 							size={24}
@@ -195,9 +202,11 @@ const OrderSummaryScreen: React.FC = () => {
 					<View style={styles.divider} />
 
 					<View style={styles.contactInfo}>
-						<Text style={styles.contactName}>Israel Ajala</Text>
+						<Text style={styles.contactName}>{user?.fullName}</Text>
 						<Text style={styles.contactDot}>•</Text>
-						<Text style={styles.contactPhone}>09035161685</Text>
+						<Text style={styles.contactPhone}>
+							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
+						</Text>
 						<TouchableOpacity style={styles.editButton}>
 							<Feather
 								name="edit-2"

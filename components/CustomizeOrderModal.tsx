@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+"use client";
+
+import type React from "react";
+import { useState } from "react";
 import {
 	View,
 	Text,
@@ -77,6 +80,43 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 
 	const formatPrice = (price: number): string => {
 		return `₦${price.toLocaleString()}`;
+	};
+
+	// Render quantity control for any item
+	const renderQuantityControl = (item: keyof Quantities) => {
+		if (quantities[item] > 0) {
+			return (
+				<View style={styles.quantityControl}>
+					<TouchableOpacity
+						style={styles.quantityButton}
+						onPress={() => updateQuantity(item, -1)}>
+						<AntDesign
+							name="minus"
+							size={16}
+							color="black"
+						/>
+					</TouchableOpacity>
+					<Text style={styles.quantityText}>{quantities[item]}</Text>
+					<TouchableOpacity
+						style={styles.quantityButton}
+						onPress={() => updateQuantity(item, 1)}>
+						<AntDesign
+							name="plus"
+							size={16}
+							color="black"
+						/>
+					</TouchableOpacity>
+				</View>
+			);
+		} else {
+			return (
+				<TouchableOpacity
+					style={styles.addButton}
+					onPress={() => updateQuantity(item, 1)}>
+					<Text style={styles.addButtonText}>+</Text>
+				</TouchableOpacity>
+			);
+		}
 	};
 
 	if (!visible) return null;
@@ -177,11 +217,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 							</View>
 							<View style={styles.optionRight}>
 								<Text style={styles.priceText}>₦1000</Text>
-								<TouchableOpacity
-									style={styles.addButton}
-									onPress={() => updateQuantity("chicken", 1)}>
-									<Text style={styles.addButtonText}>+</Text>
-								</TouchableOpacity>
+								{renderQuantityControl("chicken")}
 							</View>
 						</View>
 
@@ -192,35 +228,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 							</View>
 							<View style={styles.optionRight}>
 								<Text style={styles.priceText}>₦1000</Text>
-								{quantities.meat > 0 ? (
-									<View style={styles.quantityControl}>
-										<TouchableOpacity
-											style={styles.quantityButton}
-											onPress={() => updateQuantity("meat", -1)}>
-											<AntDesign
-												name="minus"
-												size={16}
-												color="black"
-											/>
-										</TouchableOpacity>
-										<Text style={styles.quantityText}>{quantities.meat}</Text>
-										<TouchableOpacity
-											style={styles.quantityButton}
-											onPress={() => updateQuantity("meat", 1)}>
-											<AntDesign
-												name="plus"
-												size={16}
-												color="black"
-											/>
-										</TouchableOpacity>
-									</View>
-								) : (
-									<TouchableOpacity
-										style={styles.addButton}
-										onPress={() => updateQuantity("meat", 1)}>
-										<Text style={styles.addButtonText}>+</Text>
-									</TouchableOpacity>
-								)}
+								{renderQuantityControl("meat")}
 							</View>
 						</View>
 
@@ -231,11 +239,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 							</View>
 							<View style={styles.optionRight}>
 								<Text style={styles.priceText}>₦1000</Text>
-								<TouchableOpacity
-									style={styles.addButton}
-									onPress={() => updateQuantity("fish", 1)}>
-									<Text style={styles.addButtonText}>+</Text>
-								</TouchableOpacity>
+								{renderQuantityControl("fish")}
 							</View>
 						</View>
 					</View>
@@ -250,11 +254,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 							</View>
 							<View style={styles.optionRight}>
 								<Text style={styles.priceText}>₦1000</Text>
-								<TouchableOpacity
-									style={styles.addButton}
-									onPress={() => updateQuantity("beer", 1)}>
-									<Text style={styles.addButtonText}>+</Text>
-								</TouchableOpacity>
+								{renderQuantityControl("beer")}
 							</View>
 						</View>
 
@@ -265,27 +265,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 							</View>
 							<View style={styles.optionRight}>
 								<Text style={styles.priceText}>₦800</Text>
-								<View style={styles.quantityControl}>
-									<TouchableOpacity
-										style={styles.quantityButton}
-										onPress={() => updateQuantity("coke", -1)}>
-										<AntDesign
-											name="minus"
-											size={16}
-											color="black"
-										/>
-									</TouchableOpacity>
-									<Text style={styles.quantityText}>{quantities.coke}</Text>
-									<TouchableOpacity
-										style={styles.quantityButton}
-										onPress={() => updateQuantity("coke", 1)}>
-										<AntDesign
-											name="plus"
-											size={16}
-											color="black"
-										/>
-									</TouchableOpacity>
-								</View>
+								{renderQuantityControl("coke")}
 							</View>
 						</View>
 
@@ -296,11 +276,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 							</View>
 							<View style={styles.optionRight}>
 								<Text style={styles.priceText}>₦800</Text>
-								<TouchableOpacity
-									style={styles.addButton}
-									onPress={() => updateQuantity("sosa", 1)}>
-									<Text style={styles.addButtonText}>+</Text>
-								</TouchableOpacity>
+								{renderQuantityControl("sosa")}
 							</View>
 						</View>
 
@@ -310,15 +286,13 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 								style={styles.optionRow}>
 								<View style={styles.optionLeft}>
 									<View style={styles.iconPlaceholder} />
-									<Text style={styles.optionText}>Youghurt</Text>
+									<Text style={styles.optionText}>
+										Youghurt {index === 0 ? "" : index === 1 ? "2" : "3"}
+									</Text>
 								</View>
 								<View style={styles.optionRight}>
 									<Text style={styles.priceText}>₦800</Text>
-									<TouchableOpacity
-										style={styles.addButton}
-										onPress={() => updateQuantity(item, 1)}>
-										<Text style={styles.addButtonText}>+</Text>
-									</TouchableOpacity>
+									{renderQuantityControl(item as keyof Quantities)}
 								</View>
 							</View>
 						))}

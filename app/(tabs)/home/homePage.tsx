@@ -12,16 +12,16 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign, Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import {
 	storiesData,
-	videosData,
 	recommendedData,
 	fastSellingData,
 	restaurantAllData,
+	videosData,
 } from "./data";
 import DeliveryAddressModal from "@/components/deliveryAddressModal";
+import { useUser } from "@clerk/clerk-expo";
 
 const width = Dimensions.get("screen").width;
 
@@ -34,6 +34,10 @@ const HomePage = () => {
 		address: "33, Rosebud, Oke...",
 	});
 
+	const { user } = useUser();
+
+	const profileImage = user?.imageUrl;
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView
@@ -41,35 +45,28 @@ const HomePage = () => {
 				showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
 					<View style={styles.miniHeader}>
-						{/* Make this section clickable to open the modal */}
+						{/* Replace menu-fold with user profile circle */}
 						<TouchableOpacity
 							style={{ flexDirection: "row", alignItems: "center" }}
 							onPress={() => setModalVisible(true)}>
-							<AntDesign
-								name="menu-fold"
-								size={24}
-								color="#FFFFFF"
-								style={styles.headerIcon}
+							<Image
+								source={{ uri: profileImage }}
+								style={styles.userProfileCircle}
 							/>
-							<View>
-								<Text style={{ color: "#475467", fontSize: 16 }}>
-									Deliver to:
-									<Text style={{ fontWeight: "700" }}>
-										{" "}
-										{selectedAddress.name}
-									</Text>
+							<View style={{ marginLeft: 10 }}>
+								<Text style={{ color: "#475467", fontSize: 12 }}>
+									Deliver to: {selectedAddress.name}
 								</Text>
 								<Text
 									style={{
-										justifyContent: "center",
 										fontWeight: "bold",
 										color: "#101828",
-										fontSize: 18,
+										fontSize: 14,
 									}}>
 									{selectedAddress.address}
 									<Feather
 										name="chevron-down"
-										size={24}
+										size={16}
 										color="#61605F"
 									/>
 								</Text>
@@ -77,18 +74,20 @@ const HomePage = () => {
 						</TouchableOpacity>
 					</View>
 					<View style={styles.miniHeader}>
-						<Feather
-							name="search"
-							size={24}
-							color="#61605F"
-							style={styles.headerIcon2}
-						/>
-						<Feather
-							name="shopping-cart"
-							size={24}
-							color="#61605F"
-							style={styles.headerIcon2}
-						/>
+						<TouchableOpacity style={styles.iconButton}>
+							<Feather
+								name="search"
+								size={20}
+								color="#61605F"
+							/>
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.iconButton}>
+							<Feather
+								name="shopping-cart"
+								size={20}
+								color="#61605F"
+							/>
+						</TouchableOpacity>
 					</View>
 				</View>
 
@@ -106,72 +105,88 @@ const HomePage = () => {
 					)}
 					keyExtractor={(item, index) => index.toString()}
 					horizontal
-					showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+					showsHorizontalScrollIndicator={false}
+					contentContainerStyle={{ paddingRight: 20 }}
+					style={{ width: "100%" }}
 				/>
-				<View style={{ padding: 10 }}>
+
+				{/* Category Section */}
+				<View style={styles.sectionContainer}>
 					<View style={styles.categoryHeader}>
 						<Text style={styles.categoryTitle}>Category</Text>
 						<Text style={styles.categorySeeAll}>See All</Text>
 					</View>
 
-					<View style={styles.categoryContainer}>
+					{/* Horizontal scrollable categories */}
+					<ScrollView
+						horizontal
+						showsHorizontalScrollIndicator={false}
+						contentContainerStyle={{ paddingRight: 20 }}
+						style={{ width: "100%" }}>
 						<View style={styles.categoryItem}>
-							<FontAwesome6
-								name="bowl-rice"
-								size={20}
-								color="#E58945"
-								style={styles.categoryIcon}
-							/>
+							<View style={styles.categoryIconContainer}>
+								<FontAwesome6
+									name="bowl-rice"
+									size={16}
+									color="#E58945"
+								/>
+							</View>
 							<Text style={styles.categoryLabel}>Rice</Text>
 						</View>
 						<View style={styles.categoryItem}>
-							<FontAwesome6
-								name="wine-bottle"
-								size={20}
-								color="#E58945"
-								style={styles.categoryIcon}
-							/>
+							<View style={styles.categoryIconContainer}>
+								<FontAwesome6
+									name="wine-bottle"
+									size={16}
+									color="#E58945"
+								/>
+							</View>
 							<Text style={styles.categoryLabel}>Beverages</Text>
 						</View>
 						<View style={styles.categoryItem}>
-							<FontAwesome6
-								name="bowl-rice"
-								size={20}
-								color="#E58945"
-								style={styles.categoryIcon}
-							/>
+							<View style={styles.categoryIconContainer}>
+								<FontAwesome6
+									name="bowl-rice"
+									size={16}
+									color="#E58945"
+								/>
+							</View>
 							<Text style={styles.categoryLabel}>Swallow</Text>
 						</View>
 						<View style={styles.categoryItem}>
-							<FontAwesome6
-								name="bowl-rice"
-								size={20}
-								color="#E58945"
-								style={styles.categoryIcon}
-							/>
+							<View style={styles.categoryIconContainer}>
+								<FontAwesome6
+									name="fish"
+									size={16}
+									color="#E58945"
+								/>
+							</View>
 							<Text style={styles.categoryLabel}>Seafood</Text>
 						</View>
 						<View style={styles.categoryItem}>
-							<FontAwesome6
-								name="bowl-rice"
-								size={20}
-								color="#E58945"
-								style={styles.categoryIcon}
-							/>
+							<View style={styles.categoryIconContainer}>
+								<FontAwesome6
+									name="bowl-rice"
+									size={16}
+									color="#E58945"
+								/>
+							</View>
 							<Text style={styles.categoryLabel}>Soup</Text>
 						</View>
 						<View style={styles.categoryItem}>
-							<FontAwesome6
-								name="cookie-bite"
-								size={20}
-								color="#E58945"
-								style={styles.categoryIcon}
-							/>
+							<View style={styles.categoryIconContainer}>
+								<FontAwesome6
+									name="cookie-bite"
+									size={16}
+									color="#E58945"
+								/>
+							</View>
 							<Text style={styles.categoryLabel}>Bakery</Text>
 						</View>
-					</View>
+					</ScrollView>
 				</View>
 
+				{/* Videos/Carousel Section - directly under user profile */}
 				<FlatList
 					data={videosData}
 					renderItem={({ item }) => (
@@ -188,209 +203,163 @@ const HomePage = () => {
 					)}
 					keyExtractor={(item, index) => index.toString()}
 					horizontal
-					showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
+					showsHorizontalScrollIndicator={false}
+					contentContainerStyle={{ paddingRight: 20 }}
+					style={{ marginTop: 20, width: "100%" }}
 				/>
 
-				<View>
+				{/* Recommended for you */}
+				<View style={styles.sectionContainer}>
 					<View style={styles.categoryHeader}>
 						<Text style={styles.categoryTitle}>Recommended for you</Text>
 						<Text style={styles.categorySeeAll}>See All</Text>
 					</View>
-				</View>
 
-				<FlatList
-					data={recommendedData}
-					renderItem={({ item }) => (
-						<View style={styles.videoContainer}>
-							<Image
-								source={item.recommended}
-								style={styles.videos}
-							/>
-							<View style={styles.videoOverlay}>
-								<LinearGradient
-									style={styles.recommendationHeader}
-									colors={["#3579DD", "#24DA36"]}
-									start={{ x: 0, y: 0 }} // Start from the left
-									end={{ x: 1, y: 0 }}>
-									<FontAwesome6
-										name="crown"
-										size={15}
-										color="#FFFFFF"
-									/>
-									<Text style={styles.recommendationText}>{item.title}</Text>
-								</LinearGradient>
-
-								<View>
+					<FlatList
+						data={recommendedData}
+						renderItem={({ item, index }) => (
+							<View style={styles.recommendedItem}>
+								<Image
+									source={item.recommended}
+									style={styles.recommendedImage}
+								/>
+								<View style={styles.recommendedBadge}>
+									<Text style={styles.recommendedBadgeText}>Very Healthy</Text>
+								</View>
+								<View style={styles.recommendedHeartContainer}>
 									<Ionicons
 										name="heart-outline"
 										size={20}
 										color="#E58945"
 									/>
 								</View>
-							</View>
-							<View
-								style={{
-									flexDirection: "row",
-									justifyContent: "space-between",
-									alignItems: "center",
-									padding: 10,
-								}}>
-								<View>
-									<Text>Caramello Spaghetti</Text>
-									<View style={{ flexDirection: "row", alignItems: "center" }}>
-										<Ionicons
-											name="star"
-											size={15}
-											color="#E58945"
-										/>
-										<Text style={{ marginLeft: 5 }}>4.8</Text>
-										<Text>10min away</Text>
+								<View style={styles.recommendedDetails}>
+									<Text style={styles.recommendedTitle}>
+										{index === 0 ? "Caramello Spaghetti" : "Homemade Pasta"}
+									</Text>
+									<View style={styles.recommendedMeta}>
+										<View style={styles.recommendedRating}>
+											<Ionicons
+												name="star"
+												size={12}
+												color="#E58945"
+											/>
+											<Text style={styles.recommendedRatingText}>
+												4.8 (120+)
+											</Text>
+										</View>
+										<Text style={styles.recommendedDistance}>10 min away</Text>
 									</View>
-								</View>
-								<View>
-									<Text>{item.price}</Text>
+									<Text style={styles.recommendedPrice}>
+										{index === 0 ? "₦1,500" : "₦2,000"}
+									</Text>
 								</View>
 							</View>
-						</View>
-					)}
-					keyExtractor={(item, index) => index.toString()}
-					horizontal
-					showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
-				/>
+						)}
+						keyExtractor={(item, index) => index.toString()}
+						horizontal
+						showsHorizontalScrollIndicator={false}
+						contentContainerStyle={{ paddingRight: 20 }}
+						style={{ width: "100%" }}
+					/>
+				</View>
 
-				<View>
+				{/* Fast Selling */}
+				<View style={styles.sectionContainer}>
 					<View style={styles.categoryHeader}>
-						<Text style={styles.categoryTitle}>Fast Selling</Text>
+						<Text style={styles.categoryTitle}>Fast selling</Text>
 						<Text style={styles.categorySeeAll}>See All</Text>
+					</View>
+
+					<View style={styles.gridContainer}>
+						{fastSellingData.slice(0, 6).map((item, index) => (
+							<View
+								key={index}
+								style={styles.gridItem}>
+								<Image
+									source={item.fastSelling}
+									style={styles.gridItemImage}
+								/>
+								<TouchableOpacity style={styles.heartIconContainer}>
+									<Ionicons
+										name="heart-outline"
+										size={20}
+										color="#FFFFFF"
+									/>
+								</TouchableOpacity>
+								<View style={styles.gridItemOverlay}>
+									<Text style={styles.gridItemTitle}>
+										{index % 2 === 0
+											? "Burger"
+											: index % 4 === 1
+											? "White Rice"
+											: index % 4 === 3
+											? "Neapolitan Pizza"
+											: "Gbegiri Soup"}
+									</Text>
+									<Text style={styles.gridItemMeta}>
+										10 min away • 128 ordered
+									</Text>
+									<Text style={styles.gridItemPrice}>
+										{index % 2 === 0 ? "₦3,500" : "₦2,500"}
+									</Text>
+								</View>
+							</View>
+						))}
 					</View>
 				</View>
 
-				<FlatList
-					data={fastSellingData}
-					renderItem={({ item }) => (
-						<View style={styles.gridItem}>
-							<Image
-								source={item.fastSelling}
-								style={styles.gridItemImages}
-							/>
-							<View style={styles.gridItemOverlay}>
-								<Ionicons
-									name="heart-outline"
-									size={20}
-									color="#FFFFFF"
-									style={{ fontWeight: 700 }}
-								/>
-							</View>
-							<View
-								style={{ paddingBottom: 5, position: "absolute", bottom: 10 }}>
-								<View>
-									<Text
-										style={{ color: "#fff", fontWeight: "700", fontSize: 24 }}>
-										{item.title}
-									</Text>
-									<View>
-										<Text style={{ color: "#fff" }}>{item.time}</Text>
-										<Text style={{ color: "#fff" }}>{item.price}</Text>
-									</View>
-								</View>
-							</View>
-						</View>
-					)}
-					keyExtractor={(item, index) => index.toString()}
-					numColumns={2} // Dynamically set the number of columns
-				/>
-				<Text style={styles.headerText}>Home</Text>
-
-				<View>
-					<View style={styles.categoryHeader}>
-						<Text style={styles.categoryTitle}>Fast Selling</Text>
-						<Text style={styles.categorySeeAll}>See All</Text>
-					</View>
-				</View>
-
-				<FlatList
-					data={fastSellingData}
-					renderItem={({ item }) => (
-						<View style={styles.gridItem}>
-							<Image
-								source={item.fastSelling}
-								style={styles.gridItemImages}
-							/>
-							<View style={styles.gridItemOverlay}>
-								<Ionicons
-									name="heart-outline"
-									size={20}
-									color="#FFFFFF"
-									style={{ fontWeight: 700 }}
-								/>
-							</View>
-							<View
-								style={{ paddingBottom: 5, position: "absolute", bottom: 10 }}>
-								<View>
-									<Text
-										style={{ color: "#fff", fontWeight: "700", fontSize: 24 }}>
-										{item.title}
-									</Text>
-									<View>
-										<Text style={{ color: "#fff" }}>{item.time}</Text>
-										<Text style={{ color: "#fff" }}>{item.price}</Text>
-									</View>
-								</View>
-							</View>
-						</View>
-					)}
-					keyExtractor={(item, index) => index.toString()}
-					numColumns={2} // Dynamically set the number of columns
-				/>
-
-				<View>
+				{/* All restaurant */}
+				<View style={styles.sectionContainer}>
 					<View style={styles.categoryHeader}>
 						<Text style={styles.categoryTitle}>All restaurant</Text>
 						<Text style={styles.categorySeeAll}>See All</Text>
 					</View>
-				</View>
 
-				<FlatList
-					data={restaurantAllData}
-					renderItem={({ item }) => (
-						<View style={styles.restaurantItemOverlay}>
+					{restaurantAllData.slice(0, 4).map((item, index) => (
+						<View
+							key={index}
+							style={styles.restaurantItem}>
 							<Image
 								source={item.restaurantAll}
-								style={styles.restaurantItemImages}
+								style={styles.restaurantImage}
 							/>
-							<View style={{ paddingBottom: 5, bottom: 10 }}>
-								<View>
-									<Text
-										style={{
-											color: "#1F2125",
-											fontWeight: "700",
-											fontSize: 24,
-										}}>
-										{item.title}
-									</Text>
-									<View style={{ flexDirection: "row", alignItems: "center" }}>
-										<Ionicons
-											name="star"
-											size={15}
-											color="#E58945"
-										/>
-										<Text style={{ marginLeft: 5, color: "#56585C" }}>
-											{item.time}
-										</Text>
-									</View>
-									<View style={{ marginTop: "30%" }}>
-										<Text>{item.price}</Text>
-									</View>
+							<View style={styles.restaurantDetails}>
+								<Text style={styles.restaurantName}>
+									{index === 0
+										? "Pepperoni"
+										: index === 1
+										? "Amala Spot"
+										: index === 2
+										? "Belloni's Place"
+										: "Tasty & Spicy"}
+								</Text>
+								<View style={styles.restaurantMeta}>
+									<Ionicons
+										name="star"
+										size={12}
+										color="#E58945"
+									/>
+									<Text style={styles.restaurantRating}>4.8 (100+)</Text>
 								</View>
+								<Text style={styles.restaurantLocation}>
+									Civic center, Fejuyi Park
+								</Text>
+								<Text style={styles.restaurantDistance}>10 min away</Text>
 							</View>
+							<TouchableOpacity style={styles.restaurantHeartContainer}>
+								<Ionicons
+									name="heart-outline"
+									size={20}
+									color="#E58945"
+								/>
+							</TouchableOpacity>
 						</View>
-					)}
-					keyExtractor={(item, index) => index.toString()}
-					showsVerticalScrollIndicator={false}
-				/>
+					))}
+				</View>
 			</ScrollView>
 
-			{/* Add the Delivery Address Modal */}
+			{/* Delivery Address Modal */}
 			<DeliveryAddressModal
 				visible={modalVisible}
 				onClose={() => setModalVisible(false)}
@@ -408,78 +377,118 @@ export default HomePage;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingLeft: 16,
-		paddingRight: 16,
-		paddingBottom: 16,
-		top: 10,
+		backgroundColor: "#FFFFFF",
 	},
 	scrollView: {
-		flexGrow: 1,
+		flex: 1,
+		paddingHorizontal: 15,
 	},
 	header: {
 		flexDirection: "row",
 		alignItems: "center",
-		marginHorizontal: 10,
 		justifyContent: "space-between",
-		marginBottom: 20,
+		paddingVertical: 10,
 	},
 	miniHeader: {
 		flexDirection: "row",
 		alignItems: "center",
 	},
-	headerIcon: {
-		backgroundColor: "#E58945",
-		borderRadius: 50,
-		padding: 8,
-		elevation: 1,
-		marginRight: 10,
+	userProfileCircle: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		borderWidth: 2,
+		borderColor: "#E58945",
+		backgroundColor: "#FFF5EB",
 	},
-	headerIcon2: {
+	iconButton: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
 		backgroundColor: "#F3F3F3",
-		borderRadius: 50,
-		padding: 8,
-		elevation: 1,
-		marginRight: 10,
+		justifyContent: "center",
+		alignItems: "center",
+		marginLeft: 10,
 	},
 	imageContainer: {
 		alignItems: "center",
-		marginRight: 10,
-		padding: 5,
+		marginRight: 15,
 	},
 	image: {
-		width: 70,
-		height: 70,
+		width: 60,
+		height: 60,
 		resizeMode: "cover",
-		borderRadius: 50,
+		borderRadius: 30,
 		borderColor: "#E58945",
-		borderWidth: 3,
+		borderWidth: 2,
 	},
 	imageLabel: {
 		marginTop: 5,
-		fontSize: 14,
+		fontSize: 12,
+		color: "#333",
+		textAlign: "center",
+	},
+	sectionContainer: {
+		marginTop: 20,
+	},
+	categoryHeader: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginBottom: 15,
+	},
+	categoryTitle: {
+		fontSize: 16,
 		fontWeight: "bold",
 		color: "#333",
 	},
-	videoContainer: {
+	categorySeeAll: {
+		fontSize: 14,
+		color: "#E58945",
+	},
+	categoryScrollContainer: {
+		paddingRight: 20,
+	},
+	categoryItem: {
+		flexDirection: "row",
+		alignItems: "center",
+		backgroundColor: "#F9F9F9",
+		borderRadius: 20,
+		paddingHorizontal: 10,
+		paddingVertical: 6,
 		marginRight: 10,
-		// position: 'relative', // Ensure the overlay is positioned relative to the video
+	},
+	categoryIconContainer: {
+		width: 30,
+		height: 30,
+		borderRadius: 15,
+		backgroundColor: "#FFFFFF",
+		justifyContent: "center",
+		alignItems: "center",
+		marginRight: 5,
+	},
+	categoryLabel: {
+		fontSize: 14,
+		color: "#333",
+	},
+	videoContainer: {
+		marginRight: 15,
+		width: width - 50, // Make it almost full width with some margin
 	},
 	videos: {
-		width: 333,
+		width: "100%",
 		height: 167,
 		resizeMode: "cover",
 		borderRadius: 10,
 	},
 	videoOverlayTop: {
 		position: "absolute",
-		marginLeft: 10,
-		alignItems: "flex-start",
-		justifyContent: "center",
-		// flexDirection: 'row',
-		// justifyContent: 'space-around',
+		bottom: 20,
+		left: 20,
+		right: 20,
 	},
 	videoTitleTop: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: "bold",
 		color: "#fff",
 		textAlign: "center",
@@ -487,140 +496,230 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		borderColor: "#FFFFFF",
 		borderWidth: 1,
-		padding: 5,
-		marginTop: 80,
-	},
-	videoOverlay: {
-		position: "absolute",
-		marginLeft: 10,
-		alignItems: "flex-start",
-		flexDirection: "column",
-	},
-	videoTitle: {
-		fontSize: 18,
-		fontWeight: "bold",
-		color: "#fff",
-		textAlign: "center",
-		marginBottom: 10,
-		borderRadius: 100,
-		borderColor: "#FFFFFF",
-		borderWidth: 1,
-		padding: 5,
-		marginTop: 80,
+		paddingVertical: 5,
+		paddingHorizontal: 15,
+		alignSelf: "flex-start",
 	},
 	videoLabel: {
 		fontSize: 24,
 		fontWeight: "bold",
 		color: "#FFFFFF",
-		textAlign: "center",
-		alignSelf: "center",
 		marginTop: 5,
 	},
-	recommendationHeader: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		marginBottom: 5,
-		borderRadius: 100,
-		borderColor: "#FFFFFF",
-		borderWidth: 1,
-		marginTop: 20,
-		alignItems: "center",
-		paddingLeft: 5,
-		paddingRight: 5,
-	},
-	recommendationText: {
-		fontSize: 18,
-		fontWeight: "bold",
-		color: "#fff",
-		padding: 5,
-	},
-	gridItem: {
-		flex: 1,
-		alignItems: "center",
-		// marginRight: 10,
-		// position: 'relative', // Ensure the overlay is positioned relative to the video
-	},
-	gridItemImages: {
-		width: 164,
-		height: 179,
-		resizeMode: "cover",
+	recommendedItem: {
+		width: 180,
+		marginRight: 15,
 		borderRadius: 10,
-		marginBottom: 10,
+		overflow: "hidden",
+		backgroundColor: "#FFFFFF",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		elevation: 2,
 	},
-	gridItemOverlay: {
+	recommendedImage: {
+		width: "100%",
+		height: 120,
+		resizeMode: "cover",
+	},
+	recommendedBadge: {
 		position: "absolute",
-		paddingLeft: 100,
-		marginTop: 10,
-		alignItems: "flex-end",
+		top: 10,
+		left: 10,
+		backgroundColor: "#3579DD",
+		paddingHorizontal: 8,
+		paddingVertical: 4,
+		borderRadius: 15,
 	},
-	restaurantItemOverlay: {
-		flex: 1,
-		alignItems: "center",
-		flexDirection: "row",
-		marginBottom: 15,
-	},
-	restaurantItemImages: {
-		width: 164,
-		height: 179,
-		resizeMode: "cover",
-		borderRadius: 10,
-		marginLeft: 16,
-		marginRight: 16,
-	},
-	headerText: {
-		fontSize: 25,
-		fontWeight: "700",
-		marginHorizontal: "auto",
-		fontFamily: "Switzerland",
-		letterSpacing: -0.41,
-		// lineHeight: 100,
-	},
-	categoryHeader: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		marginVertical: 20,
-	},
-	categoryTitle: {
-		fontSize: 18,
+	recommendedBadgeText: {
+		color: "#FFFFFF",
+		fontSize: 10,
 		fontWeight: "bold",
-		color: "#333",
 	},
-	categorySeeAll: {
+	recommendedHeartContainer: {
+		position: "absolute",
+		top: 10,
+		right: 10,
+		backgroundColor: "#FFFFFF",
+		width: 30,
+		height: 30,
+		borderRadius: 15,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	recommendedDetails: {
+		padding: 10,
+	},
+	recommendedTitle: {
+		fontSize: 14,
+		fontWeight: "bold",
+		marginBottom: 5,
+	},
+	recommendedMeta: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 5,
+	},
+	recommendedRating: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginRight: 10,
+	},
+	recommendedRatingText: {
+		fontSize: 12,
+		color: "#666",
+		marginLeft: 3,
+	},
+	recommendedDistance: {
+		fontSize: 12,
+		color: "#666",
+	},
+	recommendedPrice: {
 		fontSize: 14,
 		fontWeight: "bold",
 		color: "#E58945",
 	},
-	categoryContainer: {
+	gridContainer: {
 		flexDirection: "row",
 		flexWrap: "wrap",
-		justifyContent: "flex-start",
+		justifyContent: "space-between",
 	},
-	categoryItem: {
+	gridItem: {
+		width: "48%",
+		height: 180,
+		borderRadius: 10,
+		overflow: "hidden",
+		marginBottom: 15,
+		position: "relative",
+	},
+	gridItemImage: {
+		width: "100%",
+		height: "100%",
+		resizeMode: "cover",
+	},
+	heartIconContainer: {
+		position: "absolute",
+		top: 10,
+		right: 10,
+		backgroundColor: "rgba(0,0,0,0.3)",
+		width: 30,
+		height: 30,
+		borderRadius: 15,
+		justifyContent: "center",
 		alignItems: "center",
-		flexDirection: "row",
-		marginRight: 10,
-		marginBottom: 20,
-		borderRadius: 50,
-		elevation: 5,
-		backgroundColor: "#F9F9F9",
-		padding: 5,
 	},
-	categoryIcon: {
-		width: 40,
-		height: 40,
-		resizeMode: "contain",
-		backgroundColor: "#fff",
+	gridItemOverlay: {
+		position: "absolute",
+		bottom: 0,
+		left: 0,
+		right: 0,
 		padding: 10,
-		elevation: 1,
-		borderRadius: 50,
+		backgroundColor: "rgba(0,0,0,0.5)",
 	},
-	categoryLabel: {
-		marginTop: 5,
-		fontSize: 18,
+	gridItemTitle: {
+		color: "#FFFFFF",
+		fontSize: 16,
 		fontWeight: "bold",
-		color: "#333",
-		paddingLeft: 5,
-		paddingRight: 5,
+		marginBottom: 2,
+	},
+	gridItemMeta: {
+		color: "#FFFFFF",
+		fontSize: 10,
+		marginBottom: 2,
+	},
+	gridItemPrice: {
+		color: "#FFFFFF",
+		fontSize: 14,
+		fontWeight: "bold",
+	},
+	restaurantItem: {
+		flexDirection: "row",
+		marginBottom: 15,
+		backgroundColor: "#FFFFFF",
+		borderRadius: 10,
+		padding: 10,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		elevation: 2,
+	},
+	restaurantImage: {
+		width: 80,
+		height: 80,
+		borderRadius: 10,
+		marginRight: 15,
+	},
+	restaurantDetails: {
+		flex: 1,
+		justifyContent: "center",
+	},
+	restaurantName: {
+		fontSize: 16,
+		fontWeight: "bold",
+		marginBottom: 5,
+	},
+	restaurantMeta: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 5,
+	},
+	restaurantRating: {
+		fontSize: 12,
+		color: "#666",
+		marginLeft: 5,
+	},
+	restaurantLocation: {
+		fontSize: 12,
+		color: "#666",
+		marginBottom: 2,
+	},
+	restaurantDistance: {
+		fontSize: 12,
+		color: "#666",
+	},
+	restaurantHeartContainer: {
+		justifyContent: "center",
+		alignItems: "center",
+		width: 30,
+		height: 30,
+	},
+	bottomNavigation: {
+		flexDirection: "row",
+		height: 60,
+		backgroundColor: "#FFFFFF",
+		borderTopWidth: 1,
+		borderTopColor: "#EEEEEE",
+		justifyContent: "space-around",
+		alignItems: "center",
+	},
+	bottomNavItem: {
+		alignItems: "center",
+		justifyContent: "center",
+		flex: 1,
+		height: "100%",
+	},
+	activeNavIndicator: {
+		position: "absolute",
+		top: 0,
+		width: 30,
+		height: 3,
+		backgroundColor: "#E58945",
+		borderRadius: 1.5,
+	},
+	activeNavText: {
+		fontSize: 12,
+		color: "#E58945",
+		marginTop: 2,
+	},
+	floatingActionButton: {
+		width: 50,
+		height: 50,
+		borderRadius: 25,
+		backgroundColor: "#E58945",
+		justifyContent: "center",
+		alignItems: "center",
+		marginBottom: 15,
 	},
 });

@@ -13,11 +13,29 @@ import {
 	MaterialIcons,
 	FontAwesome,
 } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import * as SecureStore from "expo-secure-store";
 
 const ProfileScreen: React.FC = () => {
 	const navigateToProfileDetails = () => {
 		router.push("/(root)/src/profile/profileDetailsScreen");
+	};
+
+	const { user } = useUser();
+	const { signOut } = useAuth();
+	const router = useRouter();
+	const profileImage = user?.imageUrl;
+	const email = user?.primaryEmailAddress?.emailAddress;
+
+	const handleSignOut = async () => {
+		try {
+			await signOut();
+			await SecureStore.deleteItemAsync("__clerk_token_cache");
+			router.replace("/onBoarding");
+		} catch (error) {
+			console.error("Sign out error:", error);
+		}
 	};
 
 	return (
@@ -25,12 +43,12 @@ const ProfileScreen: React.FC = () => {
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
 				<View style={styles.header}>
 					<Image
-						source={require("@/assets/icons/profile.png")}
+						source={{ uri: profileImage }}
 						style={styles.avatar}
 					/>
 					<View>
-						<Text style={styles.name}>Israel Ajala</Text>
-						<Text style={styles.email}>Israelajala@gmai.com</Text>
+						<Text style={styles.name}>{user?.fullName}</Text>
+						<Text style={styles.email}>{email}</Text>
 					</View>
 				</View>
 
@@ -150,6 +168,9 @@ const ProfileScreen: React.FC = () => {
 						}
 						label="Log Out"
 					/>
+					<TouchableOpacity onPress={handleSignOut}>
+						<Text>signout</Text>
+					</TouchableOpacity>
 				</View>
 			</ScrollView>
 		</View>
