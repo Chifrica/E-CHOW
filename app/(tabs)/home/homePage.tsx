@@ -22,6 +22,7 @@ import {
 } from "./data";
 import DeliveryAddressModal from "@/components/deliveryAddressModal";
 import { useUser } from "@clerk/clerk-expo";
+import { router } from "expo-router";
 
 const width = Dimensions.get("screen").width;
 
@@ -48,12 +49,16 @@ const HomePage = () => {
 						{/* Replace menu-fold with user profile circle */}
 						<TouchableOpacity
 							style={{ flexDirection: "row", alignItems: "center" }}
-							onPress={() => setModalVisible(true)}>
+							onPress={() => {
+								router.push("/src/profile/profileScreen");
+							}}>
 							<Image
 								source={{ uri: profileImage }}
 								style={styles.userProfileCircle}
 							/>
-							<View style={{ marginLeft: 10 }}>
+							<TouchableOpacity
+								style={{ marginLeft: 10 }}
+								onPress={() => setModalVisible(true)}>
 								<Text style={{ color: "#475467", fontSize: 12 }}>
 									Deliver to: {selectedAddress.name}
 								</Text>
@@ -70,7 +75,7 @@ const HomePage = () => {
 										color="#61605F"
 									/>
 								</Text>
-							</View>
+							</TouchableOpacity>
 						</TouchableOpacity>
 					</View>
 					<View style={styles.miniHeader}>
