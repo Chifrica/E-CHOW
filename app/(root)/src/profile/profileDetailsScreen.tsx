@@ -170,7 +170,7 @@ const ProfileDetailsScreen = () => {
 					]}
 					disabled={!hasChanges}
 					onPress={() => {
-						Alert.alert("Saved!", "Your profile has been updated.");
+						Alert.alert("Saved!", "Your profile has been updated");
 					}}>
 					<Text
 						style={{
