@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -8,16 +10,25 @@ import {
 	ScrollView,
 	SafeAreaView,
 	Alert,
+	Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
 
 const ProfileDetailsScreen = () => {
+	const { user } = useUser();
+
+	// Get user data from Clerk
+	const clerkFullName = user?.fullName || "";
+	const clerkEmail = user?.primaryEmailAddress?.emailAddress || "";
+	const profileImage = user?.imageUrl;
+
 	const originalData = {
-		name: "Israel Ajala Israel",
-		email: "israelajala@gmail.com",
-		phone: "08081040068",
+		name: clerkFullName,
+		email: clerkEmail,
+		phone: "08081040068", // Keep this as is since Clerk doesn't provide phone
 		gender: "Male",
 		dob: "09/02/1998",
 	};
@@ -71,7 +82,10 @@ const ProfileDetailsScreen = () => {
 
 				{/* Avatar */}
 				<View style={styles.avatarContainer}>
-					<View style={styles.avatarCircle} />
+					<Image
+						source={{ uri: profileImage }}
+						style={styles.avatarImage}
+					/>
 					<TouchableOpacity style={styles.cameraIcon}>
 						<Ionicons
 							name="camera"
@@ -156,7 +170,7 @@ const ProfileDetailsScreen = () => {
 					]}
 					disabled={!hasChanges}
 					onPress={() => {
-						Alert.alert("Saved!", "Your profile has been updated.");
+						Alert.alert("Saved!", "Your profile has been updated");
 					}}>
 					<Text
 						style={{
@@ -189,12 +203,13 @@ const styles = StyleSheet.create({
 	avatarContainer: {
 		alignItems: "center",
 		marginBottom: 30,
+		position: "relative",
 	},
-	avatarCircle: {
+	avatarImage: {
 		width: 90,
 		height: 90,
+		borderRadius: 45,
 		backgroundColor: "#f1f1f1",
-		borderRadius: 50,
 	},
 	cameraIcon: {
 		position: "absolute",

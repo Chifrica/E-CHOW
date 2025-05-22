@@ -69,6 +69,9 @@ const DeliveryAddressModal: React.FC<DeliveryAddressModalProps> = ({
 		}
 	};
 
+	// const handleAddAddress = () => {
+	// 	router.push("@/src/location/addLocation")
+	// }
 	return (
 		<Modal
 			animationType="slide"
