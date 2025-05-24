@@ -20,7 +20,7 @@ import {
 	restaurantAllData,
 	videosData,
 } from "./data";
-import DeliveryAddressModal from "@/components/deliveryAddressModal";
+import DeliveryAddressModal from "../../../components/deliveryAddressModal";
 import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 

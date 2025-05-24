@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RNPickerSelect from "react-native-picker-select";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { statesAndLgas } from "@/lib/databank/statesAndLgas";
+import { statesAndLgas } from "../../../lib/databank/statesAndLgas";
 import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
@@ -68,7 +68,7 @@ const Profile = () => {
 					<Text>Profile Picture</Text>
 
 					<Image
-						source={require("@/assets/icons/profile.png")}
+						source={require("../../../assets/icons/profile.png")}
 						style={{ width: 50, height: 50, borderRadius: 50, marginLeft: 20 }}
 					/>
 				</View>

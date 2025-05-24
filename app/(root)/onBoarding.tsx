@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { slides } from "@/constants/data";
-import { SignInOutCard } from "@/components/signInOutCard";
+import { slides } from "../../constants/data";
+import { SignInOutCard } from "../../components/signInOutCard";
 // import GlobalProvider from '@/lib/global-provider'
 
 const { width } = Dimensions.get("window");

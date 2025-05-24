@@ -10,7 +10,7 @@ import {
 	StatusBar,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import CustomizeOrderModal from "@/components/CustomizeOrderModal";
+import CustomizeOrderModal from "../../../components/CustomizeOrderModal";
 
 // Define TypeScript interfaces
 interface OrderItem {
@@ -35,7 +35,7 @@ const orderData: OrderItem[] = [
 		quantity: "2 Packs",
 		price: "₦7,000",
 		status: "Preparing",
-		image: "@/assets/images/spicy-jollof.png",
+		image: "../../../assets/images/spicy-jollof.png",
 	},
 	{
 		id: "2",
@@ -44,7 +44,7 @@ const orderData: OrderItem[] = [
 		quantity: "2 Packs",
 		price: "₦7,000",
 		status: "Out for Delivery",
-		image: "@/assets/images/spicy-jollof.png",
+		image: "../../../assets/images/spicy-jollof.png",
 	},
 	{
 		id: "3",
@@ -53,7 +53,7 @@ const orderData: OrderItem[] = [
 		quantity: "2 Packs",
 		price: "₦7,000",
 		status: "Cancelled",
-		image: "@/assets/images/spicy-jollof.png",
+		image: "../../../assets/images/spicy-jollof.png",
 	},
 	{
 		id: "4",
@@ -62,7 +62,7 @@ const orderData: OrderItem[] = [
 		quantity: "2 Packs",
 		price: "₦7,000",
 		status: "Preparing",
-		image: "@/assets/images/spicy-jollof.png",
+		image: "../../../assets/images/spicy-jollof.png",
 	},
 ];
 
@@ -114,7 +114,7 @@ const OrdersScreen: React.FC = () => {
 	const renderEmptyState = (): React.ReactElement => (
 		<View style={styles.emptyContainer}>
 			<Image
-				source={require("@/assets/images/empty.png")}
+				source={require("../../../assets/images/empty.png")}
 				style={styles.emptyImage}
 			/>
 			<Text style={styles.emptyTitle}>You have no orders yet!</Text>
@@ -137,7 +137,7 @@ const OrdersScreen: React.FC = () => {
 			onPress={() => setModalVisible(true)}>
 			<View style={styles.gridImageContainer}>
 				<Image
-					source={require("@/assets/images/spicy-jollof.png")}
+					source={require("../../../assets/images/spicy-jollof.png")}
 					style={styles.gridImage}
 				/>
 				<View
@@ -176,7 +176,7 @@ const OrdersScreen: React.FC = () => {
 			onPress={() => setModalVisible(true)}>
 			<View style={styles.listImageContainer}>
 				<Image
-					source={require("@/assets/images/spicy-jollof.png")}
+					source={require("../../../assets/images/spicy-jollof.png")}
 					style={styles.listImage}
 				/>
 				<View

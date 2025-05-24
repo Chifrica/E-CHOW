@@ -2,8 +2,8 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
-import images from "@/constants/images";
-import icons from "@/constants/icons";
+import images from "../../constants/images";
+import icons from "../../constants/icons";
 
 const TabIcon = ({ focused, icon }: any) => {
 	if (focused) {

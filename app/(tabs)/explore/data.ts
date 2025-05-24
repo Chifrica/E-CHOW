@@ -18,7 +18,7 @@ export const exploreData = [
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
 		deliveryTime: "\u20A67000 - \u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		image: require("../../../assets/images/burger.png"),
 	},
 	{
 		id: "2",
@@ -28,7 +28,7 @@ export const exploreData = [
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
 		deliveryTime: "\u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		image: require("../../../assets/images/burger.png"),
 	},
 	{
 		id: "3",
@@ -38,7 +38,7 @@ export const exploreData = [
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
 		deliveryTime: "\u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		image: require("../../../assets/images/burger.png"),
 	},
 	{
 		id: "4",
@@ -48,10 +48,10 @@ export const exploreData = [
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
 		deliveryTime: "\u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		image: require("../../../assets/images/burger.png"),
 	},
 ];
 
 export const exploreImages = {
-	explore1: require("@/assets/images/burger.png"),
+	explore1: require("../../../assets/images/burger.png"),
 };

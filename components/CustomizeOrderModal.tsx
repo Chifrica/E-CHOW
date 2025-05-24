@@ -152,7 +152,7 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 				<ScrollView style={styles.content}>
 					<View style={styles.imageContainer}>
 						<Image
-							source={require("@/assets/images/spicy-jollof.png")}
+							source={require("../assets/images/spicy-jollof.png")}
 							style={styles.foodImage}
 							resizeMode="cover"
 						/>

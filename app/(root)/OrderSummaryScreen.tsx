@@ -13,11 +13,11 @@ import {
 	Feather,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import NotesToRestaurantsModal from "@/components/NotesToRestaurantsModal";
-import RidersInstructionModal from "@/components/RidersInstructionModal";
+import NotesToRestaurantsModal from "../../components/NotesToRestaurantsModal";
+import RidersInstructionModal from "../../components/RidersInstructionModal";
 import DateTimePickerModal, {
 	type DateTimeSelection,
-} from "@/components/DateTimePicket";
+} from "../../components/DateTimePicket";
 import { useUser } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
 

@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { Redirect } from "expo-router";
 import { useOAuth } from "@clerk/clerk-expo";
-import { useGlobalContext } from "@/lib/global-provider";
+import { useGlobalContext } from "../lib/global-provider";
 import * as WebBrowser from "expo-web-browser";
 import Constants from "expo-constants";
 

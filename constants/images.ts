@@ -5,7 +5,7 @@ import bellonis from "../assets/images/Bellonis.png";
 import nao from "../assets/images/Nao.png";
 import igboKitchen from "../assets/images/Igbo-kitchen.png";
 import tasty from "../assets/images/Tasty.png";
-import background from "@/assets/icons/background.png";
+import background from "..//assets/icons/background.png";
 
 export default {
 	onboarding,

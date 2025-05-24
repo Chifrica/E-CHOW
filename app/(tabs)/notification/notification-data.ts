@@ -13,6 +13,6 @@ export const notificationData = [
 		userName: "Wiels",
 		message: "🎉 Hurray! You have successfully created an account with E-CHOW",
 		time: formatTime(),
-		image: require("@/assets/images/user-img.jpg"),
+		image: require("../../../assets/images/user-img.jpg"),
 	},
 ];
