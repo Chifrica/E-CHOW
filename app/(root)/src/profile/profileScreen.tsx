@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	View,
 	Text,
@@ -6,6 +6,7 @@ import {
 	Image,
 	TouchableOpacity,
 	ScrollView,
+	Alert,
 } from "react-native";
 import {
 	Ionicons,
@@ -38,6 +39,13 @@ const ProfileScreen: React.FC = () => {
 		}
 	};
 
+	const [isHidden, setIsHidden] = useState(true);
+    const walletAmount = "8000.00";
+
+    const toggleVisibility = () => {
+        setIsHidden(!isHidden);
+    };
+	
 	return (
 		<View style={styles.container}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -64,9 +72,21 @@ const ProfileScreen: React.FC = () => {
 							/>
 							<Text style={styles.walletText}>Wallet</Text>
 						</View>
-						<Text style={styles.walletAmount}>₦8000.00</Text>
+						<Text 
+							style={styles.walletAmount}
+						>
+							{isHidden ? "***" : `₦${walletAmount}`}
+                            <TouchableOpacity onPress={toggleVisibility} style={{ position: "absolute", paddingLeft: 20 }}>
+                                <Ionicons
+                                    name={isHidden ? "eye-off" : "eye"}
+                                    size={24}
+                                    color="white"
+                                />
+                            </TouchableOpacity>
+						</Text>
 					</View>
-					<TouchableOpacity style={styles.topUpButton}>
+					{/* Add an alert whenever the user taps on the top-up button it will say payment development in progress*/}	
+					<TouchableOpacity style={styles.topUpButton} onPress={() => Alert.alert("Payment Development in Progress", "This feature is currently under development. Please check back later.")}>
 						<Text style={styles.topUpText}>Top Up</Text>
 					</TouchableOpacity>
 				</View>
@@ -159,18 +179,37 @@ const ProfileScreen: React.FC = () => {
 						}
 						label="Rate Us"
 					/>
-					<Option
-						icon={
-							<Feather
-								name="log-out"
-								size={20}
-							/>
-						}
-						label="Log Out"
-					/>
-					<TouchableOpacity onPress={handleSignOut}>
-						<Text>signout</Text>
-					</TouchableOpacity>
+
+                    <Option
+                        icon={
+                            <Feather
+                                name="log-out"
+                                size={20}
+								style={{ color: "red" }}
+                            />
+                        }
+                        label="Log Out"
+                        onPress={() =>
+                            Alert.alert(
+                                "Log Out",
+                                "Are you sure you want to log out?",
+                                [
+                                    {
+                                        text: "Cancel",
+                                        style: "cancel",
+                                    },
+                                    {
+                                        text: "OK",
+                                        onPress: async () => {
+                                            await handleSignOut();
+                                            Alert.alert("Success", "You have successfully logged out.");
+                                        },
+                                    },
+                                ],
+                                { cancelable: false }
+                            )
+                        }
+                    />
 				</View>
 			</ScrollView>
 		</View>

@@ -24,13 +24,16 @@ const ProfileDetailsScreen = () => {
 	const clerkFullName = user?.fullName || "";
 	const clerkEmail = user?.primaryEmailAddress?.emailAddress || "";
 	const profileImage = user?.imageUrl;
+	const clerkPhone = user?.primaryPhoneNumber?.phoneNumber || "";
+	const clerkGender = "";
+	const clerkDob = "";
 
 	const originalData = {
 		name: clerkFullName,
 		email: clerkEmail,
-		phone: "08081040068", // Keep this as is since Clerk doesn't provide phone
-		gender: "Male",
-		dob: "09/02/1998",
+		phone: clerkPhone,
+		gender: clerkGender,
+		dob: clerkDob,
 	};
 
 	const [name, setName] = useState(originalData.name);

@@ -46,7 +46,6 @@ const HomePage = () => {
 				showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
 					<View style={styles.miniHeader}>
-						{/* Replace menu-fold with user profile circle */}
 						<TouchableOpacity
 							style={{ flexDirection: "row", alignItems: "center" }}
 							onPress={() => {
