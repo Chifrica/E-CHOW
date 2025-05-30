@@ -7,9 +7,10 @@ interface ExploreItem {
 	foodName: string;
 	deliveryTime: string;
 	image: ".png";
+	price: number;
 }
 
-export const exploreData = [
+const exploreData = [
 	{
 		id: "1",
 		vendorName: "NAO Restaurant",
@@ -17,8 +18,9 @@ export const exploreData = [
 		timeAgo: "5min ago",
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
-		deliveryTime: "\u20A67000 - \u20A67000 - 10min away",
+		deliveryTime: " - 10min away",
 		image: require("../../../assets/images/burger.png"),
+		price: 10000,
 	},
 	{
 		id: "2",
@@ -27,8 +29,9 @@ export const exploreData = [
 		timeAgo: "5min ago",
 		rating: 4.5,
 		foodName: "Good Burger",
-		deliveryTime: "\u20A67000 - 10min away",
+		deliveryTime: " - 10min away",
 		image: require("../../../assets/images/burger.png"),
+		price: 4000,
 	},
 	{
 		id: "3",
@@ -37,8 +40,9 @@ export const exploreData = [
 		timeAgo: "5min ago",
 		rating: 4.5,
 		foodName: "Beans and Plantain",
-		deliveryTime: "\u20A67000 - 10min away",
+		deliveryTime: " - 10min away",
 		image: require("../../../assets/images/burger.png"),
+		price: 9000,
 	},
 	{
 		id: "4",
@@ -47,10 +51,14 @@ export const exploreData = [
 		timeAgo: "5min ago",
 		rating: 4.5,
 		foodName: "Meat Pie",
-		deliveryTime: "\u20A67000 - 10min away",
+		deliveryTime: " - 10min away",
 		image: require("../../../assets/images/burger.png"),
+		price: 15000,
 	},
 ];
+// ₦
+
+export default exploreData;
 
 export const exploreImages = {
 	explore1: require("../../../assets/images/burger.png"),

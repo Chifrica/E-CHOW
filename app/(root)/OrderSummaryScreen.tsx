@@ -6,6 +6,7 @@ import {
 	TouchableOpacity,
 	SafeAreaView,
 	ScrollView,
+	Image,
 } from "react-native";
 import {
 	Ionicons,
@@ -20,8 +21,11 @@ import DateTimePickerModal, {
 } from "../../components/DateTimePicket";
 import { useUser } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
+import exploreData from "../(tabs)/explore/data";
+import { useRouter } from "expo-router";
 
 const OrderSummaryScreen: React.FC = () => {
+	const router = useRouter()
 	const [deliveryTime, setDeliveryTime] = useState<"now" | "schedule">("now");
 	const [notesToRestaurant, setNotesToRestaurant] = useState<string>("");
 	const [ridersInstruction, setRidersInstruction] = useState<string>("");
@@ -34,7 +38,18 @@ const OrderSummaryScreen: React.FC = () => {
 	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
 	const [errorType, setErrorType] = useState<string | null>(null);
 
+	const foodName = ["Spicy Jollof Rice", "Good Burger", "Beans and Plantain", "Meat Pie"][3]; // Example food name, replace with actual selection logic
+	// Find the food item from exploreData
+	const foodItem = exploreData.find(
+		(item) => item.foodName.toLowerCase() === foodName.toLowerCase()
+	);
+	const foodAmount = typeof foodItem?.price === 'number' ? foodItem.price : 0;
+	const deliveryFee = 1000;
+	const serviceFee = 100;
+	const totalAmount = foodAmount + deliveryFee + serviceFee;
+
 	const handleOpenDateTimePicker = (): void => {
+		setDeliveryTime("schedule");
 		setDateTimeModalVisible(true);
 	};
 
@@ -43,87 +58,84 @@ const OrderSummaryScreen: React.FC = () => {
 			setErrorType("time");
 		} else {
 			setErrorType(null);
-			// Add your save logic here
+			// Add save logic here
 		}
 	};
 
 	const handleSaveDateTime = (dateTime: DateTimeSelection): void => {
 		setSelectedDateTime(dateTime);
 		setSelectedTime(dateTime.formattedDate);
+		setDeliveryTime("schedule");
 		setErrorType(null);
 	};
 
 	const { user } = useUser();
 	const navigation = useNavigation();
 
+	const handleBack = () => {
+		router.back();
+	}
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView
-				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}>
+			<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
-					<TouchableOpacity
-						onPress={() => navigation.goBack()}
-						style={styles.backButton}>
-						<Ionicons
-							name="chevron-back"
-							size={24}
-							color="#000"
-						/>
+					<TouchableOpacity onPress={handleBack} style={styles.backButton}>
+						<Ionicons name="chevron-back" size={24} color="#000" />
 					</TouchableOpacity>
 					<Text style={styles.headerTitle}>Order Summary</Text>
 				</View>
 
+				{/* Food Info */}
 				<View style={styles.foodInfo}>
-					<Text style={styles.foodName}>Spicy Jollof</Text>
-					<Text style={styles.separator}>—</Text>
-					<Text style={styles.restaurantName}>From Nao Restaurants</Text>
+					{foodItem?.image && (
+						<Image source={foodItem.image} style={styles.foodImage} />
+					)}
+					
+					<View style={{flexDirection: "column", flex: 1}}>
+						<Text style={styles.foodName}>
+							{foodItem?.foodName ?? "Unknown"}
+						</Text>
+						<Text style={styles.billingAmount}>
+							₦{foodAmount.toLocaleString()}
+						</Text>
+						{/* <Text style={styles.separator}>—</Text> */}
+						<Text style={styles.restaurantName}>{foodItem?.vendorName ?? "Unknown"} Restaurant</Text>
+					</View>
 				</View>
 
+				{/* Location Section */}
 				<View style={styles.section}>
 					<Text style={styles.sectionTitle}>Delivered to:</Text>
 					<TouchableOpacity style={styles.locationContainer}>
-						<Ionicons
-							name="location-outline"
-							size={20}
-							color="#000"
-							style={styles.locationIcon}
-						/>
+						<Ionicons name="location-outline" size={20} color="#000" style={styles.locationIcon} />
 						<View style={styles.locationTextContainer}>
-							<Text style={styles.locationTitle}>
-								General (Current location)
-							</Text>
-							<Text style={styles.locationAddress}>
-								Rosebud, Oke Ila, Ado Ekiti
-							</Text>
+							<Text style={styles.locationTitle}>General (Current location)</Text>
+							<Text style={styles.locationAddress}>Rosebud, Oke Ila, Ado Ekiti</Text>
 						</View>
 					</TouchableOpacity>
-
 					<TouchableOpacity style={styles.changeLocationButton}>
-						<Feather
-							name="map-pin"
-							size={20}
-							color="#FF8C42"
-						/>
+						<Feather name="map-pin" size={20} color="#FF8C42" />
 						<Text style={styles.changeLocationText}>Change Location</Text>
 					</TouchableOpacity>
 				</View>
 
+				{/* Delivery Time */}
 				<View style={styles.section}>
 					<Text style={styles.sectionTitle}>Delivery time:</Text>
-
 					<TouchableOpacity
 						style={[
 							styles.timeOption,
 							deliveryTime === "now" && styles.timeOptionSelected,
 						]}
-						onPress={() => setDeliveryTime("now")}>
+						onPress={() => setDeliveryTime("now")}
+					>
 						<View style={styles.radioContainer}>
 							<View
 								style={[
 									styles.radioOuter,
 									deliveryTime === "now" && styles.radioOuterSelected,
-								]}>
+								]}
+							>
 								{deliveryTime === "now" && <View style={styles.radioInner} />}
 							</View>
 							<Text style={styles.timeOptionText}>Now</Text>
@@ -135,72 +147,52 @@ const OrderSummaryScreen: React.FC = () => {
 							styles.timeOption,
 							deliveryTime === "schedule" && styles.timeOptionSelected,
 						]}
-						// onPress={() => setDeliveryTime("schedule")}
-						onPress={handleOpenDateTimePicker}>
+						onPress={handleOpenDateTimePicker}
+					>
 						<View style={styles.radioContainer}>
 							<View
 								style={[
 									styles.radioOuter,
 									deliveryTime === "schedule" && styles.radioOuterSelected,
-								]}>
-								{deliveryTime === "schedule" && (
-									<View style={styles.radioInner} />
-								)}
+								]}
+							>
+								{deliveryTime === "schedule" && <View style={styles.radioInner} />}
 							</View>
 							<Text style={styles.timeOptionText}>Schedule</Text>
 						</View>
 						<View style={styles.scheduleContainer}>
-							<Text style={styles.scheduleText}>Set time & date</Text>
-							<MaterialIcons
-								name="chevron-right"
-								size={20}
-								color="#000"
-							/>
+							<Text style={styles.scheduleText}>{selectedTime}</Text>
+							<MaterialIcons name="chevron-right" size={20} color="#000" />
 						</View>
 					</TouchableOpacity>
 				</View>
 
+				{/* Instructions */}
 				<View style={styles.section}>
 					<Text style={styles.sectionTitle}>Instructions</Text>
 					<View style={styles.divider} />
-
 					<TouchableOpacity
 						style={styles.instructionOption}
-						onPress={() => setNotesModalVisible(true)}>
-						<MaterialCommunityIcons
-							name="note-text-outline"
-							size={20}
-							color="#000"
-						/>
+						onPress={() => setNotesModalVisible(true)}
+					>
+						<MaterialCommunityIcons name="note-text-outline" size={20} color="#000" />
 						<Text style={styles.instructionText}>Notes to Restaurants</Text>
-						<MaterialIcons
-							name="chevron-right"
-							size={20}
-							color="#000"
-						/>
+						<MaterialIcons name="chevron-right" size={20} color="#000" />
 					</TouchableOpacity>
-
 					<TouchableOpacity
 						style={styles.instructionOption}
-						onPress={() => setRidersModalVisible(true)}>
-						<MaterialIcons
-							name="delivery-dining"
-							size={20}
-							color="#000"
-						/>
+						onPress={() => setRidersModalVisible(true)}
+					>
+						<MaterialIcons name="delivery-dining" size={20} color="#000" />
 						<Text style={styles.instructionText}>Riders Instruction</Text>
-						<MaterialIcons
-							name="chevron-right"
-							size={20}
-							color="#000"
-						/>
+						<MaterialIcons name="chevron-right" size={20} color="#000" />
 					</TouchableOpacity>
 				</View>
 
+				{/* Contact Info */}
 				<View style={styles.section}>
 					<Text style={styles.sectionTitle}>Contact Info:</Text>
 					<View style={styles.divider} />
-
 					<View style={styles.contactInfo}>
 						<Text style={styles.contactName}>{user?.fullName}</Text>
 						<Text style={styles.contactDot}>•</Text>
@@ -208,61 +200,55 @@ const OrderSummaryScreen: React.FC = () => {
 							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
 						</Text>
 						<TouchableOpacity style={styles.editButton}>
-							<Feather
-								name="edit-2"
-								size={20}
-								color="#000"
-							/>
+							<Feather name="edit-2" size={20} color="#000" />
 						</TouchableOpacity>
 					</View>
 				</View>
 
+				{/* Billing */}
 				<View style={styles.section}>
 					<Text style={styles.sectionTitle}>Billings:</Text>
 					<View style={styles.divider} />
-
 					<View style={styles.billingItem}>
 						<Text style={styles.billingText}>Food</Text>
-						<Text style={styles.billingAmount}>₦4,100.00</Text>
+						<Text style={styles.billingAmount}>₦{foodAmount.toLocaleString()}</Text>
 					</View>
-
 					<View style={styles.billingItem}>
 						<Text style={styles.billingText}>Delivery Fee</Text>
-						<Text style={styles.billingAmount}>₦1000.00</Text>
+						<Text style={styles.billingAmount}>₦{deliveryFee.toLocaleString()}</Text>
 					</View>
-
 					<View style={styles.billingItem}>
 						<Text style={styles.billingText}>Service Fee</Text>
-						<Text style={styles.billingAmount}>₦100.00</Text>
+						<Text style={styles.billingAmount}>₦{serviceFee.toLocaleString()}</Text>
 					</View>
-
 					<View style={styles.divider} />
-
 					<View style={styles.billingItem}>
 						<Text style={styles.totalText}>Total</Text>
-						<Text style={styles.totalAmount}>₦5,100.00</Text>
+						<Text style={styles.totalAmount}>₦{totalAmount.toLocaleString()}</Text>
 					</View>
 				</View>
+
+				{/* Proceed Button */}
+				<TouchableOpacity style={styles.paymentButton} onPress={handleSave}>
+					<Text style={styles.paymentButtonText}>Proceed to payment</Text>
+				</TouchableOpacity>
 			</ScrollView>
 
-			<TouchableOpacity style={styles.paymentButton}>
-				<Text style={styles.paymentButtonText}>Proceed to payment</Text>
-			</TouchableOpacity>
+			
 
+			{/* Modals */}
 			<NotesToRestaurantsModal
 				visible={notesModalVisible}
 				onClose={() => setNotesModalVisible(false)}
 				onSave={setNotesToRestaurant}
 				initialNote={notesToRestaurant}
 			/>
-
 			<RidersInstructionModal
 				visible={ridersModalVisible}
 				onClose={() => setRidersModalVisible(false)}
 				onSave={setRidersInstruction}
 				initialInstruction={ridersInstruction}
 			/>
-
 			<DateTimePickerModal
 				visible={dateTimeModalVisible}
 				onClose={() => setDateTimeModalVisible(false)}
@@ -273,9 +259,7 @@ const OrderSummaryScreen: React.FC = () => {
 			{/* Error Message */}
 			{errorType && (
 				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>
-						Oops! You haven't selected a delivery time.
-					</Text>
+					<Text style={styles.errorText}>Oops! You haven't selected a delivery time.</Text>
 					<Text style={styles.errorSubText}>Set time and date</Text>
 				</View>
 			)}
@@ -287,6 +271,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#F8F8F8",
+		top: 30
 	},
 	scrollView: {
 		flex: 1,
@@ -312,6 +297,13 @@ const styles = StyleSheet.create({
 	foodName: {
 		fontSize: 18,
 		fontWeight: "600",
+	},
+	foodImage: {
+		width: 100,
+		height: 100,
+		borderRadius: 10,
+		marginRight: 16,
+		// marginRight: SIZES.medium,
 	},
 	separator: {
 		marginHorizontal: 8,
@@ -484,6 +476,7 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		alignItems: "center",
 		margin: 16,
+		marginBottom: 80,
 	},
 	paymentButtonText: {
 		color: "#fff",

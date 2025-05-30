@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import { exploreData } from "./data";
+import exploreData from "./data";
 import { router } from "expo-router";
 
 const width = Dimensions.get("window").width;
@@ -29,8 +29,16 @@ const ExploreScreen = () => {
         );
         setFilteredData(filtered);
     };
-	const handleOrderNow = () => {
-		router.push("/(root)/OrderSummaryScreen");
+	const handleOrderNow = (item) => {
+		router.push({
+			pathname: "/(root)/OrderSummaryScreen",
+			params: {
+				foodName: item.foodName,
+				foodImage: item.image,
+				price: item.price,
+				vendorName: item.vendorName,
+			}
+		});
 	};
 
 	return (
@@ -138,7 +146,7 @@ const ExploreScreen = () => {
                                 <View style={styles.foodInfoContainer}>
                                     <View>
                                         <Text style={styles.whiteText}>{item.foodName}</Text>
-                                        <Text style={styles.whiteText}>{item.deliveryTime}</Text>
+                                        <Text style={styles.whiteText}>{item.price}{item.deliveryTime}</Text>
                                     </View>
                                     <TouchableOpacity
                                         style={styles.orderButton}
@@ -282,10 +290,10 @@ const styles = StyleSheet.create({
 		position: "absolute",
 	},
 	iconSpacing: {
-		marginLeft: 20,
+		marginLeft: 30,
 	},
 	iconSpacingDouble: {
-		marginLeft: 40,
+		marginLeft: 60,
 	},
 	foodInfoContainer: {
 		marginTop: "10%",
