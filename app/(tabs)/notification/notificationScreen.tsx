@@ -5,9 +5,9 @@ import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
 
 const NotificationScreen: React.FC = () => {
-	const navigateToProfile = () => {
-		router.push("/(root)/src/profile/profileScreen");
-	};
+	// const navigateToProfile = () => {
+	// 	router.push("/(root)/src/profile/profileScreen");
+	// };
 
 	const { user } = useUser();
 	const profileImage = user?.imageUrl;
@@ -29,7 +29,8 @@ const NotificationScreen: React.FC = () => {
 								/>
 								<Text
 									style={styles.userName}
-									onPress={navigateToProfile}>
+									// onPress={navigateToProfile}
+								>
 									{user?.fullName}
 								</Text>
 							</View>

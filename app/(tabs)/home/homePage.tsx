@@ -27,7 +27,7 @@ import { router } from "expo-router";
 const width = Dimensions.get("screen").width;
 
 const HomePage = () => {
-	// Add state for modal and selected address
+	// Added state for modal and selected address
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedAddress, setSelectedAddress] = useState({
 		id: "1",

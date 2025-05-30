@@ -7,8 +7,9 @@ import {
 	Image,
 	Dimensions,
 	TouchableOpacity,
+	TextInput,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { exploreData } from "./data";
 import { router } from "expo-router";
@@ -16,113 +17,141 @@ import { router } from "expo-router";
 const width = Dimensions.get("window").width;
 
 const ExploreScreen = () => {
+	const [searchQuery, setSearchQuery] = useState(""); 
+    const [filteredData, setFilteredData] = useState(exploreData); 
+	const [isSearchActive, setIsSearchActive] = useState(false); 
+    
+	const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        const filtered = exploreData.filter((item) =>
+            item.foodName.toLowerCase().includes(query.toLowerCase()) ||
+            item.vendorName.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredData(filtered);
+    };
 	const handleOrderNow = () => {
 		router.push("/(root)/OrderSummaryScreen");
 	};
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView
-				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}>
-				<View style={styles.header}>
-					<Text style={styles.headerTitle}>Explore</Text>
-					<View style={styles.miniHeader}>
-						<Feather
-							name="search"
-							size={24}
-							color="#61605F"
-							style={styles.headerIcon2}
-						/>
-						<Feather
-							name="shopping-cart"
-							size={24}
-							color="#61605F"
-							style={styles.headerIcon2}
-						/>
-					</View>
-				</View>
-
-				{exploreData.map((item) => (
-					<View
-						key={item.id}
-						style={{ marginBottom: 20 }}>
-						<View style={styles.imageContainer}>
-							<Image
-								source={item.image}
-								style={styles.image}
+            <ScrollView
+                style={styles.scrollView}
+                showsVerticalScrollIndicator={false}>
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Explore</Text>
+                    <View style={styles.miniHeader}>
+                        {/* Search Input */}
+                        { isSearchActive ? (
+							<TextInput
+								style={styles.searchInput}
+								placeholder="Search items..."
+								value={searchQuery}
+								onChangeText={handleSearch}
+								onBlur={() => setIsSearchActive(false)}
+								autoFocus={true}
 							/>
-						</View>
+						) : (
+							<TouchableOpacity onPress={() => setIsSearchActive(true)}>
+                                <Feather
+                                    name="search"
+                                    size={24}
+                                    color="#61605F"
+                                    style={styles.headerIcon2}
+                                />
+                            </TouchableOpacity>
+                        )}
+                        {/* Shopping Cart Icon */}
+                        <Feather
+                            name="shopping-cart"
+                            size={24}
+                            color="#61605F"
+                            style={styles.headerIcon2}
+                        />
+                    </View>
+                </View>
 
-						<View style={styles.imageOverlay}>
-							<View>
-								<View style={styles.topLayerContainer}>
-									<View style={styles.vendorContainer}>
-										<View style={styles.vendorBadge}>
-											<Text style={styles.vendorText}>vendor</Text>
-										</View>
+                {/* Render filtered data */}
+                {filteredData.map((item) => (
+                    <View
+                        key={item.id}
+                        style={{ marginBottom: 20 }}>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={item.image}
+                                style={styles.image}
+                            />
+                        </View>
 
-										<View>
-											<Text style={styles.whiteText}>{item.vendorName}</Text>
-											<Text style={styles.whiteText}>{item.location}</Text>
-										</View>
-									</View>
+                        <View style={styles.imageOverlay}>
+                            <View>
+                                <View style={styles.topLayerContainer}>
+                                    <View style={styles.vendorContainer}>
+                                        <View style={styles.vendorBadge}>
+                                            <Text style={styles.vendorText}>vendor</Text>
+                                        </View>
 
-									<View style={styles.ratingContainer}>
-										<Feather
-											name="star"
-											size={20}
-											color="#E58945"
-										/>
-										<Text style={styles.ratingText}>{item.timeAgo}</Text>
-									</View>
-								</View>
-							</View>
+                                        <View>
+                                            <Text style={styles.whiteText}>{item.vendorName}</Text>
+                                            <Text style={styles.whiteText}>{item.location}</Text>
+                                        </View>
+                                    </View>
 
-							<View style={styles.bottomLayer}>
-								<View style={styles.actionContainer}>
-									<View style={styles.iconContainer}>
-										<Feather
-											name="share"
-											size={24}
-											color="#fff"
-											style={styles.actionIcon}
-										/>
-										<Feather
-											name="heart"
-											size={24}
-											color="#fff"
-											style={[styles.actionIcon, styles.iconSpacing]}
-										/>
-										<Feather
-											name="shopping-cart"
-											size={24}
-											color="#fff"
-											style={[styles.actionIcon, styles.iconSpacingDouble]}
-										/>
-									</View>
-									<View>
-										<Text style={styles.whiteText}>Click for details</Text>
-									</View>
-								</View>
+                                    <View style={styles.ratingContainer}>
+                                        <Feather
+                                            name="star"
+                                            size={20}
+                                            color="#E58945"
+                                        />
+                                        <Text style={styles.ratingText}>{item.timeAgo}</Text>
+                                    </View>
+                                </View>
+                            </View>
 
-								<View style={styles.foodInfoContainer}>
-									<View>
-										<Text style={styles.whiteText}>{item.foodName}</Text>
-										<Text style={styles.whiteText}>{item.deliveryTime}</Text>
-									</View>
-									<TouchableOpacity
-										style={styles.orderButton}
-										onPress={handleOrderNow}>
-										<Text style={styles.whiteText}>Order Now</Text>
-									</TouchableOpacity>
-								</View>
-							</View>
-						</View>
-					</View>
-				))}
-			</ScrollView>
-		</SafeAreaView>
+                            <View style={styles.bottomLayer}>
+                                <View style={styles.actionContainer}>
+                                    <View style={styles.iconContainer}>
+                                        <Feather
+                                            name="share"
+                                            size={24}
+                                            color="#fff"
+                                            style={styles.actionIcon}
+                                        />
+                                        <Feather
+                                            name="heart"
+                                            size={24}
+                                            color="#fff"
+                                            style={[styles.actionIcon, styles.iconSpacing]}
+                                        />
+                                        <Feather
+                                            name="shopping-cart"
+                                            size={24}
+                                            color="#fff"
+                                            style={[styles.actionIcon, styles.iconSpacingDouble]}
+                                        />
+                                    </View>
+                                    <View>
+                                        <Text style={styles.whiteText}>Click for details</Text>
+                                    </View>
+                                </View>
+
+                                <View style={styles.foodInfoContainer}>
+                                    <View>
+                                        <Text style={styles.whiteText}>{item.foodName}</Text>
+                                        <Text style={styles.whiteText}>{item.deliveryTime}</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        style={styles.orderButton}
+                                        onPress={handleOrderNow}>
+                                        <Text style={styles.whiteText}>Order Now</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
 	);
 };
 
@@ -134,7 +163,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 16,
 		paddingRight: 16,
 		paddingBottom: 16,
-		top: 10,
+		// paddingTop: 5,
 	},
 	scrollView: {
 		flexGrow: 1,
@@ -144,7 +173,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginHorizontal: 10,
 		justifyContent: "space-between",
-		marginBottom: 20,
+		paddingVertical: 30,
 	},
 	miniHeader: {
 		flexDirection: "row",
@@ -157,6 +186,17 @@ const styles = StyleSheet.create({
 		elevation: 1,
 		marginRight: 10,
 	},
+	searchInput: {
+        backgroundColor: "#F3F3F3",
+        borderRadius: 50,
+		borderWidth: 1,
+		borderColor: "#E58945",
+        padding: 10,
+        // paddingHorizontal: 15,
+        fontSize: 11,
+        marginRight: 10,
+        // flex: 1,
+    },
 	headerIcon2: {
 		backgroundColor: "#F3F3F3",
 		borderRadius: 50,
