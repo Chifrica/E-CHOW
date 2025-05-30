@@ -30,15 +30,16 @@ const ExploreScreen = () => {
         setFilteredData(filtered);
     };
 	const handleOrderNow = (item) => {
-		router.push({
-			pathname: "/(root)/OrderSummaryScreen",
-			params: {
-				foodName: item.foodName,
-				foodImage: item.image,
-				price: item.price,
-				vendorName: item.vendorName,
-			}
-		});
+		router.push("/(root)/OrderSummaryScreen");
+		// router.push({
+		// 	pathname: "/(root)/OrderSummaryScreen",
+		// 	params: {
+		// 		foodName: item.foodName,
+		// 		foodImage: item.image,
+		// 		price: item.price,
+		// 		vendorName: item.vendorName,
+		// 	}
+		// });
 	};
 
 	return (
