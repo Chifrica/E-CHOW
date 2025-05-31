@@ -53,13 +53,15 @@ const OrderSummaryScreen: React.FC = () => {
 		setDateTimeModalVisible(true);
 	};
 
-	const handleSave = (): void => {
-		if (selectedTime === "Schedule") {
-			setErrorType("time");
-		} else {
-			setErrorType(null);
-			// Add save logic here
-		}
+	const handleSave = () => {
+		router.push("/(root)/src/payment/paystack");
+		// if (selectedTime === "Schedule") {
+		// 	setErrorType("time");
+		// 	router.push("/(root)/src/location/paystack");
+		// } else {
+		// 	setErrorType(null);
+		// 	// Add save logic here
+		// }
 	};
 
 	const handleSaveDateTime = (dateTime: DateTimeSelection): void => {

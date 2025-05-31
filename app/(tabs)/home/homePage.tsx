@@ -361,10 +361,6 @@ const HomePage = () => {
 						</View>
 					))}
 				</View>
-
-				<TouchableOpacity onPress={() => router.push("/(root)/src/location/payment")}>
-					<Text>Pay</Text>
-				</TouchableOpacity>
 			</ScrollView>
 
 			{/* Delivery Address Modal */}
