@@ -39,7 +39,7 @@
     "expo-updates": "~0.28.13",
     "expo-web-browser": "~14.1.6",
     "firebase": "^11.6.0",
-    "react-dom": "^19.1.0",
+    "react-dom": "^19.0.0",
     "react-native": "0.79.2",
     "react-native-appwrite": "^0.7.4",
     "react-native-checkbox": "^2.0.0",
@@ -52,7 +52,8 @@
     "react-native-screens": "^4.10.0",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "^0.20.0",
-    "react-native-webview": "^13.13.5"
+    "react-native-webview": "^13.13.5",
+    "expo-dev-client": "~5.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
