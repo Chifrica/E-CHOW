@@ -3,10 +3,10 @@
     "name": "E-CHOW",
     "slug": "E-CHOW",
     "version": "1.0.0",
+    "platform": "[web, android, ios]",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "platforms": ["ios", "android", "web"],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -38,6 +38,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "718fb9ad-43b1-4f9d-b80f-e40c44482932"
+      }
     }
   }
 }

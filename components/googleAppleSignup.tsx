@@ -9,23 +9,32 @@ import {
 import React from "react";
 import { Redirect } from "expo-router";
 import { useOAuth } from "@clerk/clerk-expo";
-import { useGlobalContext } from "@/lib/global-provider";
+import { useGlobalContext } from "../lib/global-provider";
+import * as WebBrowser from "expo-web-browser";
+import Constants from "expo-constants";
+
+// Add this to handle WebAuthSession redirect
+WebBrowser.maybeCompleteAuthSession();
 
 const GoogleAppleSignup = () => {
 	const { refetch, loading, isLoggedIn } = useGlobalContext();
 
-	// Clerk's OAuth hook
-	const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+	// Setup Clerk OAuth with required redirectUrl and proxyUrl
+	const { startOAuthFlow } = useOAuth({
+		strategy: "oauth_google",
+		// redirectUrl: "https://caring-sunfish-51.clerk.accounts.dev/v1/oauth_callback", // MUST match your Expo scheme
+	});
 
 	if (!loading && isLoggedIn) return <Redirect href="/home/homePage" />;
 
 	const handleGoogleLogin = async () => {
 		try {
 			const result = await startOAuthFlow();
+			console.log("OAuth result:", result);
 
 			if (result?.createdSessionId) {
-				// No need to call setActive
-				refetch();
+				// Apply the session
+				refetch(); // update global context state
 			} else {
 				Alert.alert("Error", "Google login failed");
 			}

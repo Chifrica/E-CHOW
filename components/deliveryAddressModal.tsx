@@ -8,6 +8,7 @@ import {
 	SafeAreaView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 // Define the address interface
 interface Address {
@@ -69,6 +70,9 @@ const DeliveryAddressModal: React.FC<DeliveryAddressModalProps> = ({
 		}
 	};
 
+	const handleAddAddress = () => {
+		router.push("/(root)/src/location/addLocation");
+	};
 	return (
 		<Modal
 			animationType="slide"
@@ -87,7 +91,7 @@ const DeliveryAddressModal: React.FC<DeliveryAddressModalProps> = ({
 						</TouchableOpacity>
 					</View>
 
-					<TouchableOpacity style={styles.addNewButton}>
+					<TouchableOpacity style={styles.addNewButton} onPress={handleAddAddress}>
 						<Feather
 							name="plus"
 							size={20}

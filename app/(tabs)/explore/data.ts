@@ -7,9 +7,10 @@ interface ExploreItem {
 	foodName: string;
 	deliveryTime: string;
 	image: ".png";
+	price: number;
 }
 
-export const exploreData = [
+const exploreData = [
 	{
 		id: "1",
 		vendorName: "NAO Restaurant",
@@ -17,41 +18,48 @@ export const exploreData = [
 		timeAgo: "5min ago",
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
-		deliveryTime: "\u20A67000 - \u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		deliveryTime: " - 10min away",
+		image: require("../../../assets/images/burger.png"),
+		price: 10000,
 	},
 	{
 		id: "2",
-		vendorName: "NAO Restaurant",
+		vendorName: "5G Restaurant",
 		location: "Adebayo road, Ado Ekiti",
 		timeAgo: "5min ago",
 		rating: 4.5,
-		foodName: "Spicy Jollof Rice",
-		deliveryTime: "\u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		foodName: "Good Burger",
+		deliveryTime: " - 10min away",
+		image: require("../../../assets/images/burger.png"),
+		price: 4000,
 	},
 	{
 		id: "3",
-		vendorName: "NAO Restaurant",
+		vendorName: "Sweet Sixteen Restaurant",
 		location: "Adebayo road, Ado Ekiti",
 		timeAgo: "5min ago",
 		rating: 4.5,
-		foodName: "Spicy Jollof Rice",
-		deliveryTime: "\u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		foodName: "Beans and Plantain",
+		deliveryTime: " - 10min away",
+		image: require("../../../assets/images/burger.png"),
+		price: 9000,
 	},
 	{
 		id: "4",
-		vendorName: "NAO Restaurant",
+		vendorName: "Gensis",
 		location: "Adebayo road, Ado Ekiti",
 		timeAgo: "5min ago",
 		rating: 4.5,
-		foodName: "Spicy Jollof Rice",
-		deliveryTime: "\u20A67000 - 10min away",
-		image: require("@/assets/images/burger.png"),
+		foodName: "Meat Pie",
+		deliveryTime: " - 10min away",
+		image: require("../../../assets/images/burger.png"),
+		price: 15000,
 	},
 ];
+// ₦
+
+export default exploreData;
 
 export const exploreImages = {
-	explore1: require("@/assets/images/burger.png"),
+	explore1: require("../../../assets/images/burger.png"),
 };

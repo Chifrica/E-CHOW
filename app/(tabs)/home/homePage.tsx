@@ -20,14 +20,14 @@ import {
 	restaurantAllData,
 	videosData,
 } from "./data";
-import DeliveryAddressModal from "@/components/deliveryAddressModal";
+import DeliveryAddressModal from "../../../components/deliveryAddressModal";
 import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 
 const width = Dimensions.get("screen").width;
 
 const HomePage = () => {
-	// Add state for modal and selected address
+	// Added state for modal and selected address
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedAddress, setSelectedAddress] = useState({
 		id: "1",
@@ -46,7 +46,6 @@ const HomePage = () => {
 				showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
 					<View style={styles.miniHeader}>
-						{/* Replace menu-fold with user profile circle */}
 						<TouchableOpacity
 							style={{ flexDirection: "row", alignItems: "center" }}
 							onPress={() => {

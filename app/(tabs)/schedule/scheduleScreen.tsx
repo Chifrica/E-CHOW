@@ -14,8 +14,8 @@ import {
 import { Ionicons, Feather } from "@expo/vector-icons";
 import DateTimePickerModal, {
 	type DateTimeSelection,
-} from "@/components/DateTimePicket";
-import MealTypeModal from "@/components/MealTypeModal";
+} from "../../../components/DateTimePicket";
+import MealTypeModal from "../../../components/MealTypeModal";
 
 type ScheduleScreenProps = {};
 

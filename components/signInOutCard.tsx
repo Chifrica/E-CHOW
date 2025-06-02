@@ -4,29 +4,51 @@ import {
 	Dimensions,
 	StyleSheet,
 	TouchableOpacity,
+	Alert,
+	ActivityIndicator,
 } from "react-native";
 import React from "react";
-import { useRouter } from "expo-router";
+import { useRouter, Redirect } from "expo-router";
+import { useGlobalContext } from "../lib/global-provider";
+
 
 const { width } = Dimensions.get("window");
 const { height } = Dimensions.get("window");
 
 export const SignInOutCard = () => {
 	const router = useRouter();
+	const {isLoggedIn, loading} = useGlobalContext();
 
 	const handleLogin = () => {
 		router.push("/(auth)/login/savedNumber");
 	};
 
 	const handleGetStarted = () => {
-		// router.replace('/auth/SignUp');
+		if (loading) {
+				return (
+					<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+						<ActivityIndicator size="large" />
+					</View>
+				);
+			}
+		
+			if (isLoggedIn) {
+				return <Redirect href="/home/homePage" />;
+			} else {
+				Alert.alert(
+					"Login Required",
+					"Please login to continue",
+				[{ text: "OK", onPress: () => router.push("/(auth)/login/savedNumber") }]
+			);
+		}
 	};
 
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
 				style={styles.getStarted}
-				onPress={handleGetStarted}>
+				onPress={handleGetStarted}
+			>
 				<Text style={styles.getStartedTxt}>Order Now</Text>
 			</TouchableOpacity>
 

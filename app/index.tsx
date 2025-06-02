@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import OnboardingScreen from "@/app/(root)/onBoarding";
-import { useGlobalContext } from "@/lib/global-provider";
+import OnboardingScreen from "../app/(root)/onBoarding";
+import { useGlobalContext } from "../lib/global-provider";
 import { Redirect } from "expo-router";
 import { ActivityIndicator, Text, View } from "react-native";
 

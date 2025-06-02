@@ -1,7 +1,4 @@
-"use client";
-
-import type React from "react";
-import { useState } from "react";
+import React from "react";
 import {
 	View,
 	Text,
@@ -38,18 +35,6 @@ const ProfileScreen: React.FC = () => {
 		}
 	};
 
-	const handleTopUp = () => {
-		Alert.alert(
-			"In Development",
-			"The transaction process is still in development.",
-			[{ text: "OK", onPress: () => console.log("OK Pressed") }]
-		);
-	};
-
-	const toggleAmountVisibility = () => {
-		setIsAmountVisible(!isAmountVisible);
-	};
-
 	return (
 		<View style={styles.container}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -76,24 +61,9 @@ const ProfileScreen: React.FC = () => {
 							/>
 							<Text style={styles.walletText}>Wallet</Text>
 						</View>
-						<View style={styles.amountContainer}>
-							<Text style={styles.walletAmount}>
-								{isAmountVisible ? "₦8000.00" : "********"}
-							</Text>
-							<TouchableOpacity
-								onPress={toggleAmountVisibility}
-								style={styles.eyeIcon}>
-								<Ionicons
-									name={isAmountVisible ? "eye-off" : "eye"}
-									size={20}
-									color="#fff"
-								/>
-							</TouchableOpacity>
-						</View>
+						<Text style={styles.walletAmount}>₦8000.00</Text>
 					</View>
-					<TouchableOpacity
-						style={styles.topUpButton}
-						onPress={handleTopUp}>
+					<TouchableOpacity style={styles.topUpButton}>
 						<Text style={styles.topUpText}>Top Up</Text>
 					</TouchableOpacity>
 				</View>
@@ -187,7 +157,6 @@ const ProfileScreen: React.FC = () => {
 						label="Rate Us"
 					/>
 					<Option
-						onPress={handleSignOut}
 						icon={
 							<Feather
 								name="log-out"
@@ -196,6 +165,9 @@ const ProfileScreen: React.FC = () => {
 						}
 						label="Log Out"
 					/>
+					<TouchableOpacity onPress={handleSignOut}>
+						<Text>signout</Text>
+					</TouchableOpacity>
 				</View>
 			</ScrollView>
 		</View>

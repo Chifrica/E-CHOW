@@ -1,4 +1,4 @@
-import GoogleAppleSignup from "@/components/googleAppleSignup";
+import GoogleAppleSignup from "../../../components/googleAppleSignup";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
