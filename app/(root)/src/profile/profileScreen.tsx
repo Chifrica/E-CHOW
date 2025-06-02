@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	View,
 	Text,
@@ -8,13 +8,17 @@ import {
 	ScrollView,
 	Alert,
 } from "react-native";
-import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
+import {
+	Ionicons,
+	Feather,
+	MaterialIcons,
+	FontAwesome,
+} from "@expo/vector-icons";
 import { router, useRouter } from "expo-router";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 
 const ProfileScreen: React.FC = () => {
-	const [isAmountVisible, setIsAmountVisible] = useState(true);
 	const navigateToProfileDetails = () => {
 		router.push("/(root)/src/profile/profileDetailsScreen");
 	};
@@ -33,6 +37,13 @@ const ProfileScreen: React.FC = () => {
 		} catch (error) {
 			console.error("Sign out error:", error);
 		}
+	};
+
+	const [isHidden, setIsHidden] = useState(true);
+	const walletAmount = "8000.00";
+
+	const toggleVisibility = () => {
+		setIsHidden(!isHidden);
 	};
 
 	return (
@@ -61,9 +72,28 @@ const ProfileScreen: React.FC = () => {
 							/>
 							<Text style={styles.walletText}>Wallet</Text>
 						</View>
-						<Text style={styles.walletAmount}>₦8000.00</Text>
+						<Text style={styles.walletAmount}>
+							{isHidden ? "***" : `₦${walletAmount}`}
+							<TouchableOpacity
+								onPress={toggleVisibility}
+								style={{ position: "absolute", paddingLeft: 20 }}>
+								<Ionicons
+									name={isHidden ? "eye-off" : "eye"}
+									size={24}
+									color="white"
+								/>
+							</TouchableOpacity>
+						</Text>
 					</View>
-					<TouchableOpacity style={styles.topUpButton}>
+					{/* Add an alert whenever the user taps on the top-up button it will say payment development in progress*/}
+					<TouchableOpacity
+						style={styles.topUpButton}
+						onPress={() =>
+							Alert.alert(
+								"Payment Development in Progress",
+								"This feature is currently under development. Please check back later."
+							)
+						}>
 						<Text style={styles.topUpText}>Top Up</Text>
 					</TouchableOpacity>
 				</View>
@@ -156,18 +186,40 @@ const ProfileScreen: React.FC = () => {
 						}
 						label="Rate Us"
 					/>
+
 					<Option
 						icon={
 							<Feather
 								name="log-out"
 								size={20}
+								style={{ color: "red" }}
 							/>
 						}
 						label="Log Out"
+						onPress={() =>
+							Alert.alert(
+								"Log Out",
+								"Are you sure you want to log out?",
+								[
+									{
+										text: "Cancel",
+										style: "cancel",
+									},
+									{
+										text: "OK",
+										onPress: async () => {
+											await handleSignOut();
+											Alert.alert(
+												"Success",
+												"You have successfully logged out."
+											);
+										},
+									},
+								],
+								{ cancelable: false }
+							)
+						}
 					/>
-					<TouchableOpacity onPress={handleSignOut}>
-						<Text>signout</Text>
-					</TouchableOpacity>
 				</View>
 			</ScrollView>
 		</View>
@@ -242,19 +294,11 @@ const styles = StyleSheet.create({
 		gap: 10,
 	},
 	walletText: { color: "#fff", fontSize: 16, marginTop: 5 },
-	amountContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginTop: 10,
-	},
 	walletAmount: {
 		color: "#fff",
 		fontSize: 24,
 		fontWeight: "bold",
-	},
-	eyeIcon: {
-		marginLeft: 10,
-		padding: 5,
+		marginTop: 10,
 	},
 	topUpButton: {
 		backgroundColor: "#F97316",

@@ -18,12 +18,22 @@ import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
 
 const ProfileDetailsScreen = () => {
+	const { user } = useUser();
+
+	// Get user data from Clerk
+	const clerkFullName = user?.fullName || "";
+	const clerkEmail = user?.primaryEmailAddress?.emailAddress || "";
+	const profileImage = user?.imageUrl;
+	const clerkPhone = user?.primaryPhoneNumber?.phoneNumber || "";
+	const clerkGender = "";
+	const clerkDob = "";
+
 	const originalData = {
-		name: "Israel Ajala Israel",
-		email: "israelajala@gmail.com",
-		phone: "08081040068",
-		gender: "Male",
-		dob: "09/02/1998",
+		name: clerkFullName,
+		email: clerkEmail,
+		phone: clerkPhone,
+		gender: clerkGender,
+		dob: clerkDob,
 	};
 
 	const [name, setName] = useState(originalData.name);
