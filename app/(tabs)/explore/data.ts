@@ -56,7 +56,6 @@ const exploreData = [
 		price: 15000,
 	},
 ];
-// ₦
 
 export default exploreData;
 
