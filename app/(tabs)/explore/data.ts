@@ -10,7 +10,7 @@ interface ExploreItem {
 	price: number;
 }
 
-const exploreData = [
+export const exploreData = [
 	{
 		id: "1",
 		vendorName: "NAO Restaurant",
@@ -57,7 +57,7 @@ const exploreData = [
 	},
 ];
 
-export default exploreData;
+// export default exploreData;
 
 export const exploreImages = {
 	explore1: require("../../../assets/images/burger.png"),

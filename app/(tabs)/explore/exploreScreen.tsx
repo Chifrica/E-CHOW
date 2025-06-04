@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import exploreData from "./data";
+import { exploreData } from "./data";
 import { router } from "expo-router";
 
 const width = Dimensions.get("window").width;

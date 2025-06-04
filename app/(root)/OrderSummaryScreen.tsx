@@ -21,7 +21,7 @@ import DateTimePickerModal, {
 } from "../../components/DateTimePicket";
 import { useUser } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
-import exploreData from "../(tabs)/explore/data";
+import { exploreData } from "../(tabs)/explore/data";
 import { useRouter } from "expo-router";
 
 const OrderSummaryScreen: React.FC = () => {
