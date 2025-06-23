@@ -19,7 +19,7 @@ const exploreData = [
 		rating: 4.5,
 		foodName: "Spicy Jollof Rice",
 		deliveryTime: " - 10min away",
-		image: require("../../../assets/images/burger.png"),
+		image: require("@/assets/images/burger.png"),
 		price: 10000,
 	},
 	{
@@ -30,7 +30,7 @@ const exploreData = [
 		rating: 4.5,
 		foodName: "Good Burger",
 		deliveryTime: " - 10min away",
-		image: require("../../../assets/images/burger.png"),
+		image: require("@/assets/images/burger.png"),
 		price: 4000,
 	},
 	{
@@ -41,7 +41,7 @@ const exploreData = [
 		rating: 4.5,
 		foodName: "Beans and Plantain",
 		deliveryTime: " - 10min away",
-		image: require("../../../assets/images/burger.png"),
+		image: require("@/assets/images/burger.png"),
 		price: 9000,
 	},
 	{
@@ -52,7 +52,7 @@ const exploreData = [
 		rating: 4.5,
 		foodName: "Meat Pie",
 		deliveryTime: " - 10min away",
-		image: require("../../../assets/images/burger.png"),
+		image: require("@/assets/images/burger.png"),
 		price: 15000,
 	},
 ];
@@ -60,5 +60,5 @@ const exploreData = [
 export default exploreData;
 
 export const exploreImages = {
-	explore1: require("../../../assets/images/burger.png"),
+	explore1: require("@/assets/images/burger.png"),
 };
