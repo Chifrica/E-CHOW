@@ -1,7 +1,6 @@
 "use client";
 
-import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
 	View,
 	Text,
@@ -11,529 +10,676 @@ import {
 	StatusBar,
 	ScrollView,
 } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
-import DateTimePickerModal, {
-	type DateTimeSelection,
-} from "../../../components/DateTimePicket";
-import MealTypeModal from "../../../components/MealTypeModal";
-
-type ScheduleScreenProps = {};
-
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useUser } from "@clerk/clerk-expo";
 
-const ScheduleScreen: React.FC<ScheduleScreenProps> = () => {
-	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
-	const [selectedMealType, setSelectedMealType] = useState<string>("Breakfast");
-	const [dateTimeModalVisible, setDateTimeModalVisible] =
-		useState<boolean>(false);
-	const [mealTypeModalVisible, setMealTypeModalVisible] =
-		useState<boolean>(false);
-	const [selectedDateTime, setSelectedDateTime] =
-		useState<DateTimeSelection | null>(null);
-	const [errorType, setErrorType] = useState<string | null>(null);
-	const [errorTimeout, setErrorTimeout] = useState<NodeJS.Timeout | null>(null);
+// Mock data for scheduled meals
+const scheduledMeals = {
+	"2025-03-15": [
+		{
+			id: 1,
+			time: "08:00 am",
+			type: "Breakfast",
+			name: "Spicy Jollof",
+			restaurant: "Nao Restaurants",
+			packs: "2 Packs",
+			price: "7,000",
+			image: "/placeholder.svg?height=60&width=60",
+		},
+		{
+			id: 2,
+			time: "02:00 pm",
+			type: "Lunch",
+			name: "Spicy Jollof",
+			restaurant: "Nao Restaurants",
+			packs: "2 Packs",
+			price: "7,000",
+			image: "/placeholder.svg?height=60&width=60",
+		},
+		{
+			id: 3,
+			time: "06:00 pm",
+			type: "Dinner",
+			name: "Spicy Jollof",
+			restaurant: "Nao Restaurants",
+			packs: "2 Packs",
+			price: "7,000",
+			image: "/placeholder.svg?height=60&width=60",
+		},
+	],
+};
 
-	// Clear error after timeout
-	useEffect(() => {
-		if (errorType) {
-			// Clear any existing timeout
-			if (errorTimeout) {
-				clearTimeout(errorTimeout);
-			}
-
-			// Set new timeout to clear error after 3 seconds
-			const timeout = setTimeout(() => {
-				setErrorType(null);
-			}, 3000);
-
-			setErrorTimeout(timeout);
-		}
-
-		// Cleanup function to clear timeout when component unmounts
-		return () => {
-			if (errorTimeout) {
-				clearTimeout(errorTimeout);
-			}
-		};
-	}, [errorType]);
-
-	const handleOpenDateTimePicker = (): void => {
-		setDateTimeModalVisible(true);
-	};
-
-	const handleSaveDateTime = (dateTime: DateTimeSelection): void => {
-		setSelectedDateTime(dateTime);
-		setSelectedTime(dateTime.formattedDate);
-		setErrorType(null);
-
-		// Clear any existing timeout when user takes action
-		if (errorTimeout) {
-			clearTimeout(errorTimeout);
-			setErrorTimeout(null);
-		}
-	};
-
-	const handleOpenMealTypeModal = (): void => {
-		setMealTypeModalVisible(true);
-	};
-
-	const handleSelectMealType = (mealType: string): void => {
-		setSelectedMealType(mealType);
-		setErrorType(null);
-
-		// Clear any existing timeout when user takes action
-		if (errorTimeout) {
-			clearTimeout(errorTimeout);
-			setErrorTimeout(null);
-		}
-	};
-
-	const handleSave = (): void => {
-		if (selectedTime === "Schedule") {
-			setErrorType("time");
-		} else {
-			setErrorType(null);
-			// Add your save logic here
-		}
-	};
-
+const SchedulePage = () => {
+	const [currentDate, setCurrentDate] = useState(new Date());
+	const [selectedDate, setSelectedDate] = useState(new Date(2025, 2, 15)); // March 15, 2025
+	const [needsApproval, setNeedsApproval] = useState(true);
 	const router = useRouter();
 
-	const handleBack = () => {
-		router.back();
+	const monthNames = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
+
+	const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+	// Get calendar data for current month
+	const getCalendarData = () => {
+		const year = currentDate.getFullYear();
+		const month = currentDate.getMonth();
+
+		// First day of the month
+		const firstDay = new Date(year, month, 1);
+		// Last day of the month
+		const lastDay = new Date(year, month + 1, 0);
+
+		// Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
+		// Convert to Monday = 0, Sunday = 6
+		let firstDayOfWeek = firstDay.getDay();
+		firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+
+		const daysInMonth = lastDay.getDate();
+		const weeks = [];
+		let currentWeek = [];
+
+		// Add empty cells for days before the first day of month
+		for (let i = 0; i < firstDayOfWeek; i++) {
+			currentWeek.push(null);
+		}
+
+		// Add all days of the month
+		for (let day = 1; day <= daysInMonth; day++) {
+			currentWeek.push(day);
+
+			// If week is complete (7 days) or it's the last day, push to weeks
+			if (currentWeek.length === 7 || day === daysInMonth) {
+				// Fill remaining days with null if needed
+				while (currentWeek.length < 7) {
+					currentWeek.push(null);
+				}
+				weeks.push([...currentWeek]);
+				currentWeek = [];
+			}
+		}
+
+		return weeks;
 	};
 
-	const changeLocation = () => {
-		router.push("/src/location/currentLocation");
+	const handlePreviousMonth = () => {
+		setCurrentDate(
+			new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+		);
 	};
 
-	const { user } = useUser();
+	const handleNextMonth = () => {
+		setCurrentDate(
+			new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+		);
+	};
+
+	const handleDateSelect = (day: number) => {
+		if (day) {
+			const newDate = new Date(
+				currentDate.getFullYear(),
+				currentDate.getMonth(),
+				day
+			);
+			setSelectedDate(newDate);
+		}
+	};
+
+	const formatDateKey = (date: Date) => {
+		const year = date.getFullYear();
+		const month = (date.getMonth() + 1).toString().padStart(2, "0");
+		const day = date.getDate().toString().padStart(2, "0");
+		return `${year}-${month}-${day}`;
+	};
+
+	const isDateSelected = (day: number) => {
+		if (!day) return false;
+		const dateToCheck = new Date(
+			currentDate.getFullYear(),
+			currentDate.getMonth(),
+			day
+		);
+		return (
+			dateToCheck.getDate() === selectedDate.getDate() &&
+			dateToCheck.getMonth() === selectedDate.getMonth() &&
+			dateToCheck.getFullYear() === selectedDate.getFullYear()
+		);
+	};
+
+	const dateHasMeals = (day: number) => {
+		if (!day) return false;
+		const dateToCheck = new Date(
+			currentDate.getFullYear(),
+			currentDate.getMonth(),
+			day
+		);
+		const dateKey = formatDateKey(dateToCheck);
+		return scheduledMeals[dateKey]?.length > 0;
+	};
+
+	const handleAddMeal = () => {
+		router.push("/(tabs)/home/homePage");
+	};
+
+	const handleScheduleMeal = () => {
+		router.push("/(root)/create");
+	};
+
+	const selectedDateKey = formatDateKey(selectedDate);
+	const selectedMeals = scheduledMeals[selectedDateKey] || [];
+	const hasScheduledMeals = selectedMeals.length > 0;
+
+	const getMealTypeColor = (type: string) => {
+		switch (type) {
+			case "Breakfast":
+				return "#4CAF50";
+			case "Lunch":
+				return "#2196F3";
+			case "Dinner":
+				return "#FF9800";
+			default:
+				return "#9E9E9E";
+		}
+	};
+
+	const calendarWeeks = getCalendarData();
+	const currentMonthName = monthNames[currentDate.getMonth()];
+	const currentYear = currentDate.getFullYear();
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={styles.scrollContent}>
-				<StatusBar barStyle="dark-content" />
+			<StatusBar barStyle="dark-content" />
 
-				{/* Header */}
-				<View style={styles.header}>
-					<TouchableOpacity
-						style={styles.backButton}
-						onPress={handleBack}>
-						<Ionicons
-							name="chevron-back"
-							size={24}
-							color="black"
-						/>
-					</TouchableOpacity>
-					<Text style={styles.headerTitle}>Schedule your meal</Text>
-				</View>
+			{/* Header */}
+			<View style={styles.header}>
+				<Text style={styles.headerTitle}>Schedule Meal</Text>
+				<TouchableOpacity onPress={() => {}}>
+					<Text style={styles.clearAll}>Clear all</Text>
+				</TouchableOpacity>
+			</View>
 
-				{/* Meal Info */}
-				<View style={styles.mealInfoContainer}>
-					<Text style={styles.mealName}>Spicy Jollof</Text>
-					<Text style={styles.separator}>—</Text>
-					<Text style={styles.restaurantName}>From Nao Restaurants</Text>
-				</View>
-
-				{/* Delivery Location */}
-				<Text style={styles.sectionLabel}>Delivered to:</Text>
-				<TouchableOpacity style={styles.locationCard}>
+			{/* Calendar Navigation */}
+			<View style={styles.calendarNav}>
+				<TouchableOpacity onPress={handlePreviousMonth}>
 					<Ionicons
-						name="location-outline"
-						size={22}
+						name="chevron-back"
+						size={24}
 						color="black"
-						style={styles.locationIcon}
 					/>
-					<View style={styles.locationTextContainer}>
-						<Text style={styles.locationTitle}>General (Current location)</Text>
-						<Text style={styles.locationAddress}>
-							Rosebud, Oke Ila, Ado Ekiti
-						</Text>
-					</View>
 				</TouchableOpacity>
-
-				{/* Change Location Button */}
-				<TouchableOpacity
-					style={styles.changeLocationButton}
-					onPress={changeLocation}>
+				<Text style={styles.monthText}>
+					{currentMonthName}, {currentYear}
+				</Text>
+				<TouchableOpacity onPress={handleNextMonth}>
 					<Ionicons
-						name="location-outline"
-						size={20}
-						color="#FF8C42"
+						name="chevron-forward"
+						size={24}
+						color="black"
 					/>
-					<Text style={styles.changeLocationText}>Change Location</Text>
 				</TouchableOpacity>
-
-				{/* Delivery Time */}
-				<Text style={styles.sectionLabel}>Delivery time:</Text>
 				<TouchableOpacity
-					style={[
-						styles.selectionCard,
-						errorType === "time" && styles.errorSelectionCard,
-					]}
-					onPress={handleOpenDateTimePicker}>
+					style={styles.scheduleButton}
+					onPress={handleScheduleMeal}>
+					<Text style={styles.scheduleButtonText}>Schedule meal</Text>
+				</TouchableOpacity>
+			</View>
+
+			{/* Calendar */}
+			<View style={styles.calendarContainer}>
+				{/* Days Header */}
+				<View style={styles.daysHeader}>
+					{daysOfWeek.map((day, index) => (
+						<Text
+							key={index}
+							style={styles.dayLabel}>
+							{day}
+						</Text>
+					))}
+				</View>
+
+				{/* Calendar Grid */}
+				{calendarWeeks.map((week, weekIndex) => (
 					<View
-						style={[
-							styles.radioButton,
-							errorType === "time" && styles.errorRadioButton,
-						]}
-					/>
-					<Text
-						style={[
-							styles.selectionText,
-							errorType === "time" && styles.errorSelectionText,
-						]}>
-						{selectedTime}
-					</Text>
-					<View style={styles.rightContainer}>
-						<Text style={styles.rightText}>Set time & date</Text>
-						<Ionicons
-							name="chevron-forward"
-							size={20}
-							color="#888"
-						/>
+						key={weekIndex}
+						style={styles.weekRow}>
+						{week.map((day, dayIndex) => {
+							const isSelected = day && isDateSelected(day);
+							const hasMeals = day && dateHasMeals(day);
+							const isToday =
+								day &&
+								new Date().getDate() === day &&
+								new Date().getMonth() === currentDate.getMonth() &&
+								new Date().getFullYear() === currentDate.getFullYear();
+
+							return (
+								<TouchableOpacity
+									key={dayIndex}
+									style={[
+										styles.dateButton,
+										isSelected && styles.selectedDateButton,
+										hasMeals && !isSelected && styles.dateWithMeals,
+										isToday && !isSelected && styles.todayButton,
+									]}
+									onPress={() => handleDateSelect(day)}
+									disabled={!day}>
+									{day && (
+										<Text
+											style={[
+												styles.dateText,
+												isSelected && styles.selectedDateText,
+												isToday && !isSelected && styles.todayText,
+											]}>
+											{day}
+										</Text>
+									)}
+									{hasMeals && !isSelected && (
+										<View style={styles.mealIndicator} />
+									)}
+								</TouchableOpacity>
+							);
+						})}
 					</View>
-				</TouchableOpacity>
+				))}
+			</View>
 
-				{/* Meal Type */}
-				<Text style={styles.sectionLabel}>Meal Type:</Text>
-				<TouchableOpacity
-					style={styles.selectionCard}
-					onPress={handleOpenMealTypeModal}>
-					<View style={styles.radioButton} />
-					<Text style={styles.selectionText}>{selectedMealType}</Text>
-					<Ionicons
-						name="chevron-forward"
-						size={20}
-						color="#888"
-						style={styles.rightIcon}
-					/>
-				</TouchableOpacity>
+			<ScrollView
+				style={styles.content}
+				showsVerticalScrollIndicator={false}>
+				{hasScheduledMeals ? (
+					<>
+						{/* Approval Notice */}
+						{needsApproval && (
+							<View style={styles.approvalNotice}>
+								<View style={styles.approvalTextContainer}>
+									<Text style={styles.approvalText}>
+										Your scheduled meal has not been approved yet.
+									</Text>
+									<Text style={styles.approvalSubText}>
+										Pay now to approve your schedule
+									</Text>
+								</View>
+								<TouchableOpacity style={styles.payNowButton}>
+									<Text style={styles.payNowText}>Pay Now</Text>
+								</TouchableOpacity>
+							</View>
+						)}
 
-				<MealTypeModal
-					visible={mealTypeModalVisible}
-					onClose={() => setMealTypeModalVisible(false)}
-					onSelectMealType={handleSelectMealType}
-					initialMealType={selectedMealType}
-				/>
+						{/* Scheduled Meals */}
+						{selectedMeals.map((meal: any) => (
+							<View
+								key={meal.id}
+								style={styles.mealCard}>
+								<Text style={styles.mealTime}>{meal.time}</Text>
+								<View style={styles.mealContent}>
+									<View style={styles.mealImageContainer}>
+										<View style={styles.mealImage} />
+										<View
+											style={[
+												styles.mealTypeBadge,
+												{ backgroundColor: getMealTypeColor(meal.type) },
+											]}>
+											<Text style={styles.mealTypeBadgeText}>{meal.type}</Text>
+										</View>
+									</View>
 
-				{/* Instructions */}
-				<Text style={styles.sectionLabel}>Instructions:</Text>
-				<TouchableOpacity style={styles.instructionRow}>
-					<Feather
-						name="file-text"
-						size={20}
-						color="black"
-					/>
-					<Text style={styles.instructionText}>Notes to Restaurants</Text>
-					<Ionicons
-						name="chevron-forward"
-						size={20}
-						color="#888"
-						style={styles.rightIcon}
-					/>
-				</TouchableOpacity>
-				<View style={styles.divider} />
+									<View style={styles.mealDetails}>
+										<Text style={styles.mealName}>{meal.name}</Text>
+										<Text style={styles.mealRestaurant}>
+											{meal.restaurant} • {meal.packs}
+										</Text>
+										<Text style={styles.mealPrice}>{meal.price}</Text>
+									</View>
 
-				<TouchableOpacity style={styles.instructionRow}>
-					<Feather
-						name="user"
-						size={20}
-						color="black"
-					/>
-					<Text style={styles.instructionText}>Riders Instruction</Text>
-					<Ionicons
-						name="chevron-forward"
-						size={20}
-						color="#888"
-						style={styles.rightIcon}
-					/>
-				</TouchableOpacity>
-				<View style={styles.divider} />
+									<View style={styles.mealActions}>
+										<TouchableOpacity style={styles.reviewButton}>
+											<Text style={styles.reviewButtonText}>Review</Text>
+										</TouchableOpacity>
+										<TouchableOpacity style={styles.deleteButton}>
+											<Ionicons
+												name="trash-outline"
+												size={20}
+												color="#FF5252"
+											/>
+										</TouchableOpacity>
+									</View>
+								</View>
+							</View>
+						))}
 
-				{/* Contact Info */}
-				<Text style={styles.sectionLabel}>Contact Info:</Text>
-				<View style={styles.contactRow}>
-					{/* <Feather
-						name="phone"
-						size={20}
-						color="black"
-					/> */}
-					<View style={styles.contactTextContainer}>
-						<Text style={styles.contactName}>{user?.fullName}</Text>
-						<Text style={styles.dot}>•</Text>
-						<Text style={styles.contactPhone}>
-							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
+						{/* Bottom Note */}
+						<Text style={styles.bottomNote}>
+							Note that, your schedule meal will be delivered automatically at
+							the schedule time by our auto delivery system
+						</Text>
+					</>
+				) : (
+					/* Empty State */
+					<View style={styles.emptyState}>
+						<TouchableOpacity
+							style={styles.addMealButton}
+							onPress={handleAddMeal}>
+							<View style={styles.addMealIcon}>
+								<Ionicons
+									name="add"
+									size={24}
+									color="white"
+								/>
+							</View>
+							<Text style={styles.addMealText}>Add meal to schedule</Text>
+						</TouchableOpacity>
+
+						<Text style={styles.emptyNote}>
+							Note that, your schedule meal will be delivered automatically at
+							the schedule time by our auto delivery system
 						</Text>
 					</View>
-					<TouchableOpacity>
-						<Feather
-							name="edit-2"
-							size={20}
-							color="#888"
-						/>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.divider} />
-
-				{/* Billings */}
-				<Text style={styles.sectionLabel}>Billings:</Text>
-				<View style={styles.billingRow}>
-					<Feather
-						name="shopping-bag"
-						size={20}
-						color="black"
-					/>
-					<Text style={styles.billingText}>Food</Text>
-					<Text style={styles.billingAmount}>₦4,100.00</Text>
-				</View>
-				<View style={styles.divider} />
-
-				{/* Save Button */}
-				<TouchableOpacity
-					style={styles.saveButton}
-					onPress={handleSave}>
-					<Text style={styles.saveButtonText}>Save</Text>
-				</TouchableOpacity>
-
-				{/* Date Time Picker Modal */}
-				<DateTimePickerModal
-					visible={dateTimeModalVisible}
-					onClose={() => setDateTimeModalVisible(false)}
-					onSave={handleSaveDateTime}
-					initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
-				/>
+				)}
 			</ScrollView>
-
-			{/* Error Message with Animation */}
-			{errorType && (
-				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>
-						Oops! You haven't selected a delivery time.
-					</Text>
-					<Text style={styles.errorSubText}>Set time and date</Text>
-				</View>
-			)}
 		</SafeAreaView>
 	);
 };
 
+// Add these new styles to the existing styles object:
+const newStyles = {
+	weekRow: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		marginBottom: 8,
+	},
+	todayButton: {
+		borderWidth: 2,
+		borderColor: "#FF8C42",
+	},
+	todayText: {
+		color: "#FF8C42",
+		fontWeight: "600",
+	},
+	mealIndicator: {
+		position: "absolute",
+		bottom: 2,
+		alignSelf: "center",
+		width: 4,
+		height: 4,
+		borderRadius: 2,
+		backgroundColor: "#4CAF50",
+	},
+	approvalTextContainer: {
+		flex: 1,
+	},
+};
+
+// Merge with existing styles
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#F8F8F8",
-		padding: 16,
-	},
-	scrollContent: {
-		paddingBottom: 20,
 	},
 	header: {
 		flexDirection: "row",
+		justifyContent: "space-between",
 		alignItems: "center",
-		marginBottom: 20,
-	},
-	backButton: {
-		padding: 4,
+		paddingHorizontal: 16,
+		paddingVertical: 16,
 	},
 	headerTitle: {
 		fontSize: 20,
 		fontWeight: "bold",
-		marginLeft: 10,
+		color: "#000",
 	},
-	mealInfoContainer: {
+	clearAll: {
+		fontSize: 16,
+		color: "#666",
+	},
+	calendarNav: {
 		flexDirection: "row",
 		alignItems: "center",
+		paddingHorizontal: 16,
+		paddingBottom: 16,
+	},
+	monthText: {
+		fontSize: 16,
+		fontWeight: "500",
+		marginHorizontal: 16,
+		flex: 1,
+	},
+	scheduleButton: {
+		backgroundColor: "transparent",
+		borderWidth: 1,
+		borderColor: "#FF8C42",
+		borderRadius: 20,
+		paddingHorizontal: 16,
+		paddingVertical: 8,
+	},
+	scheduleButtonText: {
+		color: "#FF8C42",
+		fontSize: 14,
+		fontWeight: "500",
+	},
+	calendarContainer: {
+		backgroundColor: "white",
+		marginHorizontal: 16,
+		borderRadius: 12,
+		padding: 16,
 		marginBottom: 20,
+	},
+	daysHeader: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		marginBottom: 16,
+	},
+	dayLabel: {
+		fontSize: 14,
+		color: "#666",
+		textAlign: "center",
+		width: 40,
+	},
+	weekRow: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		marginBottom: 8,
+	},
+	dateButton: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		justifyContent: "center",
+		alignItems: "center",
+		position: "relative",
+	},
+	selectedDateButton: {
+		backgroundColor: "#FF8C42",
+	},
+	dateWithMeals: {
+		backgroundColor: "#E3F2FD",
+	},
+	todayButton: {
+		borderWidth: 2,
+		borderColor: "#FF8C42",
+	},
+	dateText: {
+		fontSize: 16,
+		color: "#000",
+	},
+	selectedDateText: {
+		color: "white",
+		fontWeight: "bold",
+	},
+	todayText: {
+		color: "#FF8C42",
+		fontWeight: "600",
+	},
+	mealIndicator: {
+		position: "absolute",
+		bottom: 2,
+		alignSelf: "center",
+		width: 4,
+		height: 4,
+		borderRadius: 2,
+		backgroundColor: "#4CAF50",
+	},
+	content: {
+		flex: 1,
+		paddingHorizontal: 16,
+	},
+	approvalNotice: {
+		backgroundColor: "#FFEBEE",
+		borderRadius: 8,
+		padding: 16,
+		marginBottom: 20,
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	approvalTextContainer: {
+		flex: 1,
+	},
+	approvalText: {
+		fontSize: 14,
+		color: "#D32F2F",
+		fontWeight: "500",
+	},
+	approvalSubText: {
+		fontSize: 12,
+		color: "#D32F2F",
+		marginTop: 2,
+	},
+	payNowButton: {
+		backgroundColor: "#4CAF50",
+		borderRadius: 16,
+		paddingHorizontal: 16,
+		paddingVertical: 8,
+	},
+	payNowText: {
+		color: "white",
+		fontSize: 12,
+		fontWeight: "600",
+	},
+	mealCard: {
+		backgroundColor: "white",
+		borderRadius: 12,
+		padding: 16,
+		marginBottom: 16,
+	},
+	mealTime: {
+		fontSize: 16,
+		fontWeight: "600",
+		color: "#000",
+		marginBottom: 12,
+	},
+	mealContent: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	mealImageContainer: {
+		position: "relative",
+		marginRight: 12,
+	},
+	mealImage: {
+		width: 60,
+		height: 60,
+		borderRadius: 8,
+		backgroundColor: "#FF8C42",
+	},
+	mealTypeBadge: {
+		position: "absolute",
+		bottom: -6,
+		left: -6,
+		borderRadius: 10,
+		paddingHorizontal: 8,
+		paddingVertical: 2,
+	},
+	mealTypeBadgeText: {
+		color: "white",
+		fontSize: 10,
+		fontWeight: "600",
+	},
+	mealDetails: {
+		flex: 1,
 	},
 	mealName: {
 		fontSize: 16,
-		fontWeight: "bold",
+		fontWeight: "600",
+		color: "#000",
+		marginBottom: 4,
 	},
-	separator: {
-		marginHorizontal: 8,
-		color: "#888",
-	},
-	restaurantName: {
-		fontSize: 16,
-		color: "#555",
-	},
-	sectionLabel: {
-		paddingTop: 20,
-		fontSize: 16,
-		fontWeight: "500",
-		marginBottom: 8,
-	},
-	locationCard: {
-		flexDirection: "row",
-		alignItems: "center",
-		backgroundColor: "white",
-		borderRadius: 8,
-		padding: 16,
-		marginBottom: 12,
-		borderWidth: 1,
-		borderColor: "#E0E0E0",
-	},
-	locationIcon: {
-		marginRight: 12,
-	},
-	locationTextContainer: {
-		flex: 1,
-	},
-	locationTitle: {
-		fontSize: 16,
-		fontWeight: "500",
-	},
-	locationAddress: {
+	mealRestaurant: {
 		fontSize: 14,
 		color: "#666",
-		marginTop: 2,
+		marginBottom: 4,
 	},
-	changeLocationButton: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
-		backgroundColor: "#FFF2E9",
-		borderRadius: 8,
-		padding: 12,
-		marginBottom: 20,
-	},
-	changeLocationText: {
-		color: "#FF8C42",
-		fontWeight: "500",
-		marginLeft: 8,
-	},
-	selectionCard: {
-		flexDirection: "row",
-		alignItems: "center",
-		backgroundColor: "white",
-		borderRadius: 8,
-		padding: 16,
-		marginBottom: 20,
-		borderWidth: 1,
-		borderColor: "#E0E0E0",
-	},
-	errorSelectionCard: {
-		borderColor: "#FF5252",
-		backgroundColor: "#FFEBEB10",
-	},
-	radioButton: {
-		width: 20,
-		height: 20,
-		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: "#888",
-		marginRight: 12,
-	},
-	errorRadioButton: {
-		borderColor: "#FF5252",
-	},
-	selectionText: {
-		fontSize: 16,
-		flex: 1,
-	},
-	errorSelectionText: {
-		color: "#FF5252",
-	},
-	rightContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	rightText: {
-		fontSize: 14,
-		color: "#888",
-		marginRight: 4,
-	},
-	rightIcon: {
-		marginLeft: "auto",
-	},
-	instructionRow: {
-		flexDirection: "row",
-		alignItems: "center",
-		paddingVertical: 16,
-	},
-	instructionText: {
-		fontSize: 16,
-		marginLeft: 12,
-		flex: 1,
-	},
-	divider: {
-		height: 1,
-		backgroundColor: "#E0E0E0",
-	},
-	contactRow: {
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	contactTextContainer: {
-		flexDirection: "row",
-		flex: 1,
-		marginLeft: 12,
-		paddingVertical: 8,
-	},
-	contactName: {
-		fontSize: 16,
-	},
-	dot: {
-		color: "#FF8C42",
-		fontWeight: "bold",
-		marginHorizontal: 8,
-	},
-	contactPhone: {
-		fontSize: 16,
-		flex: 1,
-	},
-	billingRow: {
-		flexDirection: "row",
-		alignItems: "center",
-		paddingVertical: 16,
-	},
-	billingText: {
-		fontSize: 16,
-		marginLeft: 12,
-		flex: 1,
-	},
-	billingAmount: {
-		fontSize: 16,
-		fontWeight: "500",
-	},
-	saveButton: {
-		backgroundColor: "#FF8C42",
-		borderRadius: 8,
-		padding: 16,
-		alignItems: "center",
-		marginTop: 20,
-		marginBottom: 20,
-	},
-	saveButtonText: {
-		color: "white",
+	mealPrice: {
 		fontSize: 16,
 		fontWeight: "600",
+		color: "#000",
 	},
-	errorContainer: {
-		position: "absolute",
-		bottom: 80,
-		left: 16,
-		right: 16,
-		backgroundColor: "#FFEBEB",
-		borderRadius: 8,
-		padding: 12,
+	mealActions: {
+		alignItems: "flex-end",
+	},
+	reviewButton: {
+		backgroundColor: "transparent",
 		borderWidth: 1,
-		borderColor: "#FF5252",
-		alignItems: "center",
+		borderColor: "#FF8C42",
+		borderRadius: 16,
+		paddingHorizontal: 12,
+		paddingVertical: 6,
+		marginBottom: 8,
 	},
-	errorText: {
-		color: "#FF0000",
-		fontSize: 14,
+	reviewButtonText: {
+		color: "#FF8C42",
+		fontSize: 12,
 		fontWeight: "500",
 	},
-	errorSubText: {
-		color: "#FF0000",
-		fontSize: 12,
-		marginTop: 2,
+	deleteButton: {
+		padding: 4,
+	},
+	emptyState: {
+		alignItems: "center",
+		paddingTop: 60,
+	},
+	addMealButton: {
+		alignItems: "center",
+		marginBottom: 40,
+	},
+	addMealIcon: {
+		width: 60,
+		height: 60,
+		borderRadius: 30,
+		backgroundColor: "#FF8C42",
+		justifyContent: "center",
+		alignItems: "center",
+		marginBottom: 12,
+	},
+	addMealText: {
+		fontSize: 16,
+		color: "#000",
+		fontWeight: "500",
+	},
+	emptyNote: {
+		fontSize: 14,
+		color: "#666",
+		textAlign: "center",
+		lineHeight: 20,
+		paddingHorizontal: 20,
+	},
+	bottomNote: {
+		fontSize: 14,
+		color: "#666",
+		textAlign: "center",
+		lineHeight: 20,
+		paddingHorizontal: 20,
+		paddingVertical: 20,
 	},
 });
 
-export default ScheduleScreen;
+export default SchedulePage;
