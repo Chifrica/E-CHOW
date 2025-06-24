@@ -190,6 +190,7 @@ const ProfileDetailsScreen = () => {
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		padding: 20,
 		backgroundColor: "#fff",
 	},
@@ -197,7 +198,8 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		gap: 10,
-		marginBottom: 30,
+		marginTop: 30,
+		marginBottom: 20,
 	},
 	headerText: {
 		fontSize: 18,

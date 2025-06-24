@@ -116,7 +116,7 @@ const OrderSummaryScreen: React.FC = () => {
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.changeLocationButton}>
-						<Feather name="map-pin" size={20} color="#FF8C42" />
+						<Image source={require("../../assets/images/orderSummary/location-mark.png")} style={{ width: 20, height: 20 }} />
 						<Text style={styles.changeLocationText}>Change Location</Text>
 					</TouchableOpacity>
 				</View>
@@ -177,18 +177,24 @@ const OrderSummaryScreen: React.FC = () => {
 						style={styles.instructionOption}
 						onPress={() => setNotesModalVisible(true)}
 					>
-						<MaterialCommunityIcons name="note-text-outline" size={20} color="#000" />
+						<MaterialCommunityIcons name="storefront-outline" size={20} color="#000" />
 						<Text style={styles.instructionText}>Notes to Restaurants</Text>
 						<MaterialIcons name="chevron-right" size={20} color="#000" />
 					</TouchableOpacity>
+
+					<View style={styles.divider} />
+					
 					<TouchableOpacity
 						style={styles.instructionOption}
 						onPress={() => setRidersModalVisible(true)}
 					>
-						<MaterialIcons name="delivery-dining" size={20} color="#000" />
+						<Image source={require("../../assets/images/orderSummary/rider.png")} style={{ width: 17, height: 17 }} />
+						<View style={styles.divider} />
 						<Text style={styles.instructionText}>Riders Instruction</Text>
 						<MaterialIcons name="chevron-right" size={20} color="#000" />
 					</TouchableOpacity>
+					<View style={styles.divider} />
+
 				</View>
 
 				{/* Contact Info */}
@@ -196,6 +202,7 @@ const OrderSummaryScreen: React.FC = () => {
 					<Text style={styles.sectionTitle}>Contact Info:</Text>
 					<View style={styles.divider} />
 					<View style={styles.contactInfo}>
+						<Feather name="phone-call" size={18} color="#000" style={{paddingRight: 15}}/>
 						<Text style={styles.contactName}>{user?.fullName}</Text>
 						<Text style={styles.contactDot}>•</Text>
 						<Text style={styles.contactPhone}>
@@ -205,30 +212,39 @@ const OrderSummaryScreen: React.FC = () => {
 							<Feather name="edit-2" size={20} color="#000" />
 						</TouchableOpacity>
 					</View>
+					<View style={styles.divider} />
 				</View>
 
 				{/* Billing */}
 				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Billings:</Text>
-					<View style={styles.divider} />
-					<View style={styles.billingItem}>
-						<Text style={styles.billingText}>Food</Text>
+				<Text style={styles.sectionTitle}>Billings:</Text>
+				<View style={{ borderWidth: 1, backgroundColor: "#fff", borderColor: "#eee", padding: 12, borderRadius: 8 }}>
+					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
+						<Image source={require("../../assets/images/orderSummary/food.png")} style={{ width: 20, height: 20 }} />
+						<Text style={styles.instructionText}>Food</Text>
 						<Text style={styles.billingAmount}>₦{foodAmount.toLocaleString()}</Text>
-					</View>
-					<View style={styles.billingItem}>
-						<Text style={styles.billingText}>Delivery Fee</Text>
+						<MaterialIcons name="chevron-right" size={20} color="#000" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
+						<MaterialCommunityIcons name="bicycle" size={20} color="#000" />
+						<Text style={styles.instructionText}>Delivery Fee</Text>
 						<Text style={styles.billingAmount}>₦{deliveryFee.toLocaleString()}</Text>
-					</View>
-					<View style={styles.billingItem}>
-						<Text style={styles.billingText}>Service Fee</Text>
+						<MaterialIcons name="chevron-right" size={20} color="#000" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
+						<MaterialCommunityIcons name="bicycle" size={20} color="#000" />
+						<Text style={styles.instructionText}>Service Fee</Text>
 						<Text style={styles.billingAmount}>₦{serviceFee.toLocaleString()}</Text>
-					</View>
-					<View style={styles.divider} />
-					<View style={styles.billingItem}>
-						<Text style={styles.totalText}>Total</Text>
-						<Text style={styles.totalAmount}>₦{totalAmount.toLocaleString()}</Text>
-					</View>
+						<MaterialIcons name="chevron-right" size={20} color="#000" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
+						<MaterialCommunityIcons name="note-text-outline" size={20} color="#000" />
+						<Text style={[styles.instructionText, { fontWeight: "bold" }]}>Total</Text>
+						<Text style={[styles.totalAmount, { flex: 1, textAlign: "right" }]}>₦{totalAmount.toLocaleString()}</Text>
+						<MaterialIcons name="chevron-right" size={20} color="#000" />
+					</TouchableOpacity>
 				</View>
+			</View>
 
 				{/* Proceed Button */}
 				<TouchableOpacity style={styles.paymentButton} onPress={handleSave}>
@@ -420,7 +436,7 @@ const styles = StyleSheet.create({
 	divider: {
 		height: 1,
 		backgroundColor: "#E0E0E0",
-		marginVertical: 12,
+		marginVertical: 8,
 	},
 	instructionOption: {
 		flexDirection: "row",

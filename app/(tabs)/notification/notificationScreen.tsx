@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 import React from "react";
 import { notificationData } from "./notification-data";
 import { router } from "expo-router";
@@ -13,7 +13,7 @@ const NotificationScreen: React.FC = () => {
 	const profileImage = user?.imageUrl;
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<Text style={styles.heading}>Notifications</Text>
 
 			<View style={styles.notifications}>
@@ -45,7 +45,7 @@ const NotificationScreen: React.FC = () => {
 					</View>
 				))}
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 };
 
@@ -54,13 +54,16 @@ export default NotificationScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingTop: 20,
-		paddingHorizontal: 10,
+		backgroundColor: "#FFFFFF",
+		paddingLeft: 16,
+		paddingRight: 16,
+		paddingBottom: 16,
 	},
 
 	heading: {
 		fontSize: 25,
 		fontWeight: "700",
+		paddingVertical: 20,
 	},
 
 	notifications: {

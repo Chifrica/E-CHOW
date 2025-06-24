@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	Alert,
+	SafeAreaView,
 } from "react-native";
 import {
 	Ionicons,
@@ -47,7 +48,7 @@ const ProfileScreen: React.FC = () => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
 				<View style={styles.header}>
 					<Image
@@ -222,7 +223,7 @@ const ProfileScreen: React.FC = () => {
 					/>
 				</View>
 			</ScrollView>
-		</View>
+		</SafeAreaView>
 	);
 };
 
@@ -245,9 +246,19 @@ const Option: React.FC<{
 );
 
 const styles = StyleSheet.create({
-	container: { flex: 1, backgroundColor: "#fff" },
-	scrollContainer: { padding: 20 },
-	header: { flexDirection: "row", alignItems: "center", marginBottom: 20 },
+	container: { 
+		flex: 1, 
+		backgroundColor: "#fff" 
+	},
+	scrollContainer: { 
+		padding: 20 
+	},
+	header: { 
+		flexDirection: "row", 
+		alignItems: "center", 
+		marginTop: 10,
+		marginBottom: 20 
+	},
 	avatar: {
 		width: 60,
 		height: 60,

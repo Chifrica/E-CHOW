@@ -23,6 +23,7 @@ const GoogleAppleSignup = () => {
 	const { startOAuthFlow } = useOAuth({
 		strategy: "oauth_google",
 		// redirectUrl: "https://caring-sunfish-51.clerk.accounts.dev/v1/oauth_callback", // MUST match your Expo scheme
+		// redirectUrl: "https://caring-sunfish-51.clerk.accounts.dev/v1/oauth_callback", // Use your app's scheme
 	});
 
 	if (!loading && isLoggedIn) return <Redirect href="/home/homePage" />;
@@ -45,7 +46,7 @@ const GoogleAppleSignup = () => {
 	};
 
 	const handleAppleDemo = () => {
-		Alert.alert("Info", "Apple login is just a demo.");
+		Alert.alert("Info", "Apple login is under development.");
 	};
 
 	return (

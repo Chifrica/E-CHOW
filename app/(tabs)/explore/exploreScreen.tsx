@@ -31,15 +31,6 @@ const ExploreScreen = () => {
     };
 	const handleOrderNow = (item) => {
 		router.push("/(root)/OrderSummaryScreen");
-		// router.push({
-		// 	pathname: "/(root)/OrderSummaryScreen",
-		// 	params: {
-		// 		foodName: item.foodName,
-		// 		foodImage: item.image,
-		// 		price: item.price,
-		// 		vendorName: item.vendorName,
-		// 	}
-		// });
 	};
 
 	return (
@@ -50,6 +41,7 @@ const ExploreScreen = () => {
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Explore</Text>
                     <View style={styles.miniHeader}>
+
                         {/* Search Input */}
                         { isSearchActive ? (
 							<TextInput
@@ -70,6 +62,7 @@ const ExploreScreen = () => {
                                 />
                             </TouchableOpacity>
                         )}
+
                         {/* Shopping Cart Icon */}
                         <Feather
                             name="shopping-cart"
@@ -182,7 +175,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginHorizontal: 10,
 		justifyContent: "space-between",
-		paddingVertical: 30,
+		paddingVertical: 20,
+		// marginTop: 20
 	},
 	miniHeader: {
 		flexDirection: "row",
