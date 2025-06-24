@@ -32,7 +32,10 @@ const CreateSchedulePage = () => {
 	const { user } = useUser();
 
 	// Parse order data if available
-	const orderData = params.orderData ? JSON.parse(params.orderData) : null;
+	const orderData =
+		typeof params.orderData === "string"
+			? JSON.parse(params.orderData)
+			: null;
 
 	useEffect(() => {
 		if (errorType) {
