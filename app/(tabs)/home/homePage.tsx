@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
 	View,
 	Text,
@@ -10,9 +11,15 @@ import {
 	Dimensions,
 	TouchableOpacity,
 } from "react-native";
-import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { useUser } from "@clerk/clerk-expo";
+import { router } from "expo-router";
+
+// Import the customize order modal
+import CustomizeOrderModal from "@/components/CustomizeOrderModal";
+import DeliveryAddressModal from "../../../components/deliveryAddressModal";
+
 import {
 	storiesData,
 	recommendedData,
@@ -20,15 +27,13 @@ import {
 	restaurantAllData,
 	videosData,
 } from "./data";
-import DeliveryAddressModal from "../../../components/deliveryAddressModal";
-import { useUser } from "@clerk/clerk-expo";
-import { router } from "expo-router";
 
 const width = Dimensions.get("screen").width;
 
 const HomePage = () => {
-	// Added state for modal and selected address
 	const [modalVisible, setModalVisible] = useState(false);
+	const [customizeModalVisible, setCustomizeModalVisible] = useState(false);
+	const [selectedMeal, setSelectedMeal] = useState(null);
 	const [selectedAddress, setSelectedAddress] = useState({
 		id: "1",
 		name: "Office",
@@ -36,8 +41,34 @@ const HomePage = () => {
 	});
 
 	const { user } = useUser();
-
 	const profileImage = user?.imageUrl;
+
+	// Sample meal data
+	const sampleMeals = [
+		{
+			name: "Spicy Jollof Rice",
+			restaurant: "Nao Restaurants",
+			image: "/placeholder.svg?height=200&width=400",
+			basePrice: 1500,
+		},
+		{
+			name: "Caramello Spaghetti",
+			restaurant: "Italian Corner",
+			image: "/placeholder.svg?height=200&width=400",
+			basePrice: 2000,
+		},
+		{
+			name: "Homemade Pasta",
+			restaurant: "Pasta Palace",
+			image: "/placeholder.svg?height=200&width=400",
+			basePrice: 1800,
+		},
+	];
+
+	const handleMealPress = (mealIndex = 0) => {
+		setSelectedMeal(sampleMeals[mealIndex]);
+		setCustomizeModalVisible(true);
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -121,7 +152,6 @@ const HomePage = () => {
 						<Text style={styles.categorySeeAll}>See All</Text>
 					</View>
 
-					{/* Horizontal scrollable categories */}
 					<ScrollView
 						horizontal
 						showsHorizontalScrollIndicator={false}
@@ -190,7 +220,7 @@ const HomePage = () => {
 					</ScrollView>
 				</View>
 
-				{/* Videos/Carousel Section - directly under user profile */}
+				{/* Videos/Carousel Section */}
 				<FlatList
 					data={videosData}
 					renderItem={({ item }) => (
@@ -222,7 +252,9 @@ const HomePage = () => {
 					<FlatList
 						data={recommendedData}
 						renderItem={({ item, index }) => (
-							<View style={styles.recommendedItem}>
+							<TouchableOpacity
+								style={styles.recommendedItem}
+								onPress={() => handleMealPress(index)}>
 								<Image
 									source={item.recommended}
 									style={styles.recommendedImage}
@@ -258,7 +290,7 @@ const HomePage = () => {
 										{index === 0 ? "₦1,500" : "₦2,000"}
 									</Text>
 								</View>
-							</View>
+							</TouchableOpacity>
 						)}
 						keyExtractor={(item, index) => index.toString()}
 						horizontal
@@ -277,9 +309,11 @@ const HomePage = () => {
 
 					<View style={styles.gridContainer}>
 						{fastSellingData.slice(0, 6).map((item, index) => (
-							<View
+							<TouchableOpacity
 								key={index}
-								style={styles.gridItem}>
+								style={styles.gridItem}
+								onPress={() => handleMealPress(0)} // Default to Spicy Jollof
+							>
 								<Image
 									source={item.fastSelling}
 									style={styles.gridItemImage}
@@ -308,7 +342,7 @@ const HomePage = () => {
 										{index % 2 === 0 ? "₦3,500" : "₦2,500"}
 									</Text>
 								</View>
-							</View>
+							</TouchableOpacity>
 						))}
 					</View>
 				</View>
@@ -321,9 +355,10 @@ const HomePage = () => {
 					</View>
 
 					{restaurantAllData.slice(0, 4).map((item, index) => (
-						<View
+						<TouchableOpacity
 							key={index}
-							style={styles.restaurantItem}>
+							style={styles.restaurantItem}
+							onPress={() => handleMealPress(0)}>
 							<Image
 								source={item.restaurantAll}
 								style={styles.restaurantImage}
@@ -358,10 +393,17 @@ const HomePage = () => {
 									color="#E58945"
 								/>
 							</TouchableOpacity>
-						</View>
+						</TouchableOpacity>
 					))}
 				</View>
 			</ScrollView>
+
+			{/* Customize Order Modal */}
+			<CustomizeOrderModal
+				visible={customizeModalVisible}
+				onClose={() => setCustomizeModalVisible(false)}
+				meal={selectedMeal}
+			/>
 
 			{/* Delivery Address Modal */}
 			<DeliveryAddressModal
@@ -375,8 +417,6 @@ const HomePage = () => {
 		</SafeAreaView>
 	);
 };
-
-export default HomePage;
 
 const styles = StyleSheet.create({
 	container: {
@@ -450,9 +490,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: "#E58945",
 	},
-	categoryScrollContainer: {
-		paddingRight: 20,
-	},
 	categoryItem: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -477,7 +514,7 @@ const styles = StyleSheet.create({
 	},
 	videoContainer: {
 		marginRight: 15,
-		width: width - 50, // Make it almost full width with some margin
+		width: width - 50,
 	},
 	videos: {
 		width: "100%",
@@ -689,41 +726,6 @@ const styles = StyleSheet.create({
 		width: 30,
 		height: 30,
 	},
-	bottomNavigation: {
-		flexDirection: "row",
-		height: 60,
-		backgroundColor: "#FFFFFF",
-		borderTopWidth: 1,
-		borderTopColor: "#EEEEEE",
-		justifyContent: "space-around",
-		alignItems: "center",
-	},
-	bottomNavItem: {
-		alignItems: "center",
-		justifyContent: "center",
-		flex: 1,
-		height: "100%",
-	},
-	activeNavIndicator: {
-		position: "absolute",
-		top: 0,
-		width: 30,
-		height: 3,
-		backgroundColor: "#E58945",
-		borderRadius: 1.5,
-	},
-	activeNavText: {
-		fontSize: 12,
-		color: "#E58945",
-		marginTop: 2,
-	},
-	floatingActionButton: {
-		width: 50,
-		height: 50,
-		borderRadius: 25,
-		backgroundColor: "#E58945",
-		justifyContent: "center",
-		alignItems: "center",
-		marginBottom: 15,
-	},
 });
+
+export default HomePage;

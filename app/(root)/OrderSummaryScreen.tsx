@@ -21,11 +21,11 @@ import DateTimePickerModal, {
 } from "../../components/DateTimePicket";
 import { useUser } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
-import { exploreData } from "../(tabs)/explore/data";
+import { exploreData } from "../../data/explore-data";
 import { useRouter } from "expo-router";
 
 const OrderSummaryScreen: React.FC = () => {
-	const router = useRouter()
+	const router = useRouter();
 	const [deliveryTime, setDeliveryTime] = useState<"now" | "schedule">("now");
 	const [notesToRestaurant, setNotesToRestaurant] = useState<string>("");
 	const [ridersInstruction, setRidersInstruction] = useState<string>("");
@@ -38,12 +38,17 @@ const OrderSummaryScreen: React.FC = () => {
 	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
 	const [errorType, setErrorType] = useState<string | null>(null);
 
-	const foodName = ["Spicy Jollof Rice", "Good Burger", "Beans and Plantain", "Meat Pie"][3]; // Example food name, replace with actual selection logic
+	const foodName = [
+		"Spicy Jollof Rice",
+		"Good Burger",
+		"Beans and Plantain",
+		"Meat Pie",
+	][3]; // Example food name, replace with actual selection logic
 	// Find the food item from exploreData
 	const foodItem = exploreData.find(
 		(item) => item.foodName.toLowerCase() === foodName.toLowerCase()
 	);
-	const foodAmount = typeof foodItem?.price === 'number' ? foodItem.price : 0;
+	const foodAmount = typeof foodItem?.price === "number" ? foodItem.price : 0;
 	const deliveryFee = 1000;
 	const serviceFee = 100;
 	const totalAmount = foodAmount + deliveryFee + serviceFee;
@@ -76,13 +81,21 @@ const OrderSummaryScreen: React.FC = () => {
 
 	const handleBack = () => {
 		router.back();
-	}
+	};
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+			<ScrollView
+				style={styles.scrollView}
+				showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
-					<TouchableOpacity onPress={handleBack} style={styles.backButton}>
-						<Ionicons name="chevron-back" size={24} color="#000" />
+					<TouchableOpacity
+						onPress={handleBack}
+						style={styles.backButton}>
+						<Ionicons
+							name="chevron-back"
+							size={24}
+							color="#000"
+						/>
 					</TouchableOpacity>
 					<Text style={styles.headerTitle}>Order Summary</Text>
 				</View>
@@ -90,10 +103,13 @@ const OrderSummaryScreen: React.FC = () => {
 				{/* Food Info */}
 				<View style={styles.foodInfo}>
 					{foodItem?.image && (
-						<Image source={foodItem.image} style={styles.foodImage} />
+						<Image
+							source={foodItem.image}
+							style={styles.foodImage}
+						/>
 					)}
-					
-					<View style={{flexDirection: "column", flex: 1}}>
+
+					<View style={{ flexDirection: "column", flex: 1 }}>
 						<Text style={styles.foodName}>
 							{foodItem?.foodName ?? "Unknown"}
 						</Text>
@@ -101,7 +117,9 @@ const OrderSummaryScreen: React.FC = () => {
 							₦{foodAmount.toLocaleString()}
 						</Text>
 						{/* <Text style={styles.separator}>—</Text> */}
-						<Text style={styles.restaurantName}>{foodItem?.vendorName ?? "Unknown"} Restaurant</Text>
+						<Text style={styles.restaurantName}>
+							{foodItem?.vendorName ?? "Unknown"} Restaurant
+						</Text>
 					</View>
 				</View>
 
@@ -109,10 +127,19 @@ const OrderSummaryScreen: React.FC = () => {
 				<View style={styles.section}>
 					<Text style={styles.sectionTitle}>Delivered to:</Text>
 					<TouchableOpacity style={styles.locationContainer}>
-						<Ionicons name="location-outline" size={20} color="#000" style={styles.locationIcon} />
+						<Ionicons
+							name="location-outline"
+							size={20}
+							color="#000"
+							style={styles.locationIcon}
+						/>
 						<View style={styles.locationTextContainer}>
-							<Text style={styles.locationTitle}>General (Current location)</Text>
-							<Text style={styles.locationAddress}>Rosebud, Oke Ila, Ado Ekiti</Text>
+							<Text style={styles.locationTitle}>
+								General (Current location)
+							</Text>
+							<Text style={styles.locationAddress}>
+								Rosebud, Oke Ila, Ado Ekiti
+							</Text>
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.changeLocationButton}>
@@ -129,15 +156,13 @@ const OrderSummaryScreen: React.FC = () => {
 							styles.timeOption,
 							deliveryTime === "now" && styles.timeOptionSelected,
 						]}
-						onPress={() => setDeliveryTime("now")}
-					>
+						onPress={() => setDeliveryTime("now")}>
 						<View style={styles.radioContainer}>
 							<View
 								style={[
 									styles.radioOuter,
 									deliveryTime === "now" && styles.radioOuterSelected,
-								]}
-							>
+								]}>
 								{deliveryTime === "now" && <View style={styles.radioInner} />}
 							</View>
 							<Text style={styles.timeOptionText}>Now</Text>
@@ -149,22 +174,26 @@ const OrderSummaryScreen: React.FC = () => {
 							styles.timeOption,
 							deliveryTime === "schedule" && styles.timeOptionSelected,
 						]}
-						onPress={handleOpenDateTimePicker}
-					>
+						onPress={handleOpenDateTimePicker}>
 						<View style={styles.radioContainer}>
 							<View
 								style={[
 									styles.radioOuter,
 									deliveryTime === "schedule" && styles.radioOuterSelected,
-								]}
-							>
-								{deliveryTime === "schedule" && <View style={styles.radioInner} />}
+								]}>
+								{deliveryTime === "schedule" && (
+									<View style={styles.radioInner} />
+								)}
 							</View>
 							<Text style={styles.timeOptionText}>Schedule</Text>
 						</View>
 						<View style={styles.scheduleContainer}>
 							<Text style={styles.scheduleText}>{selectedTime}</Text>
-							<MaterialIcons name="chevron-right" size={20} color="#000" />
+							<MaterialIcons
+								name="chevron-right"
+								size={20}
+								color="#000"
+							/>
 						</View>
 					</TouchableOpacity>
 				</View>
@@ -179,7 +208,11 @@ const OrderSummaryScreen: React.FC = () => {
 					>
 						<MaterialCommunityIcons name="storefront-outline" size={20} color="#000" />
 						<Text style={styles.instructionText}>Notes to Restaurants</Text>
-						<MaterialIcons name="chevron-right" size={20} color="#000" />
+						<MaterialIcons
+							name="chevron-right"
+							size={20}
+							color="#000"
+						/>
 					</TouchableOpacity>
 
 					<View style={styles.divider} />
@@ -191,7 +224,11 @@ const OrderSummaryScreen: React.FC = () => {
 						<Image source={require("../../assets/images/orderSummary/rider.png")} style={{ width: 17, height: 17 }} />
 						<View style={styles.divider} />
 						<Text style={styles.instructionText}>Riders Instruction</Text>
-						<MaterialIcons name="chevron-right" size={20} color="#000" />
+						<MaterialIcons
+							name="chevron-right"
+							size={20}
+							color="#000"
+						/>
 					</TouchableOpacity>
 					<View style={styles.divider} />
 
@@ -209,7 +246,11 @@ const OrderSummaryScreen: React.FC = () => {
 							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
 						</Text>
 						<TouchableOpacity style={styles.editButton}>
-							<Feather name="edit-2" size={20} color="#000" />
+							<Feather
+								name="edit-2"
+								size={20}
+								color="#000"
+							/>
 						</TouchableOpacity>
 					</View>
 					<View style={styles.divider} />
@@ -247,12 +288,12 @@ const OrderSummaryScreen: React.FC = () => {
 			</View>
 
 				{/* Proceed Button */}
-				<TouchableOpacity style={styles.paymentButton} onPress={handleSave}>
+				<TouchableOpacity
+					style={styles.paymentButton}
+					onPress={handleSave}>
 					<Text style={styles.paymentButtonText}>Proceed to payment</Text>
 				</TouchableOpacity>
 			</ScrollView>
-
-			
 
 			{/* Modals */}
 			<NotesToRestaurantsModal
@@ -277,7 +318,9 @@ const OrderSummaryScreen: React.FC = () => {
 			{/* Error Message */}
 			{errorType && (
 				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>Oops! You haven't selected a delivery time.</Text>
+					<Text style={styles.errorText}>
+						Oops! You haven't selected a delivery time.
+					</Text>
 					<Text style={styles.errorSubText}>Set time and date</Text>
 				</View>
 			)}
@@ -289,7 +332,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#F8F8F8",
-		top: 30
+		top: 30,
 	},
 	scrollView: {
 		flex: 1,
