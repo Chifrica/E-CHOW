@@ -47,6 +47,18 @@ const ProfileScreen: React.FC = () => {
 		setIsHidden(!isHidden);
 	};
 
+	const handlePrivacyPolicy = () => {
+		router.push("/(root)/src/(echowDetails)/PrivacyPolicy");
+	}
+
+	const handleAboutUs = () => {
+		router.push("/(root)/src/(echowDetails)/AboutUs");
+	}
+
+	const handleReferral = () => {
+		router.push("/(root)/src/(echowDetails)/Referral");
+	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -159,6 +171,7 @@ const ProfileScreen: React.FC = () => {
 							/>
 						}
 						label="Referrals"
+						onPress={handleReferral}
 					/>
 					<Option
 						icon={
@@ -168,6 +181,7 @@ const ProfileScreen: React.FC = () => {
 							/>
 						}
 						label="Privacy Policy and Terms"
+						onPress={handlePrivacyPolicy}
 					/>
 					<Option
 						icon={
@@ -177,6 +191,7 @@ const ProfileScreen: React.FC = () => {
 							/>
 						}
 						label="About Us"
+						onPress={handleAboutUs}
 					/>
 					<Option
 						icon={

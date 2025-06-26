@@ -9,50 +9,16 @@ import {
 	SafeAreaView,
 	StatusBar,
 	ScrollView,
+	Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
-// Mock data for scheduled meals
-const scheduledMeals = {
-	"2025-03-15": [
-		{
-			id: 1,
-			time: "08:00 am",
-			type: "Breakfast",
-			name: "Spicy Jollof",
-			restaurant: "Nao Restaurants",
-			packs: "2 Packs",
-			price: "7,000",
-			image: "/placeholder.svg?height=60&width=60",
-		},
-		{
-			id: 2,
-			time: "02:00 pm",
-			type: "Lunch",
-			name: "Spicy Jollof",
-			restaurant: "Nao Restaurants",
-			packs: "2 Packs",
-			price: "7,000",
-			image: "/placeholder.svg?height=60&width=60",
-		},
-		{
-			id: 3,
-			time: "06:00 pm",
-			type: "Dinner",
-			name: "Spicy Jollof",
-			restaurant: "Nao Restaurants",
-			packs: "2 Packs",
-			price: "7,000",
-			image: "/placeholder.svg?height=60&width=60",
-		},
-	],
-};
-
 const SchedulePage = () => {
 	const [currentDate, setCurrentDate] = useState(new Date());
-	const [selectedDate, setSelectedDate] = useState(new Date(2025, 2, 15)); // March 15, 2025
+	const [selectedDate, setSelectedDate] = useState(new Date()); // March 15, 2025
 	const [needsApproval, setNeedsApproval] = useState(true);
+	const [scheduledMeals, setScheduledMeals] = useState({});
 	const router = useRouter();
 
 	const monthNames = [
@@ -137,12 +103,18 @@ const SchedulePage = () => {
 		}
 	};
 
+	// const formatDateKey = (date: Date) => {
+	// 	const year = date.getFullYear();
+	// 	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	// 	const day = date.getDate().toString().padStart(2, "0");
+	// 	return `${year}-${month}-${day}`;
+	// };
 	const formatDateKey = (date: Date) => {
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, "0");
-		const day = date.getDate().toString().padStart(2, "0");
-		return `${year}-${month}-${day}`;
-	};
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
 
 	const isDateSelected = (day: number) => {
 		if (!day) return false;
@@ -169,17 +141,13 @@ const SchedulePage = () => {
 		return scheduledMeals[dateKey]?.length > 0;
 	};
 
-	const handleAddMeal = () => {
-		router.push("/(tabs)/home/homePage");
-	};
-
 	const handleScheduleMeal = () => {
 		router.push("/(root)/create");
 	};
 
 	const selectedDateKey = formatDateKey(selectedDate);
-	const selectedMeals = scheduledMeals[selectedDateKey] || [];
-	const hasScheduledMeals = selectedMeals.length > 0;
+    const selectedMeals = scheduledMeals[selectedDateKey] || [];
+    const hasScheduledMeals = selectedMeals.length > 0;
 
 	const getMealTypeColor = (type: string) => {
 		switch (type) {
@@ -194,6 +162,52 @@ const SchedulePage = () => {
 		}
 	};
 
+	const deleteOrder = (mealId: number) => {
+        Alert.alert(
+            "Delete Order",
+            "Are you sure you want to delete this scheduled meal?",
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: () => {
+                        setScheduledMeals((prev) => {
+                            const updatedMeals = { ...prev };
+                            updatedMeals[selectedDateKey] = updatedMeals[selectedDateKey].filter(
+                                (meal) => meal.id !== mealId
+                            );
+                            // Remove the date key if no meals left for that date
+                            if (updatedMeals[selectedDateKey].length === 0) {
+                                delete updatedMeals[selectedDateKey];
+                            }
+                            return updatedMeals;
+                        });
+                    },
+                },
+            ],
+            { cancelable: true }
+        );
+    };
+
+	const handleAddMeal = () => {
+        const newMeal = {
+            id: Date.now(),
+            time: "10:00 am",
+            type: "Breakfast",
+            name: "New Meal",
+            restaurant: "New Restaurant",
+            packs: "1 Pack",
+            price: "5,000",
+            image: "/placeholder.svg?height=60&width=60",
+        };
+        setScheduledMeals((prev) => {
+            const key = selectedDateKey;
+            const meals = prev[key] ? [...prev[key], newMeal] : [newMeal];
+            return { ...prev, [key]: meals };
+        });
+    };
+	
 	const calendarWeeks = getCalendarData();
 	const currentMonthName = monthNames[currentDate.getMonth()];
 	const currentYear = currentDate.getFullYear();
@@ -346,7 +360,7 @@ const SchedulePage = () => {
 										<TouchableOpacity style={styles.reviewButton}>
 											<Text style={styles.reviewButtonText}>Review</Text>
 										</TouchableOpacity>
-										<TouchableOpacity style={styles.deleteButton}>
+										<TouchableOpacity style={styles.deleteButton} onPress={() => deleteOrder(meal.id)}>
 											<Ionicons
 												name="trash-outline"
 												size={20}

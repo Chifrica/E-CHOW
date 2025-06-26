@@ -17,7 +17,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 
 // Import the customize order modal
-import CustomizeOrderModal from "@/components/CustomizeOrderModal";
+import CustomizeOrderModal from "../../../components/CustomizeOrderModal";
 import DeliveryAddressModal from "../../../components/deliveryAddressModal";
 
 import {
