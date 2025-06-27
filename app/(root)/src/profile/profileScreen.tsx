@@ -49,15 +49,15 @@ const ProfileScreen: React.FC = () => {
 
 	const handlePrivacyPolicy = () => {
 		router.push("/(root)/src/(echowDetails)/PrivacyPolicy");
-	}
+	};
 
 	const handleAboutUs = () => {
 		router.push("/(root)/src/(echowDetails)/AboutUs");
-	}
+	};
 
 	const handleReferral = () => {
 		router.push("/(root)/src/(echowDetails)/Referral");
-	}
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -162,6 +162,7 @@ const ProfileScreen: React.FC = () => {
 							/>
 						}
 						label="Help and Support"
+						onPress={() => router.push("/(root)/HelpSupportScreen")}
 					/>
 					<Option
 						icon={
@@ -261,18 +262,18 @@ const Option: React.FC<{
 );
 
 const styles = StyleSheet.create({
-	container: { 
-		flex: 1, 
-		backgroundColor: "#fff" 
+	container: {
+		flex: 1,
+		backgroundColor: "#fff",
 	},
-	scrollContainer: { 
-		padding: 20 
+	scrollContainer: {
+		padding: 20,
 	},
-	header: { 
-		flexDirection: "row", 
-		alignItems: "center", 
+	header: {
+		flexDirection: "row",
+		alignItems: "center",
 		marginTop: 10,
-		marginBottom: 20 
+		marginBottom: 20,
 	},
 	avatar: {
 		width: 60,
