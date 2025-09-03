@@ -31,7 +31,9 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 	meal,
 }) => {
 	const [selectedSize, setSelectedSize] = useState("Big Size");
-	const [selectedProteins, setSelectedProteins] = useState<string[]>([]);
+	const [selectedProteins, setSelectedProteins] = useState<{
+		[key: string]: number;
+	}>({});
 	const [selectedDrinks, setSelectedDrinks] = useState<{
 		[key: string]: number;
 	}>({});
@@ -58,12 +60,11 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 		{ name: "Yoghurt", price: 800 },
 	];
 
-	const toggleProtein = (protein: string) => {
-		setSelectedProteins((prev) =>
-			prev.includes(protein)
-				? prev.filter((p) => p !== protein)
-				: [...prev, protein]
-		);
+	const updateProteinQuantity = (protein: string, change: number) => {
+		setSelectedProteins((prev) => ({
+			...prev,
+			[protein]: Math.max(0, (prev[protein] || 0) + change),
+		}));
 	};
 
 	const updateDrinkQuantity = (drink: string, change: number) => {
@@ -76,10 +77,13 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 	const calculateTotal = () => {
 		const sizePrice =
 			sizeOptions.find((s) => s.name === selectedSize)?.price || 0;
-		const proteinPrice = selectedProteins.reduce((sum, protein) => {
-			const proteinOption = proteinOptions.find((p) => p.name === protein);
-			return sum + (proteinOption?.price || 0);
-		}, 0);
+		const proteinPrice = Object.entries(selectedProteins).reduce(
+			(sum, [protein, qty]) => {
+				const proteinOption = proteinOptions.find((p) => p.name === protein);
+				return sum + (proteinOption?.price || 0) * qty;
+			},
+			0
+		);
 		const drinkPrice = Object.entries(selectedDrinks).reduce(
 			(sum, [drink, qty]) => {
 				const drinkOption = drinkOptions.find((d) => d.name === drink);
@@ -185,40 +189,56 @@ const CustomizeOrderModal: React.FC<CustomizeOrderModalProps> = ({
 					<View style={styles.section}>
 						<Text style={styles.sectionTitle}>Add Protein</Text>
 						{proteinOptions.map((protein) => (
-							<TouchableOpacity
+							<View
 								key={protein.name}
-								style={styles.optionRow}
-								onPress={() => toggleProtein(protein.name)}>
+								style={styles.optionRow}>
 								<View style={styles.optionLeft}>
-									<View
-										style={[
-											styles.radioButton,
-											selectedProteins.includes(protein.name) &&
-												styles.radioButtonSelected,
-										]}>
-										{selectedProteins.includes(protein.name) && (
-											<View style={styles.radioButtonInner} />
-										)}
-									</View>
+									<Ionicons
+										name="restaurant-outline"
+										size={20}
+										color="#666"
+									/>
 									<Text style={styles.optionText}>{protein.name}</Text>
 								</View>
-								<View style={styles.optionRight}>
+								<View style={styles.drinkControls}>
 									<Text style={styles.optionPrice}>₦{protein.price}</Text>
-									<TouchableOpacity
-										style={styles.addButton}
-										onPress={() => toggleProtein(protein.name)}>
-										<Ionicons
-											name={
-												selectedProteins.includes(protein.name)
-													? "remove"
-													: "add"
-											}
-											size={16}
-											color="#FF8C42"
-										/>
-									</TouchableOpacity>
+									{selectedProteins[protein.name] > 0 ? (
+										<View style={styles.quantityControls}>
+											<TouchableOpacity
+												style={styles.quantityButton}
+												onPress={() => updateProteinQuantity(protein.name, -1)}>
+												<Ionicons
+													name="remove"
+													size={16}
+													color="#FF8C42"
+												/>
+											</TouchableOpacity>
+											<Text style={styles.quantityText}>
+												{selectedProteins[protein.name]}
+											</Text>
+											<TouchableOpacity
+												style={styles.quantityButton}
+												onPress={() => updateProteinQuantity(protein.name, 1)}>
+												<Ionicons
+													name="add"
+													size={16}
+													color="#FF8C42"
+												/>
+											</TouchableOpacity>
+										</View>
+									) : (
+										<TouchableOpacity
+											style={styles.addButton}
+											onPress={() => updateProteinQuantity(protein.name, 1)}>
+											<Ionicons
+												name="add"
+												size={16}
+												color="#FF8C42"
+											/>
+										</TouchableOpacity>
+									)}
 								</View>
-							</TouchableOpacity>
+							</View>
 						))}
 					</View>
 

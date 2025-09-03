@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#6D6C69",
 	},
 	horizontalLineText: {
-		width: 100,
+		marginHorizontal: 10,
 		textAlign: "center",
 		color: "#6D6C69",
 		lineHeight: 24,
@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
 		fontFamily: "Switzerland",
 	},
 	buttonContainer: {
+		width: 40,
+		height: 40,
 		marginRight: 20,
 		backgroundColor: "#D6D6D6",
 		borderRadius: 100,

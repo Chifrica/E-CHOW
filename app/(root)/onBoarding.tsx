@@ -45,80 +45,80 @@ const OnboardingScreen = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView>
-				<ScrollView
-					onScroll={onchange}
-					showsHorizontalScrollIndicator={false}
-					pagingEnabled
-					horizontal
-					ref={scrollViewRef}
-					scrollEventThrottle={16}>
-					{slides.map((slide, index) => (
-						<View
+			{/* <ScrollView> */}
+			<ScrollView
+				onScroll={onchange}
+				showsHorizontalScrollIndicator={false}
+				pagingEnabled
+				horizontal
+				ref={scrollViewRef}
+				scrollEventThrottle={16}>
+				{slides.map((slide, index) => (
+					<View
+						key={index}
+						style={{ width }}>
+						<Image
 							key={index}
-							style={{ width }}>
-							<Image
-								key={index}
-								resizeMode="contain"
-								source={slide.image}
-								style={{
-									width: width,
-									height: 500,
-								}}
-							/>
+							resizeMode="contain"
+							source={slide.image}
+							style={{
+								width: width,
+								height: 300,
+							}}
+						/>
 
-							<View style={styles.dotContainer}>
-								{slides.map((slide, index) => (
-									<Text
-										key={index}
-										style={
-											imgActive == index ? styles.dotActive : styles.dotInActive
-										}>
-										{/* { imgActive == index ? '⬬' : '●' } */}●
-									</Text>
-								))}
-							</View>
-
-							<View style={{ marginTop: 2 }}>
+						<View style={styles.dotContainer}>
+							{slides.map((slide, index) => (
 								<Text
-									style={{
-										fontWeight: "700",
-										fontSize: 30,
-										fontFamily: "sans",
-										padding: 10,
-									}}>
-									{typeof slide.title == "string" ? (
-										slide.title
-									) : (
-										<>{slide.title}</>
-									)}
+									key={index}
+									style={
+										imgActive == index ? styles.dotActive : styles.dotInActive
+									}>
+									{/* { imgActive == index ? '⬬' : '●' } */}●
 								</Text>
-								<Text style={{ fontSize: 18, color: "#667085", padding: 10 }}>
-									{Array.isArray(slide.description)
-										? slide.description.map((part, index) =>
-												typeof part === "string" ? (
-													part
-												) : (
-													<Text
-														key={index}
-														style={{
-															color: part.highlight ? "#E58945" : "#667085",
-														}}>
-														{part.text}
-													</Text>
-												)
-										  )
-										: slide.description}
-								</Text>
-							</View>
+							))}
 						</View>
-					))}
-				</ScrollView>
 
-				{/* <GlobalProvider> */}
-				<SignInOutCard />
-				{/* </GlobalProvider> */}
+						<View style={{ marginTop: 2 }}>
+							<Text
+								style={{
+									fontWeight: "700",
+									fontSize: 30,
+									fontFamily: "sans",
+									padding: 10,
+								}}>
+								{typeof slide.title == "string" ? (
+									slide.title
+								) : (
+									<>{slide.title}</>
+								)}
+							</Text>
+							<Text style={{ fontSize: 18, color: "#667085", padding: 10 }}>
+								{Array.isArray(slide.description)
+									? slide.description.map((part, index) =>
+											typeof part === "string" ? (
+												part
+											) : (
+												<Text
+													key={index}
+													style={{
+														color: part.highlight ? "#E58945" : "#667085",
+													}}>
+													{part.text}
+												</Text>
+											)
+									  )
+									: slide.description}
+							</Text>
+						</View>
+					</View>
+				))}
 			</ScrollView>
+
+			{/* <GlobalProvider> */}
+			<SignInOutCard />
+			{/* </GlobalProvider> */}
+			{/* </ScrollView> */}
 		</SafeAreaView>
 	);
 };

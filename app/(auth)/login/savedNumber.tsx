@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -10,7 +11,6 @@ import {
 	Dimensions,
 	Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
@@ -24,8 +24,6 @@ const SavedNumber = () => {
 	const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 
 	const router = useRouter();
-
-	// Finger print and Face Identification
 
 	const fallBackToDefaultAuth = () => {
 		console.log("fall back to password authentication");
@@ -46,9 +44,8 @@ const SavedNumber = () => {
 	};
 
 	const handleBiometric = async () => {
-		const isBiometricSupported = await LocalAuthentication.hasHardwareAsync();
-
-		if (!isBiometricSupported) {
+		const hasHardware = await LocalAuthentication.hasHardwareAsync();
+		if (!hasHardware) {
 			return alertComponent(
 				"Please enter your password",
 				"Biometric not supported",
@@ -57,15 +54,8 @@ const SavedNumber = () => {
 			);
 		}
 
-		let supportedBiometrics;
-		if (isBiometricSupported) {
-			supportedBiometrics =
-				await LocalAuthentication.supportedAuthenticationTypesAsync();
-		}
-
-		const savedBiometricRecords = await LocalAuthentication.isEnrolledAsync();
-
-		if (!savedBiometricRecords) {
+		const enrolled = await LocalAuthentication.isEnrolledAsync();
+		if (!enrolled) {
 			return alertComponent(
 				"Biometric record not found",
 				"Please login with your password",
@@ -74,13 +64,13 @@ const SavedNumber = () => {
 			);
 		}
 
-		const biometricAuth = await LocalAuthentication.authenticateAsync({
+		const result = await LocalAuthentication.authenticateAsync({
 			promptMessage: "Authenticate to continue",
 			cancelLabel: "Cancel",
 			disableDeviceFallback: true,
 		});
 
-		if (biometricAuth.success) {
+		if (result.success) {
 			router.push("/(root)/src/location/currentLocation");
 		} else {
 			Alert.alert("Authentication Failed", "Please try again.");
@@ -89,8 +79,8 @@ const SavedNumber = () => {
 
 	useEffect(() => {
 		(async () => {
-			const isBiometricSupported = await LocalAuthentication.hasHardwareAsync();
-			setIsBiometricSupported(isBiometricSupported);
+			const supported = await LocalAuthentication.hasHardwareAsync();
+			setIsBiometricSupported(supported);
 		})();
 	}, []);
 
@@ -98,7 +88,7 @@ const SavedNumber = () => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView
 				contentContainerStyle={styles.scrollView}
-				showsHorizontalScrollIndicator>
+				keyboardDismissMode="on-drag">
 				<View style={styles.header}>
 					<Text style={styles.headerText}>Welcome back</Text>
 					<Text style={styles.subHeaderText}>Log in to your account</Text>
@@ -127,14 +117,9 @@ const SavedNumber = () => {
 					<Text style={styles.checkboxLabel}>Save Phone Number</Text>
 				</View>
 
-				{/* <Image
-          source={require('@/assets/icons/facial recogn.png')}
-          style={{ alignSelf: 'center', marginTop: '50%', marginBottom: 40 }}
-        /> */}
-
 				<TouchableOpacity
 					onPress={handleBiometric}
-					style={{ alignSelf: "center", marginTop: "50%", marginBottom: 40 }}>
+					style={styles.fingerprintButton}>
 					<Entypo
 						name="fingerprint"
 						size={50}
@@ -149,21 +134,19 @@ const SavedNumber = () => {
 					<Text style={styles.buttonText}>Continue</Text>
 				</TouchableOpacity>
 
-				<Text style={styles.signupText}>
-					Don't have an account?
+				<View style={styles.signupContainer}>
+					<Text style={styles.signupText}>Don't have an account?</Text>
 					<TouchableOpacity
 						onPress={() => router.push("../signup/registration")}>
-						<Text
-							style={{ color: "#E58945", fontWeight: "bold", fontSize: 18 }}>
-							{" "}
-							Sign Up
-						</Text>
+						<Text style={styles.signupLink}> Sign Up</Text>
 					</TouchableOpacity>
-				</Text>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	);
 };
+
+export default SavedNumber;
 
 const styles = StyleSheet.create({
 	container: {
@@ -175,8 +158,8 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 	},
 	header: {
-		marginBottom: 50,
 		marginTop: 15,
+		marginBottom: 50,
 	},
 	headerText: {
 		fontSize: 30,
@@ -204,11 +187,10 @@ const styles = StyleSheet.create({
 	checkboxContainer: {
 		flexDirection: "row",
 		alignItems: "center",
-		marginBottom: 24,
 		justifyContent: "center",
+		marginBottom: 24,
 	},
 	checkbox: {
-		backgroundColor: "blue",
 		borderRadius: 4,
 		borderColor: "gray",
 	},
@@ -216,6 +198,11 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: "400",
 		paddingLeft: 5,
+	},
+	fingerprintButton: {
+		alignSelf: "center",
+		marginTop: "50%",
+		marginBottom: 40,
 	},
 	button: {
 		backgroundColor: "#E58945",
@@ -231,13 +218,21 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: "bold",
 	},
+	signupContainer: {
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		marginTop: 20,
+	},
 	signupText: {
-		marginTop: 8,
 		fontSize: 18,
 		fontWeight: "400",
 		color: "#667085",
-		textAlign: "center",
+	},
+	signupLink: {
+		fontSize: 18,
+		fontWeight: "bold",
+		color: "#E58945",
 	},
 });
-
-export default SavedNumber;

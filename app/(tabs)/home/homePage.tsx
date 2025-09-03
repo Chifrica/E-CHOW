@@ -142,7 +142,7 @@ const HomePage = () => {
 					horizontal
 					showsHorizontalScrollIndicator={false}
 					contentContainerStyle={{ paddingRight: 20 }}
-					style={{ width: "100%" }}
+					style={{ width: "100%", paddingLeft: 15 }}
 				/>
 
 				{/* Category Section */}
@@ -155,7 +155,6 @@ const HomePage = () => {
 					<ScrollView
 						horizontal
 						showsHorizontalScrollIndicator={false}
-						contentContainerStyle={{ paddingRight: 20 }}
 						style={{ width: "100%" }}>
 						<View style={styles.categoryItem}>
 							<View style={styles.categoryIconContainer}>
@@ -295,7 +294,7 @@ const HomePage = () => {
 						keyExtractor={(item, index) => index.toString()}
 						horizontal
 						showsHorizontalScrollIndicator={false}
-						contentContainerStyle={{ paddingRight: 20 }}
+						contentContainerStyle={{ paddingRight: 10, paddingLeft: 10 }}
 						style={{ width: "100%" }}
 					/>
 				</View>
@@ -425,13 +424,13 @@ const styles = StyleSheet.create({
 	},
 	scrollView: {
 		flex: 1,
-		paddingHorizontal: 15,
 	},
 	header: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
 		paddingVertical: 10,
+		paddingHorizontal: 15,
 	},
 	miniHeader: {
 		flexDirection: "row",
@@ -480,6 +479,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		alignItems: "center",
 		marginBottom: 15,
+		marginHorizontal: 15,
 	},
 	categoryTitle: {
 		fontSize: 16,
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
 		color: "#333",
 	},
 	videoContainer: {
-		marginRight: 15,
+		marginHorizontal: 15,
 		width: width - 50,
 	},
 	videos: {
@@ -625,6 +625,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-between",
+		paddingHorizontal: 15,
 	},
 	gridItem: {
 		width: "48%",
@@ -677,6 +678,7 @@ const styles = StyleSheet.create({
 	restaurantItem: {
 		flexDirection: "row",
 		marginBottom: 15,
+		marginHorizontal: 15,
 		backgroundColor: "#FFFFFF",
 		borderRadius: 10,
 		padding: 10,

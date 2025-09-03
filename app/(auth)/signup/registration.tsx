@@ -79,8 +79,8 @@ const Registration = () => {
 					<Text style={styles.buttonText}>Continue</Text>
 				</TouchableOpacity>
 
-				<Text style={styles.signupText}>
-					Already have an account?
+				<View style={styles.signinContainer}>
+					<Text style={styles.signupText}>Already have an account?</Text>
 					<TouchableOpacity onPress={handleSignIn}>
 						<Text
 							style={{ color: "#E58945", fontWeight: "bold", fontSize: 18 }}>
@@ -88,7 +88,7 @@ const Registration = () => {
 							Login Here{" "}
 						</Text>
 					</TouchableOpacity>
-				</Text>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -154,11 +154,16 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: "bold",
 	},
-	signupText: {
+	signinContainer: {
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
 		marginTop: 8,
+	},
+	signupText: {
 		fontSize: 18,
 		fontWeight: 400,
 		color: "#667085",
-		textAlign: "center",
 	},
 });
