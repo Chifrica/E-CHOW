@@ -15,6 +15,8 @@ import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import * as LocalAuthentication from "expo-local-authentication";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const { width } = Dimensions.get("window");
 
@@ -45,6 +47,27 @@ const SavedNumber = () => {
 		]);
 	};
 
+	// Function to check if user has logged in with Google before
+	const hasLoggedInWithGoogle = async (): Promise<boolean> => {
+		try {
+			const loggedIn = await AsyncStorage.getItem("googleLoggedIn");
+			return loggedIn === "true";
+		} catch (error) {
+			console.error("Error checking Google login status:", error);
+			return false;
+		}
+	};
+
+	// Example: call this after successful Google login
+	const setGoogleLogin = async () => {
+		try {
+			await AsyncStorage.setItem("googleLoggedIn", "true");
+		} catch (error) {
+			console.error("Error saving Google login status:", error);
+		}
+	};
+
+
 	const handleBiometric = async () => {
 		const isBiometricSupported = await LocalAuthentication.hasHardwareAsync();
 
@@ -58,6 +81,21 @@ const SavedNumber = () => {
 		}
 
 		let supportedBiometrics;
+		if (isBiometricSupported) {
+			supportedBiometrics =
+				await LocalAuthentication.supportedAuthenticationTypesAsync();
+		}
+
+		if(!isBiometricSupported) {
+			return alertComponent(
+				"Biometric not supported",
+				"Please enter your password",
+				"OK",
+				() => fallBackToDefaultAuth()
+			);
+		}
+
+		// let supportedBiometrics;
 		if (isBiometricSupported) {
 			supportedBiometrics =
 				await LocalAuthentication.supportedAuthenticationTypesAsync();
@@ -81,7 +119,16 @@ const SavedNumber = () => {
 		});
 
 		if (biometricAuth.success) {
-			router.push("/(root)/src/location/currentLocation");
+			const loggedBefore = await hasLoggedInWithGoogle();
+			if (loggedBefore) {
+				router.push("/(root)/src/location/currentLocation");
+			} else {
+				Alert.alert(
+					"Login Failed", 
+					"No previous login found. Please log in with Google."
+				);
+				router.push("/(auth)/signup/registration");
+			}
 		} else {
 			Alert.alert("Authentication Failed", "Please try again.");
 		}

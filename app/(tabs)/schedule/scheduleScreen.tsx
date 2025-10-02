@@ -139,6 +139,30 @@ const SchedulePage = () => {
 		router.push("/(root)/create");
 	};
 
+	const handleClearAll = () => {
+		if (Object.keys(scheduledMeals).length === 0) {
+			Alert.alert("No meals", "There are no scheduled meals to clear.");
+			return;
+		}
+
+		Alert.alert(
+			"Clear All",
+			"Are you sure you want to clear all scheduled meals?",
+			[
+				{ text: "Cancel", style: "cancel" },
+				{
+					text: "Clear",
+					style: "destructive",
+					onPress: () => {
+						setScheduledMeals({});
+					},
+				},
+			],
+			{ cancelable: true }
+		);
+	};
+
+
 	const selectedDateKey = formatDateKey(selectedDate);
     const selectedMeals = scheduledMeals[selectedDateKey] || [];
     const hasScheduledMeals = selectedMeals.length > 0;
@@ -213,7 +237,7 @@ const SchedulePage = () => {
 			{/* Header */}
 			<View style={styles.header}>
 				<Text style={styles.headerTitle}>Schedule Meal</Text>
-				<TouchableOpacity onPress={() => {}}>
+				<TouchableOpacity onPress={handleClearAll}>
 					<Text style={styles.clearAll}>Clear all</Text>
 				</TouchableOpacity>
 			</View>
