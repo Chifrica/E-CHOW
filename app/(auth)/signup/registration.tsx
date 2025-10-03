@@ -2,7 +2,6 @@ import GoogleAppleSignup from "../../../components/googleAppleSignup";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-	SafeAreaView,
 	View,
 	Text,
 	TextInput,
@@ -10,6 +9,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Registration = () => {
 	const [phoneNumber, setPhoneNumber] = useState("");

@@ -1,7 +1,6 @@
 import {
 	View,
 	Text,
-	SafeAreaView,
 	ScrollView,
 	TouchableOpacity,
 	StyleSheet,
@@ -11,6 +10,7 @@ import React from "react";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useLocation } from "../context/locationContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const width = Dimensions.get("window").width;
 

@@ -3,7 +3,6 @@ import {
 	Text,
 	StyleSheet,
 	ScrollView,
-	SafeAreaView,
 	TextInput,
 	TouchableOpacity,
 	Dimensions,
@@ -15,6 +14,7 @@ import { useRouter } from "expo-router";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useLocation } from "../context/locationContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const width = Dimensions.get("window").width;
 

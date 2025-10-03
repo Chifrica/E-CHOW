@@ -4,7 +4,6 @@ import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
-	SafeAreaView,
 	ScrollView,
 	Image,
 } from "react-native";
@@ -23,6 +22,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { useNavigation } from "@react-navigation/native";
 import { exploreData } from "../../data/explore-data";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const OrderSummaryScreen: React.FC = () => {
 	const router = useRouter();
@@ -86,7 +86,9 @@ const OrderSummaryScreen: React.FC = () => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView
 				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}>
+				showsVerticalScrollIndicator={false}
+			>
+			
 				<View style={styles.header}>
 					<TouchableOpacity
 						onPress={handleBack}
@@ -285,7 +287,7 @@ const OrderSummaryScreen: React.FC = () => {
 						<MaterialIcons name="chevron-right" size={20} color="#000" />
 					</TouchableOpacity>
 				</View>
-			</View>
+				</View>
 
 				{/* Proceed Button */}
 				<TouchableOpacity
@@ -332,7 +334,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#F8F8F8",
-		top: 30,
 	},
 	scrollView: {
 		flex: 1,
@@ -347,7 +348,7 @@ const styles = StyleSheet.create({
 		marginRight: 16,
 	},
 	headerTitle: {
-		fontSize: 20,
+		fontSize: 24,
 		fontWeight: "bold",
 	},
 	foodInfo: {

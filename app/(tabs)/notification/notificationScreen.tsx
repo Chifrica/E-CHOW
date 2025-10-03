@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import { notificationData } from "./notification-data";
 import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const NotificationScreen: React.FC = () => {
 	// const navigateToProfile = () => {
@@ -14,37 +15,42 @@ const NotificationScreen: React.FC = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text style={styles.heading}>Notifications</Text>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				style={styles.scrollView}
+			>
+				<Text style={styles.header}>Notifications</Text>
 
-			<View style={styles.notifications}>
-				{notificationData.map((notification) => (
-					<View
-						key={notification.id}
-						style={styles.notificationContainer}>
-						<View style={styles.notificationHeader}>
-							<View style={styles.userCard}>
-								<Image
-									style={styles.userImg}
-									source={{ uri: profileImage }}
-								/>
-								<Text
-									style={styles.userName}
-									// onPress={navigateToProfile}
-								>
-									{user?.fullName}
-								</Text>
+				<View style={styles.notifications}>
+					{notificationData.map((notification) => (
+						<View
+							key={notification.id}
+							style={styles.notificationContainer}>
+							<View style={styles.notificationHeader}>
+								<View style={styles.userCard}>
+									<Image
+										style={styles.userImg}
+										source={{ uri: profileImage }}
+									/>
+									<Text
+										style={styles.userName}
+										// onPress={navigateToProfile}
+									>
+										{user?.fullName}
+									</Text>
+								</View>
+								<Text style={styles.time}>{notification.time}</Text>
 							</View>
-							<Text style={styles.time}>{notification.time}</Text>
-						</View>
 
-						<View style={styles.notificationBody}>
-							<Text style={styles.message}>{notification.message}</Text>
-						</View>
+							<View style={styles.notificationBody}>
+								<Text style={styles.message}>{notification.message}</Text>
+							</View>
 
-						<View style={styles.horizontalRule} />
-					</View>
-				))}
-			</View>
+							<View style={styles.horizontalRule} />
+						</View>
+					))}
+				</View>
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
@@ -55,15 +61,16 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#FFFFFF",
-		paddingLeft: 16,
-		paddingRight: 16,
-		paddingBottom: 16,
+	},
+	scrollView: {
+		flex: 1,
+		paddingHorizontal: 15,
 	},
 
-	heading: {
+	header: {
 		fontSize: 25,
 		fontWeight: "700",
-		paddingVertical: 20,
+		paddingVertical: 10,
 	},
 
 	notifications: {

@@ -8,7 +8,6 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	ScrollView,
-	SafeAreaView,
 	Alert,
 	Image,
 } from "react-native";
@@ -16,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProfileDetailsScreen = () => {
 	const { user } = useUser();

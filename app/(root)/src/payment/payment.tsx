@@ -6,7 +6,6 @@ import {
 	StyleSheet,
 	Dimensions,
 	Animated,
-	SafeAreaView,
 	Image,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
@@ -14,6 +13,7 @@ import { usePaystack } from "react-native-paystack-webview";
 import { router } from "expo-router";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width, height } = Dimensions.get("window");
 

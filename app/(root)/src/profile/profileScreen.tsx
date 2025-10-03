@@ -7,7 +7,6 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	Alert,
-	SafeAreaView,
 } from "react-native";
 import {
 	Ionicons,
@@ -18,6 +17,7 @@ import {
 import { router, useRouter } from "expo-router";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProfileScreen: React.FC = () => {
 	const navigateToProfileDetails = () => {

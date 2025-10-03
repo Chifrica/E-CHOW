@@ -6,13 +6,13 @@ import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
-	SafeAreaView,
 	StatusBar,
 	ScrollView,
 	Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SchedulePage = () => {
 	const [currentDate, setCurrentDate] = useState(new Date());
@@ -232,7 +232,7 @@ const SchedulePage = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar barStyle="dark-content" />
+			{/* <StatusBar barStyle="dark-content" /> */}
 
 			{/* Header */}
 			<View style={styles.header}>
@@ -466,9 +466,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 16,
 	},
 	headerTitle: {
-		fontSize: 20,
+		fontSize: 24,
 		fontWeight: "bold",
-		color: "#000",
+		// color: "#000",
 	},
 	clearAll: {
 		fontSize: 16,

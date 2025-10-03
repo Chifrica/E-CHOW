@@ -1,7 +1,6 @@
 import {
 	View,
 	Text,
-	SafeAreaView,
 	TextInput,
 	ScrollView,
 	TouchableOpacity,
@@ -16,6 +15,7 @@ import { useRouter } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import * as LocalAuthentication from "expo-local-authentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const { width } = Dimensions.get("window");

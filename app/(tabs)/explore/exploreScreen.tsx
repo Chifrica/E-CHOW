@@ -1,7 +1,6 @@
 import {
 	View,
 	Text,
-	SafeAreaView,
 	ScrollView,
 	StyleSheet,
 	Image,
@@ -13,6 +12,7 @@ import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {exploreData} from "../../../data/explore-data";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const width = Dimensions.get("window").width;
 
@@ -38,7 +38,8 @@ const ExploreScreen = () => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView
 				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}>
+				showsVerticalScrollIndicator={false}
+			>
 				<View style={styles.header}>
 					<Text style={styles.headerTitle}>Explore</Text>
 					<View style={styles.miniHeader}>
@@ -164,21 +165,17 @@ export default ExploreScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingLeft: 16,
-		paddingRight: 16,
-		paddingBottom: 16,
-		// paddingTop: 5,
+		backgroundColor: "#FFFFFF"
 	},
 	scrollView: {
 		flexGrow: 1,
+		paddingHorizontal: 15,
 	},
 	header: {
 		flexDirection: "row",
 		alignItems: "center",
-		marginHorizontal: 10,
 		justifyContent: "space-between",
-		paddingVertical: 20,
-		// marginTop: 20
+		paddingVertical: 10,
 	},
 	miniHeader: {
 		flexDirection: "row",

@@ -6,7 +6,6 @@ import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
-	SafeAreaView,
 	StatusBar,
 	ScrollView,
 } from "react-native";
@@ -17,6 +16,7 @@ import { useUser } from "@clerk/clerk-expo";
 // Import your existing components
 import DateTimePickerModal from "../../components/DateTimePicket";
 import MealTypeModal from "../../components/MealTypeModal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CreateSchedulePage = () => {
 	const [selectedTime, setSelectedTime] = useState("Schedule");

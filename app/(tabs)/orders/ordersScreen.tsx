@@ -6,11 +6,12 @@ import {
 	Image,
 	TouchableOpacity,
 	FlatList,
-	SafeAreaView,
 	StatusBar,
+	ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomizeOrderModal from "../../../components/CustomizeOrderModal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Define TypeScript interfaces
 interface OrderItem {
@@ -207,59 +208,64 @@ const OrdersScreen: React.FC = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar barStyle="dark-content" />
-			<View style={styles.header}>
-				<Text style={styles.headerTitle}>My Orders</Text>
-				<TouchableOpacity onPress={toggleView}>
-					{viewType === "grid" ? (
-						<MaterialIcons
-							name="view-list"
-							size={24}
-							color="#000"
-						/>
-					) : (
-						<MaterialIcons
-							name="grid-view"
-							size={24}
-							color="#000"
-						/>
-					)}
-				</TouchableOpacity>
-			</View>
-
-			<View style={styles.tabContainer}>
-				{tabs.map((tab) => (
-					<TouchableOpacity
-						key={tab}
-						style={[styles.tab, activeTab === tab && styles.activeTab]}
-						onPress={() => setActiveTab(tab)}>
-						<Text
-							style={[
-								styles.tabText,
-								activeTab === tab && styles.activeTabText,
-							]}>
-							{tab}
-						</Text>
+			<ScrollView 
+				showsVerticalScrollIndicator={false}
+				style={styles.scrollView}
+			>	
+				<View style={styles.header}>
+					<Text style={styles.headerTitle}>My Orders</Text>
+					<TouchableOpacity onPress={toggleView}>
+						{viewType === "grid" ? (
+							<MaterialIcons
+								name="view-list"
+								size={24}
+								color="#000"
+							/>
+						) : (
+							<MaterialIcons
+								name="grid-view"
+								size={24}
+								color="#000"
+							/>
+						)}
 					</TouchableOpacity>
-				))}
-			</View>
+				</View>
 
-			{!hasOrders ? (
-				renderEmptyState()
-			) : (
-				<FlatList
-					data={orderData}
-					renderItem={viewType === "grid" ? renderGridItem : renderListItem}
-					keyExtractor={(item) => item.id}
-					numColumns={viewType === "grid" ? 1 : 1}
-					contentContainerStyle={styles.listContainer}
+				<View style={styles.tabContainer}>
+					{tabs.map((tab) => (
+						<TouchableOpacity
+							key={tab}
+							style={[styles.tab, activeTab === tab && styles.activeTab]}
+							onPress={() => setActiveTab(tab)}>
+							<Text
+								style={[
+									styles.tabText,
+									activeTab === tab && styles.activeTabText,
+								]}>
+								{tab}
+							</Text>
+						</TouchableOpacity>
+					))}
+				</View>
+
+				{!hasOrders ? (
+					renderEmptyState()
+				) : (
+					<FlatList
+						data={orderData}
+						renderItem={viewType === "grid" ? renderGridItem : renderListItem}
+						keyExtractor={(item) => item.id}
+						numColumns={viewType === "grid" ? 1 : 1}
+						contentContainerStyle={styles.listContainer}
+					/>
+				)}
+
+				<CustomizeOrderModal
+					visible={modalVisible}
+					onClose={() => setModalVisible(false)}
 				/>
-			)}
-
-			<CustomizeOrderModal
-				visible={modalVisible}
-				onClose={() => setModalVisible(false)}
-			/>
+			</ScrollView>
+			
 		</SafeAreaView>
 	);
 };
@@ -269,17 +275,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#F8F8F8",
 	},
+	scrollView: {
+		flex: 1,
+	},
 	header: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingHorizontal: 20,
+		paddingHorizontal: 25,
 		paddingVertical: 15,
 	},
 	headerTitle: {
 		fontSize: 24,
 		fontWeight: "bold",
-		color: "#000",
 	},
 	tabContainer: {
 		flexDirection: "row",
