@@ -25,26 +25,30 @@ const NotificationScreen: React.FC = () => {
 					{notificationData.map((notification) => (
 						<View
 							key={notification.id}
-							style={styles.notificationContainer}>
-							<View style={styles.notificationHeader}>
-								<View style={styles.userCard}>
+							style={styles.notificationContainer}
+						>
+								<View style={{ flexDirection: "row", alignItems: "center", marginRight: 10 }}>
 									<Image
 										style={styles.userImg}
 										source={{ uri: profileImage }}
 									/>
-									<Text
-										style={styles.userName}
-										// onPress={navigateToProfile}
-									>
-										{user?.fullName}
-									</Text>
-								</View>
-								<Text style={styles.time}>{notification.time}</Text>
-							</View>
+									<View style={styles.notificationBody}>
+										<View style={styles.userCard}>
+											<Text
+												style={styles.userName}
+												// onPress={navigateToProfile}
+											>
+												{user?.fullName}
+											</Text>
+											<Text style={styles.time}>{notification.time}</Text>
+										</View>
 
-							<View style={styles.notificationBody}>
-								<Text style={styles.message}>{notification.message}</Text>
-							</View>
+										{/* <View style={styles.notificationBody}> */}
+											<Text style={styles.message}>{notification.message}</Text>
+										{/* </View> */}
+									</View>
+								</View>
+								
 
 							<View style={styles.horizontalRule} />
 						</View>
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
 
 	header: {
 		fontSize: 25,
-		fontWeight: "700",
+		fontWeight: "bold",
 		paddingVertical: 10,
 	},
 
@@ -90,8 +94,10 @@ const styles = StyleSheet.create({
 
 	userCard: {
 		flexDirection: "row",
-		alignItems: "center",
-		gap: 10,
+		// alignItems: "center",
+		gap: "5",
+		justifyContent: "space-between",
+		marginRight: 10
 	},
 
 	userImg: {
@@ -111,7 +117,8 @@ const styles = StyleSheet.create({
 	},
 
 	notificationBody: {
-		marginLeft: 60,
+		marginLeft: 20,
+		marginRight: 40
 	},
 
 	message: {
