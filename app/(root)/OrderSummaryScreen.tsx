@@ -337,12 +337,12 @@ const styles = StyleSheet.create({
 	},
 	scrollView: {
 		flex: 1,
-		paddingHorizontal: 16,
+		paddingHorizontal: 15,
 	},
 	header: {
 		flexDirection: "row",
 		alignItems: "center",
-		paddingVertical: 16,
+		paddingVertical: 10,
 	},
 	backButton: {
 		marginRight: 16,

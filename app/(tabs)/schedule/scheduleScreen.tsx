@@ -462,13 +462,12 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingHorizontal: 16,
-		paddingVertical: 16,
+		paddingHorizontal: 18,
+		paddingVertical: 10,
 	},
 	headerTitle: {
 		fontSize: 24,
 		fontWeight: "bold",
-		// color: "#000",
 	},
 	clearAll: {
 		fontSize: 16,

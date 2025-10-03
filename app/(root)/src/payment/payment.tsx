@@ -117,8 +117,6 @@ const Payment = () => {
 		router.back();
 	}
 
-
-
 	return (
 		<SafeAreaView style={styles.container}>	
 			{/* Header */}
@@ -126,7 +124,7 @@ const Payment = () => {
                 <TouchableOpacity onPress={handleBack} style={styles.backButton}>
                     <Ionicons name="chevron-back" size={24} color="#000" />
                 </TouchableOpacity>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>Payment Method</Text>
+                <Text style={styles.headerTitle}>Payment Method</Text>
             </View>
 
             {/* Payment Method Section */}
@@ -247,14 +245,17 @@ const Payment = () => {
 const styles = StyleSheet.create({
 	container: { 
 		flex: 1, 
-		backgroundColor: "white", 
-		marginTop: 30 
+		backgroundColor: "#FFFFFF", 
 	},
 	header: { 
-		padding: 20, 
+		paddingVertical: 10, 
 		borderBottomWidth: 1, 
 		borderColor: "#ddd", 
 		flexDirection: "row", 
+	},
+	headerTitle: { 
+		fontSize: 24, 
+		fontWeight: "bold" 
 	},
 	paymentButton: {
 		backgroundColor: "#FF8C42",

@@ -282,8 +282,8 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingHorizontal: 25,
-		paddingVertical: 15,
+		paddingHorizontal: 20,
+		paddingVertical: 10,
 	},
 	headerTitle: {
 		fontSize: 24,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
 	},
 	tabContainer: {
 		flexDirection: "row",
-		marginHorizontal: 20,
+		marginHorizontal: 18,
 		backgroundColor: "#F0F0F0",
 		borderRadius: 30,
 		padding: 5,
