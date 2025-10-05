@@ -206,6 +206,17 @@ const OrdersScreen: React.FC = () => {
 		</TouchableOpacity>
 	);
 
+	const filteredOrders = orderData.filter((order) => {
+		if (activeTab === "Ongoing") {
+			return order.status === "Preparing";
+		} else if (activeTab === "Delivered") {
+			return order.status === "Delivered" || order.status === "Out for Delivery";
+		} else if (activeTab === "Canceled") {
+			return order.status === "Cancelled";
+		}
+		return false;
+	});
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView 
@@ -252,7 +263,7 @@ const OrdersScreen: React.FC = () => {
 					renderEmptyState()
 				) : (
 					<FlatList
-						data={orderData}
+						data={filteredOrders}
 						renderItem={viewType === "grid" ? renderGridItem : renderListItem}
 						keyExtractor={(item) => item.id}
 						numColumns={viewType === "grid" ? 1 : 1}

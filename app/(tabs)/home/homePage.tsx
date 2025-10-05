@@ -39,6 +39,7 @@ const HomePage = () => {
 		name: "Office",
 		address: "33, Rosebud, Oke...",
 	});
+	const [favorites, setFavorites] = useState<string[]>([]); 
 
 	const { user } = useUser();
 	const profileImage = user?.imageUrl;
@@ -69,6 +70,19 @@ const HomePage = () => {
 		setSelectedMeal(sampleMeals[mealIndex]);
 		setCustomizeModalVisible(true);
 	};
+
+	const toggleFavorite = (mealName: string) => {
+    setFavorites((prev) => {
+        if (prev.includes(mealName)) {
+            // remove if already favorite
+            return prev.filter((fav) => fav !== mealName);
+        } else {
+            // add to favorites
+            return [...prev, mealName];
+        }
+    });
+};
+
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -116,7 +130,17 @@ const HomePage = () => {
 								color="#61605F"
 							/>
 						</TouchableOpacity>
-						<TouchableOpacity style={styles.iconButton}>
+						<TouchableOpacity 
+							style={styles.iconButton}
+							onPress={() => router.push(
+								{ 
+									pathname: "/(root)/src/favorites/favorites", 
+									params: { 
+										favorites: JSON.stringify(favorites) 
+									} 
+								}
+							)}
+						>
 							<Feather
 								name="shopping-cart"
 								size={20}
@@ -263,11 +287,18 @@ const HomePage = () => {
 									<Text style={styles.recommendedBadgeText}>Very Healthy</Text>
 								</View>
 								<View style={styles.recommendedHeartContainer}>
-									<Ionicons
+									<TouchableOpacity onPress={() => toggleFavorite(item.name)}>
+										<Ionicons
+											name={favorites.includes(item.name) ? "heart" : "heart-outline"}
+											size={20}
+											color={favorites.includes(item.name) ? "red" : "#E58945"}
+										/>
+									</TouchableOpacity>
+									{/* <Ionicons
 										name="heart-outline"
 										size={20}
 										color="#E58945"
-									/>
+									/> */}
 								</View>
 								<View style={styles.recommendedDetails}>
 									<Text style={styles.recommendedTitle}>
@@ -319,12 +350,19 @@ const HomePage = () => {
 									style={styles.gridItemImage}
 								/>
 								<TouchableOpacity style={styles.heartIconContainer}>
-									<Ionicons
+									<TouchableOpacity onPress={() => toggleFavorite(item.title)}>
+										<Ionicons
+											name={favorites.includes(item.title) ? "heart" : "heart-outline"}
+											size={20}
+											color={favorites.includes(item.title) ? "red" : "#E58945"}
+										/>
+									</TouchableOpacity>
+									{/* <Ionicons
 										name="heart-outline"
 										size={20}
 										color="#FFFFFF"
-									/>
-								</TouchableOpacity>
+									/> */}
+								</TouchableOpacity> 
 								<View style={styles.gridItemOverlay}>
 									<Text style={styles.gridItemTitle}>
 										{index % 2 === 0
@@ -387,11 +425,18 @@ const HomePage = () => {
 								<Text style={styles.restaurantDistance}>10 min away</Text>
 							</View>
 							<TouchableOpacity style={styles.restaurantHeartContainer}>
-								<Ionicons
+								<TouchableOpacity onPress={() => toggleFavorite(item.title)}>
+										<Ionicons
+											name={favorites.includes(item.title) ? "heart" : "heart-outline"}
+											size={20}
+											color={favorites.includes(item.title) ? "red" : "#E58945"}
+										/>
+									</TouchableOpacity>
+								{/* <Ionicons
 									name="heart-outline"
 									size={20}
 									color="#E58945"
-								/>
+								/> */}
 							</TouchableOpacity>
 						</TouchableOpacity>
 					))}

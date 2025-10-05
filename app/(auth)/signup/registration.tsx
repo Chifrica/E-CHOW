@@ -111,18 +111,11 @@ const styles = StyleSheet.create({
 	},
 	headerText: {
 		fontSize: 30,
-		fontWeight: "700",
-		letterSpacing: -0.41,
-		lineHeight: 100,
-		fontFamily: "Switzerland",
+		fontWeight: "bold",
 	},
 	subHeaderText: {
 		fontSize: 18,
 		color: "#666",
-		fontWeight: "500",
-		letterSpacing: -0.41,
-		lineHeight: 20,
-		fontFamily: "Switzerland",
 	},
 	inputContainer: {
 		marginBottom: 24,

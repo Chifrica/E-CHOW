@@ -266,7 +266,8 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff" 
 	},
 	scrollContainer: { 
-		padding: 20 
+		flex: 1,
+		paddingHorizontal: 15 
 	},
 	header: { 
 		flexDirection: "row", 
@@ -281,8 +282,13 @@ const styles = StyleSheet.create({
 		marginRight: 15,
 		backgroundColor: "#eee",
 	},
-	name: { fontSize: 18, fontWeight: "bold" },
-	email: { color: "#666" },
+	name: { 
+		fontSize: 18, 
+		fontWeight: "bold" 
+	},
+	email: { 
+		color: "#666" 
+	},
 	walletCard: {
 		backgroundColor: "#0F172A",
 		borderRadius: 15,
@@ -319,7 +325,11 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		gap: 10,
 	},
-	walletText: { color: "#fff", fontSize: 16, marginTop: 5 },
+	walletText: { 
+		color: "#fff", 
+		fontSize: 16, 
+		marginTop: 5 
+	},
 	walletAmount: {
 		color: "#fff",
 		fontSize: 24,
@@ -332,8 +342,13 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 25,
 		borderRadius: 10,
 	},
-	topUpText: { color: "#fff", fontWeight: "bold" },
-	section: { marginBottom: 30 },
+	topUpText: { 
+		color: "#fff", 
+		fontWeight: "bold" 
+	},
+	section: { 
+		marginBottom: 30 
+	},
 	sectionTitle: {
 		fontWeight: "600",
 		fontSize: 14,
@@ -347,8 +362,14 @@ const styles = StyleSheet.create({
 		borderBottomColor: "#eee",
 		borderBottomWidth: 1,
 	},
-	optionLeft: { width: 30 },
-	optionText: { flex: 1, marginLeft: 10, fontSize: 16 },
+	optionLeft: { 
+		width: 30 
+	},
+	optionText: { 
+		flex: 1, 
+		marginLeft: 10, 
+		fontSize: 16 
+	},
 	bottomNav: {
 		flexDirection: "row",
 		justifyContent: "space-around",
@@ -365,7 +386,11 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	scheduleText: { color: "#fff", fontSize: 10, marginTop: 2 },
+	scheduleText: { 
+		color: "#fff", 
+		fontSize: 10, 
+		marginTop: 2 
+	},
 });
 
 export default ProfileScreen;

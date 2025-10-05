@@ -65,17 +65,23 @@ export const videosData = [
 
 export const recommendedData = [
 	{
+		id: 1,
+		name: "recommended1",
 		recommended: recommended.recommended1,
 		title: "Very Healthy",
 		label: "Very Healthy",
 		price: "\u20A6 3000",
 	},
 	{
+		id: 2,
+		name: "recommended2",
 		recommended: recommended.recommended1,
 		label: "recommended1",
 		price: "\u20A6 1500",
 	},
 	{
+		id: 3,
+		name: "recommended3",
 		recommended: recommended.recommended1,
 		label: "recommended1",
 		price: "\u20A6 4000",

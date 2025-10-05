@@ -108,16 +108,19 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		marginRight: 20,
 		backgroundColor: "#D6D6D6",
-		borderRadius: 100,
+		borderRadius: 50,
 		borderWidth: 1,
 		borderColor: "#D6D6D6",
 		justifyContent: "center",
 		alignItems: "center",
+		width: 50,
+		height: 50,
 	},
 	icon: {
 		width: 24,
 		height: 24,
-		margin: 5,
-		padding: 8,
+		resizeMode: "contain",
+		// margin: 5,
+		// padding: 8,
 	},
 });
