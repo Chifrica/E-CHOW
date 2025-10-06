@@ -7,43 +7,43 @@ import {
 	TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useGlobalContext } from "../lib/global-provider";
 import * as WebBrowser from "expo-web-browser";
 import Constants from "expo-constants";
+import {  useClerk } from "@clerk/clerk-expo";
 
 // Add this to handle WebAuthSession redirect
 WebBrowser.maybeCompleteAuthSession();
 
 const GoogleAppleSignup = () => {
 	const { refetch, loading, isLoggedIn } = useGlobalContext();
-
-	// Setup Clerk OAuth with required redirectUrl and proxyUrl
-	const { startOAuthFlow } = useOAuth({
-		strategy: "oauth_google",
-		// redirectUrl: "https://caring-sunfish-51.clerk.accounts.dev/v1/oauth_callback", // MUST match your Expo scheme
-		// redirectUrl: "https://caring-sunfish-51.clerk.accounts.dev/v1/oauth_callback", // Use your app's scheme
-	});
+	const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+	const { setActive } = useClerk();
 
 	if (!loading && isLoggedIn) return <Redirect href="/home/homePage" />;
 
 	const handleGoogleLogin = async () => {
-		try {
-			const result = await startOAuthFlow();
-			console.log("OAuth result:", result);
+  try {
+    const result = await startOAuthFlow();
 
-			if (result?.createdSessionId) {
-				// Apply the session
-				refetch(); // update global context state
-			} else {
-				Alert.alert("Error", "Google login failed");
-			}
-		} catch (error) {
-			console.error("Google login error:", error);
-			Alert.alert("Error", "Something went wrong during Google login");
-		}
-	};
+    if (result?.createdSessionId) {
+// 👇 This line is missing in your code
+      await setActive({ session: result.createdSessionId });
+
+      await refetch();
+
+      router.replace("/home/homePage");
+    } else {
+      Alert.alert("Error", "Google login failed");
+    }
+  } catch (error) {
+    console.error("Google login error:", error);
+    Alert.alert("Error", "Something went wrong during Google login");
+  }
+};
+	
 
 	const handleAppleDemo = () => {
 		Alert.alert("Info", "Apple login is under development.");
@@ -120,7 +120,5 @@ const styles = StyleSheet.create({
 		width: 24,
 		height: 24,
 		resizeMode: "contain",
-		// margin: 5,
-		// padding: 8,
 	},
 });

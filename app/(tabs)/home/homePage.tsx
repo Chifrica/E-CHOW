@@ -88,7 +88,8 @@ const HomePage = () => {
 		<SafeAreaView style={styles.container}>
 			<ScrollView
 				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}>
+				showsVerticalScrollIndicator={false}
+			>
 				<View style={styles.header}>
 					<View style={styles.miniHeader}>
 						<TouchableOpacity

@@ -69,8 +69,11 @@ const ProfileDetailsScreen = () => {
 	}, [name, email, phone, gender, dob]);
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<ScrollView contentContainerStyle={styles.container}>
+		<SafeAreaView style={styles.container}>
+			<ScrollView 
+				style={styles.scrollView}
+				showsVerticalScrollIndicator={false}
+			>
 				{/* Header */}
 				<View style={styles.header}>
 					<TouchableOpacity onPress={() => router.back()}>
@@ -191,18 +194,21 @@ const ProfileDetailsScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: "#F8F8F8",
+	},
+	scrollView: {
+		flex: 1,
 		paddingHorizontal: 15,
-		backgroundColor: "#fff",
 	},
 	header: {
 		flexDirection: "row",
+		justifyContent: "flex-start",
 		alignItems: "center",
-		gap: 10,
-		// marginTop: 30,
-		marginBottom: 20,
+		gap: 20,
+		paddingVertical: 10,
 	},
 	headerText: {
-		fontSize: 18,
+		fontSize: 24,
 		fontWeight: "600",
 	},
 	avatarContainer: {

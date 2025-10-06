@@ -45,7 +45,6 @@ const OnboardingScreen = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView>
 				<ScrollView
 					onScroll={onchange}
 					showsHorizontalScrollIndicator={false}
@@ -118,7 +117,6 @@ const OnboardingScreen = () => {
 				{/* <GlobalProvider> */}
 				<SignInOutCard />
 				{/* </GlobalProvider> */}
-			</ScrollView>
 		</SafeAreaView>
 	);
 };
