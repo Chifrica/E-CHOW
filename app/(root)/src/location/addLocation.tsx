@@ -167,7 +167,7 @@ const AddLocation = () => {
 					</MapView>
 				</View>
 
-				<View style={{ marginTop: 50 }}>
+				<View style={{ marginTop: 20 }}>
 					<Text style={styles.location}>Location</Text>
 
 					<View style={styles.inputContainer}>
@@ -236,21 +236,18 @@ const styles = StyleSheet.create({
 		elevation: 1,
 	},
 	headerText: {
-		fontSize: 25,
-		fontWeight: "700",
+		fontSize: 24,
+		fontWeight: "bold",
 		marginHorizontal: "auto",
-		fontFamily: "Switzerland",
-		letterSpacing: -0.41,
+
 	},
 	location: {
 		marginBottom: 24,
 		textAlign: "center",
-		fontSize: 22,
+		fontSize: 24,
 		color: "#252C32",
 		lineHeight: 20,
-		letterSpacing: -0.41,
-		fontFamily: "Switzerland",
-		fontWeight: "700",
+		fontWeight: "bold",
 	},
 	inputContainer: {
 		marginBottom: 24,

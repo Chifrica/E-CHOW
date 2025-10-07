@@ -20,12 +20,11 @@ const AboutUs = () => {
             </View>
 
             <View style={{ padding: 20 }}>
-                <Text>
-                    We are a team of passionate developers dedicated to creating innovative solutions. 
-                    Our mission is to enhance user experiences through technology. 
-                    We believe in the power of collaboration and strive to build products that make a difference in people's lives.
-
-                    Our team is committed to continuous learning and improvement, ensuring that we stay at the forefront of industry trends and best practices.
+                <Text style={{ fontSize: 18, lineHeight: 18 }}>
+                    {`We are a team of passionate developers dedicated to creating innovative solutions. 
+                    \nOur mission is to enhance user experiences through technology. 
+                    \nWe believe in the power of collaboration and strive to build products that make a difference in people's lives.
+                    \nOur team is committed to continuous learning and improvement, ensuring that we stay at the forefront of industry trends and best practices.`}
                 </Text>
             </View>
 
@@ -38,8 +37,7 @@ export default AboutUs
 const styles = StyleSheet.create({
     container: { 
 		flex: 1, 
-		backgroundColor: "white", 
-		marginTop: 30
+		backgroundColor: "#ffffff", 
 	},
 	header: { 
 		padding: 20, 

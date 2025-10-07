@@ -59,6 +59,10 @@ const ProfileScreen: React.FC = () => {
 		router.push("/(root)/src/(echowDetails)/Referral");
 	}
 
+	const handleFavorites = () => {
+		router.push("/(root)/src/favorites/favorites");
+	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -149,6 +153,7 @@ const ProfileScreen: React.FC = () => {
 							/>
 						}
 						label="Favorites"
+						onPress={handleFavorites}
 					/>
 				</View>
 
