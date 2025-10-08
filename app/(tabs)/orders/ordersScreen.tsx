@@ -219,11 +219,11 @@ const OrdersScreen: React.FC = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView 
+			{/* <ScrollView 
 				showsVerticalScrollIndicator={false}
 				style={styles.scrollView}
-			>	
-				<View style={styles.header}>
+			>	 */}
+				{/* <View style={styles.header}>
 					<Text style={styles.headerTitle}>My Orders</Text>
 					<TouchableOpacity onPress={toggleView}>
 						{viewType === "grid" ? (
@@ -274,8 +274,56 @@ const OrdersScreen: React.FC = () => {
 				<CustomizeOrderModal
 					visible={modalVisible}
 					onClose={() => setModalVisible(false)}
-				/>
-			</ScrollView>
+					// meal={null}
+				/> */}
+			{/* </ScrollView> */}
+
+
+			<FlatList
+				data={filteredOrders}
+				keyExtractor={(item) => item.id}
+				renderItem={viewType === "grid" ? renderGridItem : renderListItem}
+				numColumns={viewType === "grid" ? 1 : 1}
+				contentContainerStyle={styles.listContainer}
+				showsVerticalScrollIndicator={false}
+				ListHeaderComponent={
+					<>
+						<View style={styles.header}>
+							<Text style={styles.headerTitle}>My Orders</Text>
+							<TouchableOpacity onPress={toggleView}>
+								{viewType === "grid" ? (
+									<MaterialIcons name="view-list" size={24} color="#000" />
+								) : (
+									<MaterialIcons name="grid-view" size={24} color="#000" />
+								)}
+							</TouchableOpacity>
+						</View>
+
+						<View style={styles.tabContainer}>
+							{tabs.map((tab) => (
+								<TouchableOpacity
+									key={tab}
+									style={[styles.tab, activeTab === tab && styles.activeTab]}
+									onPress={() => setActiveTab(tab)}>
+									<Text
+										style={[
+											styles.tabText,
+											activeTab === tab && styles.activeTabText,
+										]}>
+										{tab}
+									</Text>
+								</TouchableOpacity>
+							))}
+						</View>
+					</>
+				}
+				ListEmptyComponent={renderEmptyState}
+			/>
+			<CustomizeOrderModal
+				visible={modalVisible}
+				onClose={() => setModalVisible(false)}
+				meal={null} // pass actual meal when ready
+			/>
 			
 		</SafeAreaView>
 	);
@@ -293,7 +341,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		paddingHorizontal: 20,
+		// paddingHorizontal: 0,
 		paddingVertical: 10,
 	},
 	headerTitle: {
@@ -302,7 +350,7 @@ const styles = StyleSheet.create({
 	},
 	tabContainer: {
 		flexDirection: "row",
-		marginHorizontal: 18,
+		// marginHorizontal: 18,
 		backgroundColor: "#F0F0F0",
 		borderRadius: 30,
 		padding: 5,

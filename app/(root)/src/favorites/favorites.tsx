@@ -1,15 +1,26 @@
 "use client";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
 
 const FavoritesPage = () => {
     const { favorites } = useLocalSearchParams();
     const favList = favorites ? JSON.parse(favorites as string) : [];
 
+    const handleBack = () => {
+        router.back();
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>My Favorites</Text>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="#000" />
+                </TouchableOpacity>
+                <Text style={styles.title}>My Favorites</Text>
+            </View>
             {favList.length > 0 ? (
                 <FlatList
                     data={favList}
@@ -22,11 +33,24 @@ const FavoritesPage = () => {
                 <Text style={styles.empty}>No favorites yet</Text>
             )}
         </SafeAreaView>
+
+       
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20 },
+    container: { 
+        flex: 1, 
+        padding: 20 
+    },
+    header: { 
+		borderBottomWidth: 1, 
+		borderColor: "#ddd", 
+		flexDirection: "row", 
+	},
+    backButton: {
+		marginRight: 16,
+	},
     title: { 
         fontSize: 22, 
         fontWeight: "bold", 

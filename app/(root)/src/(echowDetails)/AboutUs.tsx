@@ -7,8 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const AboutUs = () => {
 
     const handleBack = () => {
-            router.back();
-        }
+        router.back();
+    }
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}

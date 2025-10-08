@@ -3,7 +3,6 @@
     "name": "E-CHOW",
     "slug": "E-CHOW",
     "version": "1.0.0",
-    "platform": "[web, android, ios]",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
