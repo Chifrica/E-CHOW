@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -16,7 +16,6 @@ import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 
-// Import the customize order modal
 import CustomizeOrderModal from "../../../components/CustomizeOrderModal";
 import DeliveryAddressModal from "../../../components/deliveryAddressModal";
 
@@ -40,6 +39,19 @@ const HomePage = () => {
 		address: "33, Rosebud, Oke...",
 	});
 	const [favorites, setFavorites] = useState<string[]>([]); 
+
+	// // calling api
+	// const [data, setDate] = useState(undefined);
+
+	// const getDataAPI = async () => {
+	// 	let url = "";
+	// 	let result = await fetch(url);
+	// 	result = await result.json()
+	// }
+
+	// useEffect ( () => {
+	// 	getDataAPI()
+	// }, [])
 
 	const { user } = useUser();
 	const profileImage = user?.imageUrl;
