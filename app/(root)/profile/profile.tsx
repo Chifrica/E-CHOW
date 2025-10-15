@@ -36,10 +36,21 @@ const Profile = () => {
 	const isContinueDisabled = !gender || !date || !selectedState || !selectedLga;
 
 	const handleContinue = () => {
-		if (!isContinueDisabled) {
-			Alert.alert("The site is under construction, please check back later");
-		}
-	};
+  if (!isContinueDisabled) {
+    Alert.alert("Profile Completed", "Welcome to E-Chow!", [
+      { text: "Continue", onPress: () => router.push("/home/homePage") },
+    ]);
+  } else {
+    Alert.alert("Please complete all fields before continuing");
+  }
+};
+
+
+	// const handleContinue = () => {
+	// 	if (!isContinueDisabled) {
+	// 		Alert.alert("The site is under construction, please check back later");
+	// 	}
+	// };
 	//   This handle is temporary
 	const handleSkip = () => {
 		router.push("/home/homePage");

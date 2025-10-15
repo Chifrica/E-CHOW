@@ -16,16 +16,49 @@ import { Entypo } from "@expo/vector-icons";
 import * as LocalAuthentication from "expo-local-authentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { loginUser } from "../services/services";
 
 
 const { width } = Dimensions.get("window");
 
 const SavedNumber = () => {
-	const [phoneNumber, setPhoneNumber] = useState("");
+	// const [phoneNumber, setPhoneNumber] = useState("");
+	const [email, setEmail] = useState("");
 	const [isChecked, setIsChecked] = useState(false);
 	const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 
 	const router = useRouter();
+
+	const handleContinue = async () => {
+		if (!email) {
+			Alert.alert("Error", "Please enter your email address.");
+			return;
+		}
+
+		try {
+			// 🔍 Check if user exists in the backend
+			const res = await loginUser({ email, password: "dummyPassword" });
+
+			if (res.exists) {
+				// Save user email locally if "Save" is checked
+				if (isChecked) await AsyncStorage.setItem("userEmail", email);
+
+				Alert.alert("Welcome back!", "Redirecting to your profile...");
+				router.push("/(root)/profile/profile");
+			} else {
+				Alert.alert(
+					"No account found",
+					"This email is not registered. Please sign up first."
+				);
+				router.push("/(auth)/signup/registration");
+			}
+		} catch (error) {
+			Alert.alert(
+				"Connection error",
+				"Unable to verify email. Please try again later."
+			);
+		}
+	}
 
 	// Finger print and Face Identification
 
@@ -86,7 +119,7 @@ const SavedNumber = () => {
 				await LocalAuthentication.supportedAuthenticationTypesAsync();
 		}
 
-		if(!isBiometricSupported) {
+		if (!isBiometricSupported) {
 			return alertComponent(
 				"Biometric not supported",
 				"Please enter your password",
@@ -124,7 +157,7 @@ const SavedNumber = () => {
 				router.push("/(root)/src/location/currentLocation");
 			} else {
 				Alert.alert(
-					"Login Failed", 
+					"Login Failed",
 					"No previous login found. Please log in with Google."
 				);
 				router.push("/(auth)/signup/registration");
@@ -152,13 +185,20 @@ const SavedNumber = () => {
 				</View>
 
 				<View style={styles.inputContainer}>
-					<Text style={styles.label}>Enter your phone number</Text>
-					<TextInput
+					<Text style={styles.label}>Enter your email address</Text>
+					{/* <TextInput
 						style={styles.input}
 						placeholder="e.g 08139684024"
 						value={phoneNumber}
 						onChangeText={setPhoneNumber}
 						keyboardType="phone-pad"
+					/> */}
+					<TextInput
+						style={styles.input}
+						placeholder="e.g Email"
+						value={email}
+						onChangeText={setEmail}
+						keyboardType="email-address"
 					/>
 				</View>
 
@@ -171,7 +211,7 @@ const SavedNumber = () => {
 							{ backgroundColor: isChecked ? "blue" : "white" },
 						]}
 					/>
-					<Text style={styles.checkboxLabel}>Save Phone Number</Text>
+					<Text style={styles.checkboxLabel}>Save Email</Text>
 				</View>
 
 				{/* <Image
@@ -191,7 +231,7 @@ const SavedNumber = () => {
 
 				<TouchableOpacity
 					style={[styles.button, !isChecked && styles.buttonDisabled]}
-					onPress={() => console.log("Continue pressed")}
+					onPress={handleContinue}
 					disabled={!isChecked}>
 					<Text style={styles.buttonText}>Continue</Text>
 				</TouchableOpacity>
