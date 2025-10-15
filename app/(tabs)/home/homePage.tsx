@@ -32,13 +32,20 @@ const width = Dimensions.get("screen").width;
 const HomePage = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [customizeModalVisible, setCustomizeModalVisible] = useState(false);
-	const [selectedMeal, setSelectedMeal] = useState(null);
+	const [selectedMeal, setSelectedMeal] = useState<Meal | null> (null);
 	const [selectedAddress, setSelectedAddress] = useState({
 		id: "1",
 		name: "Office",
 		address: "33, Rosebud, Oke...",
 	});
-	const [favorites, setFavorites] = useState<string[]>([]); 
+	const [favorites, setFavorites] = useState<string[]>([]);
+
+	type Meal = {
+		name: string;
+		restaurant: string;
+		image: string;
+		basePrice: number;
+	};
 
 	// // calling api
 	// const [data, setDate] = useState(undefined);
@@ -84,16 +91,16 @@ const HomePage = () => {
 	};
 
 	const toggleFavorite = (mealName: string) => {
-    setFavorites((prev) => {
-        if (prev.includes(mealName)) {
-            // remove if already favorite
-            return prev.filter((fav) => fav !== mealName);
-        } else {
-            // add to favorites
-            return [...prev, mealName];
-        }
-    });
-};
+		setFavorites((prev) => {
+			if (prev.includes(mealName)) {
+				// remove if already favorite
+				return prev.filter((fav) => fav !== mealName);
+			} else {
+				// add to favorites
+				return [...prev, mealName];
+			}
+		});
+	};
 
 
 	return (
@@ -143,14 +150,14 @@ const HomePage = () => {
 								color="#61605F"
 							/>
 						</TouchableOpacity>
-						<TouchableOpacity 
+						<TouchableOpacity
 							style={styles.iconButton}
 							onPress={() => router.push(
-								{ 
-									pathname: "/(root)/src/favorites/favorites", 
-									params: { 
-										favorites: JSON.stringify(favorites) 
-									} 
+								{
+									pathname: "/(root)/src/favorites/favorites",
+									params: {
+										favorites: JSON.stringify(favorites)
+									}
 								}
 							)}
 						>
@@ -375,16 +382,16 @@ const HomePage = () => {
 										size={20}
 										color="#FFFFFF"
 									/> */}
-								</TouchableOpacity> 
+								</TouchableOpacity>
 								<View style={styles.gridItemOverlay}>
 									<Text style={styles.gridItemTitle}>
 										{index % 2 === 0
 											? "Burger"
 											: index % 4 === 1
-											? "White Rice"
-											: index % 4 === 3
-											? "Neapolitan Pizza"
-											: "Gbegiri Soup"}
+												? "White Rice"
+												: index % 4 === 3
+													? "Neapolitan Pizza"
+													: "Gbegiri Soup"}
 									</Text>
 									<Text style={styles.gridItemMeta}>
 										10 min away • 128 ordered
@@ -419,10 +426,10 @@ const HomePage = () => {
 									{index === 0
 										? "Pepperoni"
 										: index === 1
-										? "Amala Spot"
-										: index === 2
-										? "Belloni's Place"
-										: "Tasty & Spicy"}
+											? "Amala Spot"
+											: index === 2
+												? "Belloni's Place"
+												: "Tasty & Spicy"}
 								</Text>
 								<View style={styles.restaurantMeta}>
 									<Ionicons
@@ -439,12 +446,12 @@ const HomePage = () => {
 							</View>
 							<TouchableOpacity style={styles.restaurantHeartContainer}>
 								<TouchableOpacity onPress={() => toggleFavorite(item.title)}>
-										<Ionicons
-											name={favorites.includes(item.title) ? "heart" : "heart-outline"}
-											size={20}
-											color={favorites.includes(item.title) ? "red" : "#E58945"}
-										/>
-									</TouchableOpacity>
+									<Ionicons
+										name={favorites.includes(item.title) ? "heart" : "heart-outline"}
+										size={20}
+										color={favorites.includes(item.title) ? "red" : "#E58945"}
+									/>
+								</TouchableOpacity>
 								{/* <Ionicons
 									name="heart-outline"
 									size={20}
