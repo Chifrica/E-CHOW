@@ -8,17 +8,75 @@ import {
 	StyleSheet,
 	ScrollView,
 	TouchableOpacity,
+	Alert,
+	Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 
 const Registration = () => {
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [email, setEmail] = useState("");
 	const [fullName, setFullName] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [otp, setOtp] = useState("");
+	const [otpModalVisible, setOtpModalVisible] = useState(false);
 
 	const router = useRouter();
 
-	const handleContinue = () => {
+	const handleContinue = async () => {
+		const url = "https://echow-backend.onrender.com/api/v1/auth/register";
+		// Password confirmation check
+		if (password !== confirmPassword) {
+			Alert.alert("Error", "Passwords do not match. Please try again.");
+			return;
+		}
+
+		if (!email || !fullName || !password || !phoneNumber) {
+			Alert.alert("Error", "Please fill in all fields.");
+			return;
+		}
+
+		try {
+			const response = await axios.post(
+				url,
+				{
+					fullName,
+					email,
+					password,
+					phoneNumber,
+				}
+			);
+
+			console.log("Registration response:", response.data);
+			const { success, message } = response.data;
+
+			if (success) {
+				Alert.alert("Success", message);
+				setOtpModalVisible(true);
+			} else {
+				Alert.alert("Error", message || "Registration failed.");
+			}
+		} catch (error: any) {
+			console.error("Registration error:", error.response?.data || error.message);
+			Alert.alert(
+				"Error",
+				error.response?.data?.message ||
+					"An error occurred. Please check your network and try again."
+			);
+		}
+	};
+
+	const handleVerifyOtp = () => {
+		if (!otp.trim()) {
+			Alert.alert("Error", "Please enter the OTP sent to your email.");
+			return;
+		}
+
+		// TODO: Add API call for OTP verification once endpoint is ready
+		setOtpModalVisible(false);
+		Alert.alert("Success", "Email verified successfully!");
 		router.push("/(root)/profile/profile");
 	};
 
@@ -28,7 +86,7 @@ const Registration = () => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView style={styles.scrollView}>
+			<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
 				<View style={styles.header}>
 					<Text style={styles.headerText}>Registration</Text>
 					<Text style={styles.subHeaderText}>
@@ -59,6 +117,28 @@ const Registration = () => {
 				</View>
 
 				<View style={styles.inputContainer}>
+					<Text style={styles.label}>Password</Text>
+					<TextInput
+						style={styles.input}
+						placeholder="Password"
+						value={password}
+						onChangeText={setPassword}
+						secureTextEntry
+					/>
+				</View>
+
+				<View style={styles.inputContainer}>
+					<Text style={styles.label}>Confirm Password</Text>
+					<TextInput
+						style={styles.input}
+						placeholder="Confirm Password"
+						value={confirmPassword}
+						onChangeText={setConfirmPassword}
+						secureTextEntry
+					/>
+				</View>
+
+				<View style={styles.inputContainer}>
 					<Text style={styles.label}>Full name</Text>
 					<TextInput
 						style={styles.input}
@@ -71,25 +151,48 @@ const Registration = () => {
 
 				<GoogleAppleSignup />
 
-				<TouchableOpacity
-					style={styles.button}
-					onPress={handleContinue}
-					// disabled={!isChecked}
-				>
+				<TouchableOpacity style={styles.button} onPress={handleContinue}>
 					<Text style={styles.buttonText}>Continue</Text>
 				</TouchableOpacity>
 
 				<Text style={styles.signupText}>
 					Already have an account?
 					<TouchableOpacity onPress={handleSignIn}>
-						<Text
-							style={{ color: "#E58945", fontWeight: "bold", fontSize: 18 }}>
+						<Text style={{ color: "#E58945", fontWeight: "bold", fontSize: 18 }}>
 							{" "}
 							Login Here{" "}
 						</Text>
 					</TouchableOpacity>
 				</Text>
 			</ScrollView>
+
+			{/* ✅ OTP Modal */}
+			<Modal visible={otpModalVisible} transparent animationType="slide">
+				<View style={styles.modalOverlay}>
+					<View style={styles.modalBox}>
+						<Text style={styles.modalTitle}>Verify Your Email</Text>
+						<Text style={styles.modalSubtitle}>
+							Enter the OTP sent to your email address
+						</Text>
+
+						<TextInput
+							style={styles.modalInput}
+							placeholder="Enter OTP"
+							value={otp}
+							onChangeText={setOtp}
+							keyboardType="number-pad"
+						/>
+
+						<TouchableOpacity style={styles.modalButton} onPress={handleVerifyOtp}>
+							<Text style={styles.modalButtonText}>Verify OTP</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity onPress={() => setOtpModalVisible(false)}>
+							<Text style={styles.modalCancelText}>Cancel</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
 		</SafeAreaView>
 	);
 };
@@ -153,5 +256,56 @@ const styles = StyleSheet.create({
 		fontWeight: 400,
 		color: "#667085",
 		textAlign: "center",
+	},
+	modalOverlay: {
+		flex: 1,
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	modalBox: {
+		backgroundColor: "#fff",
+		padding: 25,
+		borderRadius: 20,
+		width: "85%",
+		alignItems: "center",
+	},
+	modalTitle: {
+		fontSize: 20,
+		fontWeight: "bold",
+		marginBottom: 8,
+		color: "#333",
+	},
+	modalSubtitle: {
+		fontSize: 14,
+		color: "#555",
+		marginBottom: 20,
+		textAlign: "center",
+	},
+	modalInput: {
+		width: "100%",
+		borderWidth: 1,
+		borderColor: "#ccc",
+		borderRadius: 10,
+		padding: 10,
+		textAlign: "center",
+		fontSize: 16,
+		marginBottom: 20,
+	},
+	modalButton: {
+		backgroundColor: "#E58945",
+		paddingVertical: 12,
+		paddingHorizontal: 40,
+		borderRadius: 10,
+	},
+	modalButtonText: {
+		color: "#fff",
+		fontWeight: "bold",
+		fontSize: 16,
+	},
+	modalCancelText: {
+		color: "#E58945",
+		fontWeight: "600",
+		marginTop: 15,
 	},
 });

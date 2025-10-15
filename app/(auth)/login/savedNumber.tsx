@@ -18,47 +18,106 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { loginUser } from "../services/services";
 
+import axios from "axios";
 
 const { width } = Dimensions.get("window");
+type MessageType = "SUCCESS" | "FAILED" | "WARNING";
+
+interface LoginCredentials {
+	email: string;
+	password: string;
+}
 
 const SavedNumber = () => {
 	// const [phoneNumber, setPhoneNumber] = useState("");
 	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("")
 	const [isChecked, setIsChecked] = useState(false);
 	const [isBiometricSupported, setIsBiometricSupported] = useState(false);
+	const [message, setMessage] = useState<string>("");
+	const [messageType, setMessageType] = useState<MessageType>("FAILED");
 
 	const router = useRouter();
 
-	const handleContinue = async () => {
-		if (!email) {
-			Alert.alert("Error", "Please enter your email address.");
+	// Handle login
+	const handleLogin = async (credentials: LoginCredentials) => {
+		handleMessage("");
+		const url = "https://echow-backend.onrender.com/api/v1/auth/login";
+
+		if (!credentials.email || !credentials.password) {
+			Alert.alert("Error", "Please enter your email and password.");
 			return;
 		}
 
 		try {
-			// 🔍 Check if user exists in the backend
-			const res = await loginUser({ email, password: "dummyPassword" });
+			const response = await axios.post(url, credentials);
+			console.log("Response:", response.data);
 
-			if (res.exists) {
-				// Save user email locally if "Save" is checked
-				if (isChecked) await AsyncStorage.setItem("userEmail", email);
+			const success = response.data?.success === true;
+			const message = response.data?.message || "Login attempt";
+			const data = response.data?.data;
 
-				Alert.alert("Welcome back!", "Redirecting to your profile...");
-				router.push("/(root)/profile/profile");
-			} else {
-				Alert.alert(
-					"No account found",
-					"This email is not registered. Please sign up first."
-				);
-				router.push("/(auth)/signup/registration");
+			if (!success) {
+				handleMessage(message, "FAILED");
+				Alert.alert("FAILED", message);
+				return;
 			}
-		} catch (error) {
-			Alert.alert(
-				"Connection error",
-				"Unable to verify email. Please try again later."
-			);
+
+			handleMessage(message, "SUCCESS");
+			Alert.alert("SUCCESS", message, [
+				{
+					text: "OK",
+					onPress: () =>
+						data
+							? router.push({
+								pathname: "/(tabs)/home/homePage",
+								params: { user: JSON.stringify(data) },
+							})
+							: console.warn("No user data returned from API."),
+				},
+			]);
+		} catch (error: any) {
+			console.error("Login error:", error.response?.data || error.message);
+			handleMessage("An error occurred. Check your network and try again.", "FAILED");
+			Alert.alert("FAILED", "An error occurred. Check your network and try again.");
 		}
+	};
+
+	const handleMessage = (message: string, type: MessageType = "FAILED"): void => {
+		setMessage(message);
+		setMessageType(type)
 	}
+
+	// const handleContinue = async () => {
+	// 	if (!email) {
+	// 		Alert.alert("Error", "Please enter your email address.");
+	// 		return;
+	// 	}
+
+	// 	try {
+	// 		// 🔍 Check if user exists in the backend
+	// 		const res = await loginUser({ email, password: "dummyPassword" });
+
+	// 		if (res.exists) {
+	// 			// Save user email locally if "Save" is checked
+	// 			if (isChecked) await AsyncStorage.setItem("userEmail", email);
+
+	// 			Alert.alert("Welcome back!", "Redirecting to your profile...");
+	// 			router.push("/(root)/profile/profile");
+	// 		} else {
+	// 			Alert.alert(
+	// 				"No account found",
+	// 				"This email is not registered. Please sign up first."
+	// 			);
+	// 			router.push("/(auth)/signup/registration");
+	// 		}
+	// 	} catch (error) {
+	// 		Alert.alert(
+	// 			"Connection error",
+	// 			"Unable to verify email. Please try again later."
+	// 		);
+	// 	}
+	// }
 
 	// Finger print and Face Identification
 
@@ -200,6 +259,15 @@ const SavedNumber = () => {
 						onChangeText={setEmail}
 						keyboardType="email-address"
 					/>
+
+					<Text style={styles.label}>Enter your Password</Text>
+					<TextInput
+						style={styles.input}
+						placeholder="Password"
+						value={password}
+						onChangeText={setPassword}
+						secureTextEntry
+					/>
 				</View>
 
 				<View style={styles.checkboxContainer}>
@@ -229,10 +297,12 @@ const SavedNumber = () => {
 					/>
 				</TouchableOpacity>
 
+				{/* <Alert.alert(messageType, message) /> */}
 				<TouchableOpacity
 					style={[styles.button, !isChecked && styles.buttonDisabled]}
-					onPress={handleContinue}
-					disabled={!isChecked}>
+					onPress={() => handleLogin({ email, password })}
+					disabled={!isChecked}
+				>
 					<Text style={styles.buttonText}>Continue</Text>
 				</TouchableOpacity>
 
@@ -287,6 +357,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		padding: 12,
 		fontSize: 16,
+		marginBottom: 10
 	},
 	checkboxContainer: {
 		flexDirection: "row",

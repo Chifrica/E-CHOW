@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/ideaIcon.png",
+        "foregroundImage": "./assets/images/newIcon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.chifrica.ECHOW"
