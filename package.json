@@ -23,7 +23,7 @@
     "@react-native-picker/picker": "2.11.1",
     "axios": "^1.12.2",
     "check": "^1.0.0",
-    "expo": "54.0.0",
+    "expo": "54.0.23",
     "expo-auth-session": "~6.2.1",
     "expo-blur": "~14.1.5",
     "expo-checkbox": "~4.1.4",

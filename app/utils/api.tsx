@@ -1,0 +1,1 @@
+export const registerURL = "https://echow-backend.onrender.com/api/v1/auth/register"

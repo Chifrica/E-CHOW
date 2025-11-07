@@ -126,7 +126,7 @@ export default OnboardingScreen;
 
 const styles = StyleSheet.create({
 	container: {
-		// margin: 10,
+		flex: 1,
 		backgroundColor: "#F9FAFB",
 	},
 	dotContainer: {
