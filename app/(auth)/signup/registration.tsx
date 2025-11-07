@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
-import { registerURL } from "@/app/utils/api";
 
 const Registration = () => {
 	const [phoneNumber, setPhoneNumber] = useState("");
@@ -27,7 +26,7 @@ const Registration = () => {
 	const router = useRouter();
 
 	const handleContinue = async () => {
-		const url = registerURL;
+		const url = "https://echow-backend.onrender.com/api/v1/auth/register";
 		// Password confirmation check
 		if (password !== confirmPassword) {
 			Alert.alert("Error", "Passwords do not match. Please try again.");
