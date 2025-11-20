@@ -43,19 +43,6 @@ const ProfileDetailsScreen = () => {
 	const [dob, setDob] = useState(originalData.dob);
 	const [hasChanges, setHasChanges] = useState(false);
 
-	// Alert on field change
-	const showAlert = (fieldName: string) => {
-		Alert.alert(
-			`Do you want to change your ${fieldName}?`,
-			"",
-			[
-				{ text: "Yes", style: "default" },
-				{ text: "No", style: "cancel" },
-			],
-			{ cancelable: true }
-		);
-	};
-
 	// Watch for changes
 	useEffect(() => {
 		const changed =
@@ -141,7 +128,7 @@ const ProfileDetailsScreen = () => {
 					value={name}
 					onChangeText={(text) => {
 						setName(text);
-						showAlert("full name");
+						// showAlert("full name");
 					}}
 				/>
 
@@ -151,7 +138,7 @@ const ProfileDetailsScreen = () => {
 					value={email}
 					onChangeText={(text) => {
 						setEmail(text);
-						showAlert("email");
+						// showAlert("email");
 					}}
 				/>
 
@@ -162,7 +149,7 @@ const ProfileDetailsScreen = () => {
 						value={phone}
 						onChangeText={(text) => {
 							setPhone(text);
-							showAlert("phone number");
+							// showAlert("phone number");
 						}}
 					/>
 					<Ionicons
@@ -179,7 +166,7 @@ const ProfileDetailsScreen = () => {
 						selectedValue={gender}
 						onValueChange={(value) => {
 							setGender(value);
-							showAlert("gender");
+							// showAlert("gender");
 						}}>
 						<Picker.Item
 							label="Male"
@@ -198,27 +185,9 @@ const ProfileDetailsScreen = () => {
 					value={dob}
 					onChangeText={(text) => {
 						setDob(text);
-						showAlert("date of birth");
+						// showAlert("date of birth");
 					}}
 				/>
-
-				{/* <TouchableOpacity
-					style={[
-						styles.saveButton,
-						{ backgroundColor: hasChanges ? "#EF7D44" : "#f2f2f2" },
-					]}
-					disabled={!hasChanges}
-					onPress={() => {
-						Alert.alert("Saved!", "Your profile has been updated");
-					}}>
-					<Text
-						style={{
-							color: hasChanges ? "#fff" : "#ccc",
-							fontWeight: "bold",
-						}}>
-						Save
-					</Text>
-				</TouchableOpacity> */}
 
 				<TouchableOpacity
 					style={[

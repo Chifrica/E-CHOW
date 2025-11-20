@@ -102,7 +102,6 @@ const ProfileScreen: React.FC = () => {
 							</TouchableOpacity>
 						</Text>
 					</View>
-					{/* Add an alert whenever the user taps on the top-up button it will say payment development in progress*/}
 					<TouchableOpacity
 						style={styles.topUpButton}
 						onPress={() =>
@@ -223,7 +222,7 @@ const ProfileScreen: React.FC = () => {
 								"Are you sure you want to log out?",
 								[
 									{
-										text: "Cancel",
+										text: "No",
 										style: "cancel",
 									},
 									{
