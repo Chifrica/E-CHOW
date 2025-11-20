@@ -282,11 +282,6 @@ const SavedNumber = () => {
 					<Text style={styles.checkboxLabel}>Save Email</Text>
 				</View>
 
-				{/* <Image
-          source={require('@/assets/icons/facial recogn.png')}
-          style={{ alignSelf: 'center', marginTop: '50%', marginBottom: 40 }}
-        /> */}
-
 				<TouchableOpacity
 					onPress={handleBiometric}
 					style={{ alignSelf: "center", marginTop: "50%", marginBottom: 40 }}>
@@ -297,7 +292,6 @@ const SavedNumber = () => {
 					/>
 				</TouchableOpacity>
 
-				{/* <Alert.alert(messageType, message) /> */}
 				<TouchableOpacity
 					style={[styles.button, !isChecked && styles.buttonDisabled]}
 					onPress={() => handleLogin({ email, password })}

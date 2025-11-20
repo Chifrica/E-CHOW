@@ -20,7 +20,7 @@ export const SignInOutCard = () => {
 	const {isLoggedIn, loading} = useGlobalContext();
 
 	const handleLogin = () => {
-		router.push("/(auth)/signup/registration");
+		router.push("/(auth)/login/savedNumber");
 	};
 
 	const handleGetStarted = () => {

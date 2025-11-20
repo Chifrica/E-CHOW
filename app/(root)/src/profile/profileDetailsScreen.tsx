@@ -68,9 +68,42 @@ const ProfileDetailsScreen = () => {
 		setHasChanges(changed);
 	}, [name, email, phone, gender, dob]);
 
+	const updateUserProfile = async () => {
+		try {
+			const payload = {
+				name,
+				email,
+				phone,
+				gender,
+				dob,
+			};
+
+			const response = await fetch("https://echow-backend.onrender.com/api/v1/users/profile", {
+				method: "PUT", // or PATCH — confirm backend method
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(payload),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				return Alert.alert("Update Failed", data.message || "Something went wrong");
+			}
+
+			Alert.alert("Success!", "Your profile has been updated successfully");
+
+			// Optionally: router.back();
+		} catch (error) {
+			Alert.alert("Error", "Unable to connect to server");
+		}
+	};
+
+
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView 
+			<ScrollView
 				style={styles.scrollView}
 				showsVerticalScrollIndicator={false}
 			>
@@ -169,7 +202,7 @@ const ProfileDetailsScreen = () => {
 					}}
 				/>
 
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					style={[
 						styles.saveButton,
 						{ backgroundColor: hasChanges ? "#EF7D44" : "#f2f2f2" },
@@ -185,7 +218,21 @@ const ProfileDetailsScreen = () => {
 						}}>
 						Save
 					</Text>
+				</TouchableOpacity> */}
+
+				<TouchableOpacity
+					style={[
+						styles.saveButton,
+						{ backgroundColor: hasChanges ? "#EF7D44" : "#f2f2f2" },
+					]}
+					disabled={!hasChanges}
+					onPress={updateUserProfile}
+				>
+					<Text style={{ color: hasChanges ? "#fff" : "#ccc", fontWeight: "bold" }}>
+						Save
+					</Text>
 				</TouchableOpacity>
+
 			</ScrollView>
 		</SafeAreaView>
 	);
