@@ -10,6 +10,9 @@ import {
 	Image,
 	Dimensions,
 	TouchableOpacity,
+	TextInput,
+	ActivityIndicator,
+	Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
@@ -21,87 +24,130 @@ import DeliveryAddressModal from "../../../components/deliveryAddressModal";
 
 import {
 	storiesData,
-	recommendedData,
-	fastSellingData,
-	restaurantAllData,
 	videosData,
 } from "./data";
 
 const width = Dimensions.get("screen").width;
+const API_BASE_URL = "https://echow-backend.onrender.com/api/v1";
 
 const HomePage = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [customizeModalVisible, setCustomizeModalVisible] = useState(false);
-	const [selectedMeal, setSelectedMeal] = useState<Meal | null> (null);
+	const [searchModalVisible, setSearchModalVisible] = useState(false);
+	const [selectedMeal, setSelectedMeal] = useState<any | null>(null);
 	const [selectedAddress, setSelectedAddress] = useState({
 		id: "1",
 		name: "Office",
 		address: "33, Rosebud, Oke...",
 	});
 	const [favorites, setFavorites] = useState<string[]>([]);
-
-	type Meal = {
-		name: string;
-		restaurant: string;
-		image: string;
-		basePrice: number;
-	};
-
-	// // calling api
-	// const [data, setDate] = useState(undefined);
-
-	// const getDataAPI = async () => {
-	// 	let url = "";
-	// 	let result = await fetch(url);
-	// 	result = await result.json()
-	// }
-
-	// useEffect ( () => {
-	// 	getDataAPI()
-	// }, [])
+	const [searchQuery, setSearchQuery] = useState("");
+	const [searchResults, setSearchResults] = useState<any[]>([]);
+	
+	// API State
+	const [meals, setMeals] = useState<any[]>([]);
+	const [categories, setCategories] = useState<any[]>([]);
+	const [restaurants, setRestaurants] = useState<any[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [searchLoading, setSearchLoading] = useState(false);
 
 	const { user } = useUser();
 	const profileImage = user?.imageUrl;
 
-	// Sample meal data
-	const sampleMeals = [
-		{
-			name: "Spicy Jollof Rice",
-			restaurant: "Nao Restaurants",
-			image: "/placeholder.svg?height=200&width=400",
-			basePrice: 1500,
-		},
-		{
-			name: "Caramello Spaghetti",
-			restaurant: "Italian Corner",
-			image: "/placeholder.svg?height=200&width=400",
-			basePrice: 2000,
-		},
-		{
-			name: "Homemade Pasta",
-			restaurant: "Pasta Palace",
-			image: "/placeholder.svg?height=200&width=400",
-			basePrice: 1800,
-		},
-	];
+	// Fetch all data
+	useEffect(() => {
+		fetchAllData();
+	}, []);
 
-	const handleMealPress = (mealIndex = 0) => {
-		setSelectedMeal(sampleMeals[mealIndex]);
+	const fetchAllData = async () => {
+		try {
+			setLoading(true);
+			
+			// Fetch meals
+			const mealsResponse = await fetch(`${API_BASE_URL}/meals`);
+			const mealsData = await mealsResponse.json();
+			setMeals(mealsData.data || mealsData || []);
+
+			// Fetch categories
+			const categoriesResponse = await fetch(`${API_BASE_URL}/meal-category`);
+			const categoriesData = await categoriesResponse.json();
+			setCategories(categoriesData.data || categoriesData || []);
+
+			// Fetch restaurants
+			const restaurantsResponse = await fetch(`${API_BASE_URL}/restaurants`);
+			const restaurantsData = await restaurantsResponse.json();
+			setRestaurants(restaurantsData.data || restaurantsData || []);
+
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	// Search functionality
+	const handleSearch = async (query: string) => {
+		setSearchQuery(query);
+		
+		if (query.trim() === "") {
+			setSearchResults([]);
+			return;
+		}
+
+		setSearchLoading(true);
+		try {
+			// Search through meals
+			const filteredMeals = meals.filter((meal) =>
+				meal.name?.toLowerCase().includes(query.toLowerCase()) ||
+				meal.description?.toLowerCase().includes(query.toLowerCase())
+			);
+			setSearchResults(filteredMeals);
+		} catch (error) {
+			console.error("Error searching:", error);
+		} finally {
+			setSearchLoading(false);
+		}
+	};
+
+	const handleMealPress = (meal: any) => {
+		setSelectedMeal({
+			name: meal.name,
+			restaurant: meal.restaurant?.name || "Restaurant",
+			image: meal.image || meal.imageUrl || "/placeholder.svg?height=200&width=400",
+			basePrice: meal.price || 0,
+		});
 		setCustomizeModalVisible(true);
 	};
 
-	const toggleFavorite = (mealName: string) => {
+	const toggleFavorite = (mealId: string) => {
 		setFavorites((prev) => {
-			if (prev.includes(mealName)) {
-				// remove if already favorite
-				return prev.filter((fav) => fav !== mealName);
+			if (prev.includes(mealId)) {
+				return prev.filter((fav) => fav !== mealId);
 			} else {
-				// add to favorites
-				return [...prev, mealName];
+				return [...prev, mealId];
 			}
 		});
 	};
 
+	// Get recommended meals (first 10)
+	const recommendedMeals = meals.slice(0, 10);
+	
+	// Get fast selling meals (random selection)
+	const fastSellingMeals = meals.slice(10, 16);
+	
+	// Get restaurants (first 4)
+	const displayRestaurants = restaurants.slice(0, 4);
+
+	if (loading) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+					<ActivityIndicator size="large" color="#E58945" />
+					<Text style={{ marginTop: 10, color: "#666" }}>Loading meals...</Text>
+				</View>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -143,7 +189,10 @@ const HomePage = () => {
 						</TouchableOpacity>
 					</View>
 					<View style={styles.miniHeader}>
-						<TouchableOpacity style={styles.iconButton}>
+						<TouchableOpacity 
+							style={styles.iconButton}
+							onPress={() => setSearchModalVisible(true)}
+						>
 							<Feather
 								name="search"
 								size={20}
@@ -201,66 +250,18 @@ const HomePage = () => {
 						showsHorizontalScrollIndicator={false}
 						contentContainerStyle={{ paddingRight: 20 }}
 						style={{ width: "100%" }}>
-						<View style={styles.categoryItem}>
-							<View style={styles.categoryIconContainer}>
-								<FontAwesome6
-									name="bowl-rice"
-									size={16}
-									color="#E58945"
-								/>
+						{categories.map((category, index) => (
+							<View key={index} style={styles.categoryItem}>
+								<View style={styles.categoryIconContainer}>
+									<FontAwesome6
+										name="bowl-rice"
+										size={16}
+										color="#E58945"
+									/>
+								</View>
+								<Text style={styles.categoryLabel}>{category.name}</Text>
 							</View>
-							<Text style={styles.categoryLabel}>Rice</Text>
-						</View>
-						<View style={styles.categoryItem}>
-							<View style={styles.categoryIconContainer}>
-								<FontAwesome6
-									name="wine-bottle"
-									size={16}
-									color="#E58945"
-								/>
-							</View>
-							<Text style={styles.categoryLabel}>Beverages</Text>
-						</View>
-						<View style={styles.categoryItem}>
-							<View style={styles.categoryIconContainer}>
-								<FontAwesome6
-									name="bowl-rice"
-									size={16}
-									color="#E58945"
-								/>
-							</View>
-							<Text style={styles.categoryLabel}>Swallow</Text>
-						</View>
-						<View style={styles.categoryItem}>
-							<View style={styles.categoryIconContainer}>
-								<FontAwesome6
-									name="fish"
-									size={16}
-									color="#E58945"
-								/>
-							</View>
-							<Text style={styles.categoryLabel}>Seafood</Text>
-						</View>
-						<View style={styles.categoryItem}>
-							<View style={styles.categoryIconContainer}>
-								<FontAwesome6
-									name="bowl-rice"
-									size={16}
-									color="#E58945"
-								/>
-							</View>
-							<Text style={styles.categoryLabel}>Soup</Text>
-						</View>
-						<View style={styles.categoryItem}>
-							<View style={styles.categoryIconContainer}>
-								<FontAwesome6
-									name="cookie-bite"
-									size={16}
-									color="#E58945"
-								/>
-							</View>
-							<Text style={styles.categoryLabel}>Bakery</Text>
-						</View>
+						))}
 					</ScrollView>
 				</View>
 
@@ -294,35 +295,30 @@ const HomePage = () => {
 					</View>
 
 					<FlatList
-						data={recommendedData}
-						renderItem={({ item, index }) => (
+						data={recommendedMeals}
+						renderItem={({ item }) => (
 							<TouchableOpacity
 								style={styles.recommendedItem}
-								onPress={() => handleMealPress(index)}>
+								onPress={() => handleMealPress(item)}>
 								<Image
-									source={item.recommended}
+									source={{ uri: item.image || item.imageUrl }}
 									style={styles.recommendedImage}
 								/>
 								<View style={styles.recommendedBadge}>
 									<Text style={styles.recommendedBadgeText}>Very Healthy</Text>
 								</View>
 								<View style={styles.recommendedHeartContainer}>
-									<TouchableOpacity onPress={() => toggleFavorite(item.name)}>
+									<TouchableOpacity onPress={() => toggleFavorite(item._id || item.id)}>
 										<Ionicons
-											name={favorites.includes(item.name) ? "heart" : "heart-outline"}
+											name={favorites.includes(item._id || item.id) ? "heart" : "heart-outline"}
 											size={20}
-											color={favorites.includes(item.name) ? "red" : "#E58945"}
+											color={favorites.includes(item._id || item.id) ? "red" : "#E58945"}
 										/>
 									</TouchableOpacity>
-									{/* <Ionicons
-										name="heart-outline"
-										size={20}
-										color="#E58945"
-									/> */}
 								</View>
 								<View style={styles.recommendedDetails}>
-									<Text style={styles.recommendedTitle}>
-										{index === 0 ? "Caramello Spaghetti" : "Homemade Pasta"}
+									<Text style={styles.recommendedTitle} numberOfLines={1}>
+										{item.name}
 									</Text>
 									<View style={styles.recommendedMeta}>
 										<View style={styles.recommendedRating}>
@@ -332,18 +328,18 @@ const HomePage = () => {
 												color="#E58945"
 											/>
 											<Text style={styles.recommendedRatingText}>
-												4.8 (120+)
+												{item.rating || "4.8"} ({item.reviews || "120"}+)
 											</Text>
 										</View>
 										<Text style={styles.recommendedDistance}>10 min away</Text>
 									</View>
 									<Text style={styles.recommendedPrice}>
-										{index === 0 ? "₦1,500" : "₦2,000"}
+										₦{item.price?.toLocaleString() || "0"}
 									</Text>
 								</View>
 							</TouchableOpacity>
 						)}
-						keyExtractor={(item, index) => index.toString()}
+						keyExtractor={(item, index) => item._id || item.id || index.toString()}
 						horizontal
 						showsHorizontalScrollIndicator={false}
 						contentContainerStyle={{ paddingRight: 20 }}
@@ -359,45 +355,34 @@ const HomePage = () => {
 					</View>
 
 					<View style={styles.gridContainer}>
-						{fastSellingData.slice(0, 6).map((item, index) => (
+						{fastSellingMeals.map((item, index) => (
 							<TouchableOpacity
-								key={index}
+								key={item._id || item.id || index}
 								style={styles.gridItem}
-								onPress={() => handleMealPress(0)} // Default to Spicy Jollof
+								onPress={() => handleMealPress(item)}
 							>
 								<Image
-									source={item.fastSelling}
+									source={{ uri: item.image || item.imageUrl }}
 									style={styles.gridItemImage}
 								/>
 								<TouchableOpacity style={styles.heartIconContainer}>
-									<TouchableOpacity onPress={() => toggleFavorite(item.title)}>
+									<TouchableOpacity onPress={() => toggleFavorite(item._id || item.id)}>
 										<Ionicons
-											name={favorites.includes(item.title) ? "heart" : "heart-outline"}
+											name={favorites.includes(item._id || item.id) ? "heart" : "heart-outline"}
 											size={20}
-											color={favorites.includes(item.title) ? "red" : "#E58945"}
+											color={favorites.includes(item._id || item.id) ? "red" : "#FFFFFF"}
 										/>
 									</TouchableOpacity>
-									{/* <Ionicons
-										name="heart-outline"
-										size={20}
-										color="#FFFFFF"
-									/> */}
 								</TouchableOpacity>
 								<View style={styles.gridItemOverlay}>
-									<Text style={styles.gridItemTitle}>
-										{index % 2 === 0
-											? "Burger"
-											: index % 4 === 1
-												? "White Rice"
-												: index % 4 === 3
-													? "Neapolitan Pizza"
-													: "Gbegiri Soup"}
+									<Text style={styles.gridItemTitle} numberOfLines={1}>
+										{item.name}
 									</Text>
 									<Text style={styles.gridItemMeta}>
-										10 min away • 128 ordered
+										10 min away • {item.ordersCount || 128} ordered
 									</Text>
 									<Text style={styles.gridItemPrice}>
-										{index % 2 === 0 ? "₦3,500" : "₦2,500"}
+										₦{item.price?.toLocaleString() || "0"}
 									</Text>
 								</View>
 							</TouchableOpacity>
@@ -412,24 +397,20 @@ const HomePage = () => {
 						<Text style={styles.categorySeeAll}>See All</Text>
 					</View>
 
-					{restaurantAllData.slice(0, 4).map((item, index) => (
+					{displayRestaurants.map((item, index) => (
 						<TouchableOpacity
-							key={index}
+							key={item._id || item.id || index}
 							style={styles.restaurantItem}
-							onPress={() => handleMealPress(0)}>
+							onPress={() => {
+								// Navigate to restaurant details or show meals
+							}}>
 							<Image
-								source={item.restaurantAll}
+								source={{ uri: item.image || item.logo || item.imageUrl }}
 								style={styles.restaurantImage}
 							/>
 							<View style={styles.restaurantDetails}>
 								<Text style={styles.restaurantName}>
-									{index === 0
-										? "Pepperoni"
-										: index === 1
-											? "Amala Spot"
-											: index === 2
-												? "Belloni's Place"
-												: "Tasty & Spicy"}
+									{item.name}
 								</Text>
 								<View style={styles.restaurantMeta}>
 									<Ionicons
@@ -437,31 +418,87 @@ const HomePage = () => {
 										size={12}
 										color="#E58945"
 									/>
-									<Text style={styles.restaurantRating}>4.8 (100+)</Text>
+									<Text style={styles.restaurantRating}>
+										{item.rating || "4.8"} ({item.reviews || "100"}+)
+									</Text>
 								</View>
 								<Text style={styles.restaurantLocation}>
-									Civic center, Fejuyi Park
+									{item.address || "Civic center, Fejuyi Park"}
 								</Text>
 								<Text style={styles.restaurantDistance}>10 min away</Text>
 							</View>
 							<TouchableOpacity style={styles.restaurantHeartContainer}>
-								<TouchableOpacity onPress={() => toggleFavorite(item.title)}>
+								<TouchableOpacity onPress={() => toggleFavorite(item._id || item.id)}>
 									<Ionicons
-										name={favorites.includes(item.title) ? "heart" : "heart-outline"}
+										name={favorites.includes(item._id || item.id) ? "heart" : "heart-outline"}
 										size={20}
-										color={favorites.includes(item.title) ? "red" : "#E58945"}
+										color={favorites.includes(item._id || item.id) ? "red" : "#E58945"}
 									/>
 								</TouchableOpacity>
-								{/* <Ionicons
-									name="heart-outline"
-									size={20}
-									color="#E58945"
-								/> */}
 							</TouchableOpacity>
 						</TouchableOpacity>
 					))}
 				</View>
 			</ScrollView>
+
+			{/* Search Modal */}
+			<Modal
+				visible={searchModalVisible}
+				animationType="slide"
+				transparent={false}
+				onRequestClose={() => setSearchModalVisible(false)}
+			>
+				<SafeAreaView style={styles.searchModalContainer}>
+					<View style={styles.searchHeader}>
+						<TouchableOpacity onPress={() => setSearchModalVisible(false)}>
+							<Ionicons name="arrow-back" size={24} color="#333" />
+						</TouchableOpacity>
+						<TextInput
+							style={styles.searchInput}
+							placeholder="Search for meals..."
+							value={searchQuery}
+							onChangeText={handleSearch}
+							autoFocus
+						/>
+					</View>
+					
+					{searchLoading ? (
+						<View style={styles.searchLoadingContainer}>
+							<ActivityIndicator size="large" color="#E58945" />
+						</View>
+					) : (
+						<ScrollView style={styles.searchResultsContainer}>
+							{searchResults.length > 0 ? (
+								searchResults.map((meal, index) => (
+									<TouchableOpacity
+										key={meal._id || meal.id || index}
+										style={styles.searchResultItem}
+										onPress={() => {
+											handleMealPress(meal);
+											setSearchModalVisible(false);
+										}}
+									>
+										<Image
+											source={{ uri: meal.image || meal.imageUrl }}
+											style={styles.searchResultImage}
+										/>
+										<View style={styles.searchResultDetails}>
+											<Text style={styles.searchResultName}>{meal.name}</Text>
+											<Text style={styles.searchResultPrice}>
+												₦{meal.price?.toLocaleString() || "0"}
+											</Text>
+										</View>
+									</TouchableOpacity>
+								))
+							) : searchQuery.trim() !== "" ? (
+								<View style={styles.noResultsContainer}>
+									<Text style={styles.noResultsText}>No meals found</Text>
+								</View>
+							) : null}
+						</ScrollView>
+					)}
+				</SafeAreaView>
+			</Modal>
 
 			{/* Customize Order Modal */}
 			<CustomizeOrderModal
@@ -790,6 +827,70 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		width: 30,
 		height: 30,
+	},
+	searchModalContainer: {
+		flex: 1,
+		backgroundColor: "#FFFFFF",
+	},
+	searchHeader: {
+		flexDirection: "row",
+		alignItems: "center",
+		padding: 15,
+		borderBottomWidth: 1,
+		borderBottomColor: "#E5E5E5",
+	},
+	searchInput: {
+		flex: 1,
+		marginLeft: 15,
+		fontSize: 16,
+		color: "#333",
+	},
+	searchLoadingContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	searchResultsContainer: {
+		flex: 1,
+		padding: 15,
+	},
+	searchResultItem: {
+		flexDirection: "row",
+		alignItems: "center",
+		padding: 10,
+		backgroundColor: "#F9F9F9",
+		borderRadius: 10,
+		marginBottom: 10,
+	},
+	searchResultImage: {
+		width: 60,
+		height: 60,
+		borderRadius: 10,
+		marginRight: 15,
+	},
+	searchResultDetails: {
+		flex: 1,
+	},
+	searchResultName: {
+		fontSize: 16,
+		fontWeight: "bold",
+		color: "#333",
+		marginBottom: 5,
+	},
+	searchResultPrice: {
+		fontSize: 14,
+		color: "#E58945",
+		fontWeight: "bold",
+	},
+	noResultsContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		paddingVertical: 50,
+	},
+	noResultsText: {
+		fontSize: 16,
+		color: "#666",
 	},
 });
 
