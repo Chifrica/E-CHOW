@@ -1,18 +1,18 @@
 import { Redirect, Stack } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useGlobalContext } from "../../lib/global-provider";
 
 export default function AuthRoutesLayout() {
-	const { isSignedIn } = useAuth();
+  const { isLoggedIn } = useGlobalContext();
 
-	if (isSignedIn) {
-		return <Redirect href={"/"} />;
-	}
+  if (isLoggedIn) {
+    return <Redirect href={"/"} />;
+  }
 
-	return (
-		<Stack
-			screenOptions={{
-				headerShown: false,
-			}}
-		/>
-	);
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    />
+  );
 }

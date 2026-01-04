@@ -2,61 +2,63 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import { notificationData } from "./notification-data";
 import { router } from "expo-router";
-import { useUser } from "@clerk/clerk-expo";
+import { useGlobalContext } from "../../../lib/global-provider";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const NotificationScreen: React.FC = () => {
-	// const navigateToProfile = () => {
-	// 	router.push("/(root)/src/profile/profileScreen");
-	// };
+  // const navigateToProfile = () => {
+  // 	router.push("/(root)/src/profile/profileScreen");
+  // };
 
-	const { user } = useUser();
-	const profileImage = user?.imageUrl;
+  const { user } = useGlobalContext();
+  const profileImage = user?.avatar;
 
-	return (
-		<SafeAreaView style={styles.container}>
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				style={styles.scrollView}
-			>
-				<Text style={styles.header}>Notifications</Text>
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        <Text style={styles.header}>Notifications</Text>
 
-				<View style={styles.notifications}>
-					{notificationData.map((notification) => (
-						<View
-							key={notification.id}
-							style={styles.notificationContainer}
-						>
-								<View style={{ flexDirection: "row", alignItems: "center", marginRight: 10 }}>
-									<Image
-										style={styles.userImg}
-										source={{ uri: profileImage }}
-									/>
-									<View style={styles.notificationBody}>
-										<View style={styles.userCard}>
-											<Text
-												style={styles.userName}
-												// onPress={navigateToProfile}
-											>
-												{user?.fullName}
-											</Text>
-											<Text style={styles.time}>{notification.time}</Text>
-										</View>
+        <View style={styles.notifications}>
+          {notificationData.map((notification) => (
+            <View key={notification.id} style={styles.notificationContainer}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginRight: 10,
+                }}
+              >
+                <Image
+                  style={styles.userImg}
+                  source={{ uri: profileImage ?? undefined }}
+                />
+                <View style={styles.notificationBody}>
+                  <View style={styles.userCard}>
+                    <Text
+                      style={styles.userName}
+                      // onPress={navigateToProfile}
+                    >
+                      {user?.name}
+                    </Text>
+                    <Text style={styles.time}>{notification.time}</Text>
+                  </View>
 
-										{/* <View style={styles.notificationBody}> */}
-											<Text style={styles.message}>{notification.message}</Text>
-										{/* </View> */}
-									</View>
-								</View>
-								
+                  {/* <View style={styles.notificationBody}> */}
+                  <Text style={styles.message}>{notification.message}</Text>
+                  {/* </View> */}
+                </View>
+              </View>
 
-							<View style={styles.horizontalRule} />
-						</View>
-					))}
-				</View>
-			</ScrollView>
-		</SafeAreaView>
-	);
+              <View style={styles.horizontalRule} />
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
 
 export default NotificationScreen;

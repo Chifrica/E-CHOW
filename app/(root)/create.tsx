@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { useUser } from "@clerk/clerk-expo";
+import { useGlobalContext } from "../../lib/global-provider";
 
 // Import your existing components
 import DateTimePickerModal from "../../components/DateTimePicket";
@@ -19,302 +19,273 @@ import MealTypeModal from "../../components/MealTypeModal";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CreateSchedulePage = () => {
-	const [selectedTime, setSelectedTime] = useState("Schedule");
-	const [selectedMealType, setSelectedMealType] = useState("Breakfast");
-	const [dateTimeModalVisible, setDateTimeModalVisible] = useState(false);
-	const [mealTypeModalVisible, setMealTypeModalVisible] = useState(false);
-	const [selectedDateTime, setSelectedDateTime] = useState(null);
-	const [errorType, setErrorType] = useState(null);
-	const [errorTimeout, setErrorTimeout] = useState(null);
+  const [selectedTime, setSelectedTime] = useState("Schedule");
+  const [selectedMealType, setSelectedMealType] = useState("Breakfast");
+  const [dateTimeModalVisible, setDateTimeModalVisible] = useState(false);
+  const [mealTypeModalVisible, setMealTypeModalVisible] = useState(false);
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [errorType, setErrorType] = useState(null);
+  const [errorTimeout, setErrorTimeout] = useState(null);
 
-	const router = useRouter();
-	const params = useLocalSearchParams();
-	const { user } = useUser();
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  const { user } = useGlobalContext();
 
-	// Parse order data if available
-	const orderData =
-		typeof params.orderData === "string"
-			? JSON.parse(params.orderData)
-			: null;
+  // Parse order data if available
+  const orderData =
+    typeof params.orderData === "string" ? JSON.parse(params.orderData) : null;
 
-	useEffect(() => {
-		if (errorType) {
-			if (errorTimeout) {
-				clearTimeout(errorTimeout);
-			}
+  useEffect(() => {
+    if (errorType) {
+      if (errorTimeout) {
+        clearTimeout(errorTimeout);
+      }
 
-			const timeout = setTimeout(() => {
-				setErrorType(null);
-			}, 3000);
+      const timeout = setTimeout(() => {
+        setErrorType(null);
+      }, 3000);
 
-			setErrorTimeout(timeout);
-		}
+      setErrorTimeout(timeout);
+    }
 
-		return () => {
-			if (errorTimeout) {
-				clearTimeout(errorTimeout);
-			}
-		};
-	}, [errorType]);
+    return () => {
+      if (errorTimeout) {
+        clearTimeout(errorTimeout);
+      }
+    };
+  }, [errorType]);
 
-	const handleOpenDateTimePicker = () => {
-		setDateTimeModalVisible(true);
-	};
+  const handleOpenDateTimePicker = () => {
+    setDateTimeModalVisible(true);
+  };
 
-	const handleSaveDateTime = (dateTime: any) => {
-		setSelectedDateTime(dateTime);
-		setSelectedTime(dateTime.formattedDate);
-		setErrorType(null);
+  const handleSaveDateTime = (dateTime: any) => {
+    setSelectedDateTime(dateTime);
+    setSelectedTime(dateTime.formattedDate);
+    setErrorType(null);
 
-		if (errorTimeout) {
-			clearTimeout(errorTimeout);
-			setErrorTimeout(null);
-		}
-	};
+    if (errorTimeout) {
+      clearTimeout(errorTimeout);
+      setErrorTimeout(null);
+    }
+  };
 
-	const handleOpenMealTypeModal = () => {
-		setMealTypeModalVisible(true);
-	};
+  const handleOpenMealTypeModal = () => {
+    setMealTypeModalVisible(true);
+  };
 
-	const handleSelectMealType = (mealType: any) => {
-		setSelectedMealType(mealType);
-		setErrorType(null);
+  const handleSelectMealType = (mealType: any) => {
+    setSelectedMealType(mealType);
+    setErrorType(null);
 
-		if (errorTimeout) {
-			clearTimeout(errorTimeout);
-			setErrorTimeout(null);
-		}
-	};
+    if (errorTimeout) {
+      clearTimeout(errorTimeout);
+      setErrorTimeout(null);
+    }
+  };
 
-	const handleSave = () => {
-		if (selectedTime === "Schedule") {
-			setErrorType("time");
-		} else {
-			setErrorType(null);
-			// Save the scheduled meal and navigate back to schedule page
-			router.push("/(tabs)/schedule/scheduleScreen");
-		}
-	};
+  const handleSave = () => {
+    if (selectedTime === "Schedule") {
+      setErrorType("time");
+    } else {
+      setErrorType(null);
+      // Save the scheduled meal and navigate back to schedule page
+      router.push("/(tabs)/schedule/scheduleScreen");
+    }
+  };
 
-	const handleBack = () => {
-		router.back();
-	};
+  const handleBack = () => {
+    router.back();
+  };
 
-	const changeLocation = () => {
-		router.push("/src/location/currentLocation");
-	};
+  const changeLocation = () => {
+    router.push("/src/location/currentLocation");
+  };
 
-	// Get meal info from order data or use default
-	const mealName = orderData?.meal?.name || "Spicy Jollof";
-	const restaurantName = orderData?.meal?.restaurant || "Nao Restaurants";
-	const totalPrice = orderData?.total || 4100;
+  // Get meal info from order data or use default
+  const mealName = orderData?.meal?.name || "Spicy Jollof";
+  const restaurantName = orderData?.meal?.restaurant || "Nao Restaurants";
+  const totalPrice = orderData?.total || 4100;
 
-	return (
-		<SafeAreaView style={styles.container}>
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={styles.scrollContent}>
-				<StatusBar barStyle="dark-content" />
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <StatusBar barStyle="dark-content" />
 
-				{/* Header */}
-				<View style={styles.header}>
-					<TouchableOpacity
-						style={styles.backButton}
-						onPress={handleBack}>
-						<Ionicons
-							name="chevron-back"
-							size={24}
-							color="black"
-						/>
-					</TouchableOpacity>
-					<Text style={styles.headerTitle}>Schedule your meal</Text>
-				</View>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <Ionicons name="chevron-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Schedule your meal</Text>
+        </View>
 
-				{/* Meal Info */}
-				<View style={styles.mealInfoContainer}>
-					<Text style={styles.mealName}>{mealName}</Text>
-					<Text style={styles.separator}>—</Text>
-					<Text style={styles.restaurantName}>From {restaurantName}</Text>
-				</View>
+        {/* Meal Info */}
+        <View style={styles.mealInfoContainer}>
+          <Text style={styles.mealName}>{mealName}</Text>
+          <Text style={styles.separator}>—</Text>
+          <Text style={styles.restaurantName}>From {restaurantName}</Text>
+        </View>
 
-				{/* Delivery Location */}
-				<Text style={styles.sectionLabel}>Delivered to:</Text>
-				<TouchableOpacity style={styles.locationCard}>
-					<Ionicons
-						name="location-outline"
-						size={22}
-						color="black"
-						style={styles.locationIcon}
-					/>
-					<View style={styles.locationTextContainer}>
-						<Text style={styles.locationTitle}>General (Current location)</Text>
-						<Text style={styles.locationAddress}>
-							Rosebud, Oke Ila, Ado Ekiti
-						</Text>
-					</View>
-				</TouchableOpacity>
+        {/* Delivery Location */}
+        <Text style={styles.sectionLabel}>Delivered to:</Text>
+        <TouchableOpacity style={styles.locationCard}>
+          <Ionicons
+            name="location-outline"
+            size={22}
+            color="black"
+            style={styles.locationIcon}
+          />
+          <View style={styles.locationTextContainer}>
+            <Text style={styles.locationTitle}>General (Current location)</Text>
+            <Text style={styles.locationAddress}>
+              Rosebud, Oke Ila, Ado Ekiti
+            </Text>
+          </View>
+        </TouchableOpacity>
 
-				{/* Change Location Button */}
-				<TouchableOpacity
-					style={styles.changeLocationButton}
-					onPress={changeLocation}>
-					<Ionicons
-						name="location-outline"
-						size={20}
-						color="#FF8C42"
-					/>
-					<Text style={styles.changeLocationText}>Change Location</Text>
-				</TouchableOpacity>
+        {/* Change Location Button */}
+        <TouchableOpacity
+          style={styles.changeLocationButton}
+          onPress={changeLocation}
+        >
+          <Ionicons name="location-outline" size={20} color="#FF8C42" />
+          <Text style={styles.changeLocationText}>Change Location</Text>
+        </TouchableOpacity>
 
-				{/* Delivery Time */}
-				<Text style={styles.sectionLabel}>Delivery time:</Text>
-				<TouchableOpacity
-					style={[
-						styles.selectionCard,
-						errorType === "time" && styles.errorSelectionCard,
-					]}
-					onPress={handleOpenDateTimePicker}>
-					<View
-						style={[
-							styles.radioButton,
-							errorType === "time" && styles.errorRadioButton,
-						]}
-					/>
-					<Text
-						style={[
-							styles.selectionText,
-							errorType === "time" && styles.errorSelectionText,
-						]}>
-						{selectedTime}
-					</Text>
-					<View style={styles.rightContainer}>
-						<Text style={styles.rightText}>Set time & date</Text>
-						<Ionicons
-							name="chevron-forward"
-							size={20}
-							color="#888"
-						/>
-					</View>
-				</TouchableOpacity>
+        {/* Delivery Time */}
+        <Text style={styles.sectionLabel}>Delivery time:</Text>
+        <TouchableOpacity
+          style={[
+            styles.selectionCard,
+            errorType === "time" && styles.errorSelectionCard,
+          ]}
+          onPress={handleOpenDateTimePicker}
+        >
+          <View
+            style={[
+              styles.radioButton,
+              errorType === "time" && styles.errorRadioButton,
+            ]}
+          />
+          <Text
+            style={[
+              styles.selectionText,
+              errorType === "time" && styles.errorSelectionText,
+            ]}
+          >
+            {selectedTime}
+          </Text>
+          <View style={styles.rightContainer}>
+            <Text style={styles.rightText}>Set time & date</Text>
+            <Ionicons name="chevron-forward" size={20} color="#888" />
+          </View>
+        </TouchableOpacity>
 
-				{/* Meal Type */}
-				<Text style={styles.sectionLabel}>Meal Type:</Text>
-				<TouchableOpacity
-					style={styles.selectionCard}
-					onPress={handleOpenMealTypeModal}>
-					<View style={styles.radioButton} />
-					<Text style={styles.selectionText}>{selectedMealType}</Text>
-					<Ionicons
-						name="chevron-forward"
-						size={20}
-						color="#888"
-						style={styles.rightIcon}
-					/>
-				</TouchableOpacity>
+        {/* Meal Type */}
+        <Text style={styles.sectionLabel}>Meal Type:</Text>
+        <TouchableOpacity
+          style={styles.selectionCard}
+          onPress={handleOpenMealTypeModal}
+        >
+          <View style={styles.radioButton} />
+          <Text style={styles.selectionText}>{selectedMealType}</Text>
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color="#888"
+            style={styles.rightIcon}
+          />
+        </TouchableOpacity>
 
-				<MealTypeModal
-					visible={mealTypeModalVisible}
-					onClose={() => setMealTypeModalVisible(false)}
-					onSelectMealType={handleSelectMealType}
-					initialMealType={selectedMealType}
-				/>
+        <MealTypeModal
+          visible={mealTypeModalVisible}
+          onClose={() => setMealTypeModalVisible(false)}
+          onSelectMealType={handleSelectMealType}
+          initialMealType={selectedMealType}
+        />
 
-				{/* Instructions */}
-				<Text style={styles.sectionLabel}>Instructions:</Text>
-				<TouchableOpacity style={styles.instructionRow}>
-					<Feather
-						name="file-text"
-						size={20}
-						color="black"
-					/>
-					<Text style={styles.instructionText}>Notes to Restaurants</Text>
-					<Ionicons
-						name="chevron-forward"
-						size={20}
-						color="#888"
-						style={styles.rightIcon}
-					/>
-				</TouchableOpacity>
-				<View style={styles.divider} />
+        {/* Instructions */}
+        <Text style={styles.sectionLabel}>Instructions:</Text>
+        <TouchableOpacity style={styles.instructionRow}>
+          <Feather name="file-text" size={20} color="black" />
+          <Text style={styles.instructionText}>Notes to Restaurants</Text>
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color="#888"
+            style={styles.rightIcon}
+          />
+        </TouchableOpacity>
+        <View style={styles.divider} />
 
-				<TouchableOpacity style={styles.instructionRow}>
-					<Feather
-						name="user"
-						size={20}
-						color="black"
-					/>
-					<Text style={styles.instructionText}>Riders Instruction</Text>
-					<Ionicons
-						name="chevron-forward"
-						size={20}
-						color="#888"
-						style={styles.rightIcon}
-					/>
-				</TouchableOpacity>
-				<View style={styles.divider} />
+        <TouchableOpacity style={styles.instructionRow}>
+          <Feather name="user" size={20} color="black" />
+          <Text style={styles.instructionText}>Riders Instruction</Text>
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color="#888"
+            style={styles.rightIcon}
+          />
+        </TouchableOpacity>
+        <View style={styles.divider} />
 
-				{/* Contact Info */}
-				<Text style={styles.sectionLabel}>Contact Info:</Text>
-				<View style={styles.contactRow}>
-					<View style={styles.contactTextContainer}>
-						<Text style={styles.contactName}>{user?.fullName}</Text>
-						<Text style={styles.dot}>•</Text>
-						<Text style={styles.contactPhone}>
-							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
-						</Text>
-					</View>
-					<TouchableOpacity>
-						<Feather
-							name="edit-2"
-							size={20}
-							color="#888"
-						/>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.divider} />
+        {/* Contact Info */}
+        <Text style={styles.sectionLabel}>Contact Info:</Text>
+        <View style={styles.contactRow}>
+          <View style={styles.contactTextContainer}>
+            <Text style={styles.contactName}>{user?.name}</Text>
+            <Text style={styles.dot}>•</Text>
+            <Text style={styles.contactPhone}>
+              {user?.phone ?? "Phone not available"}
+            </Text>
+          </View>
+          <TouchableOpacity>
+            <Feather name="edit-2" size={20} color="#888" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.divider} />
 
-				{/* Billings */}
-				<Text style={styles.sectionLabel}>Billings:</Text>
-				<View style={styles.billingRow}>
-					<Feather
-						name="shopping-bag"
-						size={20}
-						color="black"
-					/>
-					<Text style={styles.billingText}>Food</Text>
-					<Text style={styles.billingAmount}>
-						₦{totalPrice.toLocaleString()}
-					</Text>
-				</View>
-				<View style={styles.divider} />
+        {/* Billings */}
+        <Text style={styles.sectionLabel}>Billings:</Text>
+        <View style={styles.billingRow}>
+          <Feather name="shopping-bag" size={20} color="black" />
+          <Text style={styles.billingText}>Food</Text>
+          <Text style={styles.billingAmount}>
+            ₦{totalPrice.toLocaleString()}
+          </Text>
+        </View>
+        <View style={styles.divider} />
 
-				{/* Save Button */}
-				<TouchableOpacity
-					style={styles.saveButton}
-					onPress={handleSave}>
-					<Text style={styles.saveButtonText}>Save</Text>
-				</TouchableOpacity>
+        {/* Save Button */}
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
 
-				{/* Date Time Picker Modal */}
-				<DateTimePickerModal
-					visible={dateTimeModalVisible}
-					onClose={() => setDateTimeModalVisible(false)}
-					onSave={handleSaveDateTime}
-					initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
-				/>
-			</ScrollView>
+        {/* Date Time Picker Modal */}
+        <DateTimePickerModal
+          visible={dateTimeModalVisible}
+          onClose={() => setDateTimeModalVisible(false)}
+          onSave={handleSaveDateTime}
+          initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
+        />
+      </ScrollView>
 
-			{/* Error Message with Animation */}
-			{errorType && (
-				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>
-						Oops! You haven't selected a delivery time.
-					</Text>
-					<Text style={styles.errorSubText}>Set time and date</Text>
-				</View>
-			)}
-		</SafeAreaView>
-	);
+      {/* Error Message with Animation */}
+      {errorType && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>
+            Oops! You haven't selected a delivery time.
+          </Text>
+          <Text style={styles.errorSubText}>Set time and date</Text>
+        </View>
+      )}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({

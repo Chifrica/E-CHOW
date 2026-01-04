@@ -18,316 +18,345 @@ import RidersInstructionModal from "../../components/RidersInstructionModal";
 import DateTimePickerModal, {
 	type DateTimeSelection,
 } from "../../components/DateTimePicket";
-import { useUser } from "@clerk/clerk-expo";
+import { useGlobalContext } from "../../lib/global-provider";
 import { useNavigation } from "@react-navigation/native";
 import { exploreData } from "../../data/explore-data";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const OrderSummaryScreen: React.FC = () => {
-	const router = useRouter();
-	const [deliveryTime, setDeliveryTime] = useState<"now" | "schedule">("now");
-	const [notesToRestaurant, setNotesToRestaurant] = useState<string>("");
-	const [ridersInstruction, setRidersInstruction] = useState<string>("");
-	const [notesModalVisible, setNotesModalVisible] = useState<boolean>(false);
-	const [ridersModalVisible, setRidersModalVisible] = useState<boolean>(false);
-	const [dateTimeModalVisible, setDateTimeModalVisible] =
-		useState<boolean>(false);
-	const [selectedDateTime, setSelectedDateTime] =
-		useState<DateTimeSelection | null>(null);
-	const [selectedTime, setSelectedTime] = useState<string>("Schedule");
-	const [errorType, setErrorType] = useState<string | null>(null);
+  const router = useRouter();
+  const [deliveryTime, setDeliveryTime] = useState<"now" | "schedule">("now");
+  const [notesToRestaurant, setNotesToRestaurant] = useState<string>("");
+  const [ridersInstruction, setRidersInstruction] = useState<string>("");
+  const [notesModalVisible, setNotesModalVisible] = useState<boolean>(false);
+  const [ridersModalVisible, setRidersModalVisible] = useState<boolean>(false);
+  const [dateTimeModalVisible, setDateTimeModalVisible] =
+    useState<boolean>(false);
+  const [selectedDateTime, setSelectedDateTime] =
+    useState<DateTimeSelection | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>("Schedule");
+  const [errorType, setErrorType] = useState<string | null>(null);
 
-	const foodName = [
-		"Spicy Jollof Rice",
-		"Good Burger",
-		"Beans and Plantain",
-		"Meat Pie",
-	][3]; // Example food name, replace with actual selection logic
-	// Find the food item from exploreData
-	const foodItem = exploreData.find(
-		(item) => item.foodName.toLowerCase() === foodName.toLowerCase()
-	);
-	const foodAmount = typeof foodItem?.price === "number" ? foodItem.price : 0;
-	const deliveryFee = 1000;
-	const serviceFee = 100;
-	const totalAmount = foodAmount + deliveryFee + serviceFee;
+  const foodName = [
+    "Spicy Jollof Rice",
+    "Good Burger",
+    "Beans and Plantain",
+    "Meat Pie",
+  ][3]; // Example food name, replace with actual selection logic
+  // Find the food item from exploreData
+  const foodItem = exploreData.find(
+    (item) => item.foodName.toLowerCase() === foodName.toLowerCase()
+  );
+  const foodAmount = typeof foodItem?.price === "number" ? foodItem.price : 0;
+  const deliveryFee = 1000;
+  const serviceFee = 100;
+  const totalAmount = foodAmount + deliveryFee + serviceFee;
 
-	const handleOpenDateTimePicker = (): void => {
-		setDeliveryTime("schedule");
-		setDateTimeModalVisible(true);
-	};
+  const handleOpenDateTimePicker = (): void => {
+    setDeliveryTime("schedule");
+    setDateTimeModalVisible(true);
+  };
 
-	const handleSave = () => {
-		router.push("/(root)/src/payment/paystack");
-		// if (selectedTime === "Schedule") {
-		// 	setErrorType("time");
-		// 	router.push("/(root)/src/location/paystack");
-		// } else {
-		// 	setErrorType(null);
-		// 	// Add save logic here
-		// }
-	};
+  const handleSave = () => {
+    router.push("/(root)/src/payment/paystack");
+    // if (selectedTime === "Schedule") {
+    // 	setErrorType("time");
+    // 	router.push("/(root)/src/location/paystack");
+    // } else {
+    // 	setErrorType(null);
+    // 	// Add save logic here
+    // }
+  };
 
-	const handleSaveDateTime = (dateTime: DateTimeSelection): void => {
-		setSelectedDateTime(dateTime);
-		setSelectedTime(dateTime.formattedDate);
-		setDeliveryTime("schedule");
-		setErrorType(null);
-	};
+  const handleSaveDateTime = (dateTime: DateTimeSelection): void => {
+    setSelectedDateTime(dateTime);
+    setSelectedTime(dateTime.formattedDate);
+    setDeliveryTime("schedule");
+    setErrorType(null);
+  };
 
-	const { user } = useUser();
-	const navigation = useNavigation();
+  const { user } = useGlobalContext();
+  const navigation = useNavigation();
 
-	const handleBack = () => {
-		router.back();
-	};
-	return (
-		<SafeAreaView style={styles.container}>
-			<ScrollView
-				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}
-			>
-			
-				<View style={styles.header}>
-					<TouchableOpacity
-						onPress={handleBack}
-						style={styles.backButton}>
-						<Ionicons
-							name="chevron-back"
-							size={24}
-							color="#000"
-						/>
-					</TouchableOpacity>
-					<Text style={styles.headerTitle}>Order Summary</Text>
-				</View>
+  const handleBack = () => {
+    router.back();
+  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <Ionicons name="chevron-back" size={24} color="#000" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Order Summary</Text>
+        </View>
 
-				{/* Food Info */}
-				<View style={styles.foodInfo}>
-					{foodItem?.image && (
-						<Image
-							source={foodItem.image}
-							style={styles.foodImage}
-						/>
-					)}
+        {/* Food Info */}
+        <View style={styles.foodInfo}>
+          {foodItem?.image && (
+            <Image source={foodItem.image} style={styles.foodImage} />
+          )}
 
-					<View style={{ flexDirection: "column", flex: 1 }}>
-						<Text style={styles.foodName}>
-							{foodItem?.foodName ?? "Unknown"}
-						</Text>
-						<Text style={styles.billingAmount}>
-							₦{foodAmount.toLocaleString()}
-						</Text>
-						{/* <Text style={styles.separator}>—</Text> */}
-						<Text style={styles.restaurantName}>
-							{foodItem?.vendorName ?? "Unknown"} Restaurant
-						</Text>
-					</View>
-				</View>
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <Text style={styles.foodName}>
+              {foodItem?.foodName ?? "Unknown"}
+            </Text>
+            <Text style={styles.billingAmount}>
+              ₦{foodAmount.toLocaleString()}
+            </Text>
+            {/* <Text style={styles.separator}>—</Text> */}
+            <Text style={styles.restaurantName}>
+              {foodItem?.vendorName ?? "Unknown"} Restaurant
+            </Text>
+          </View>
+        </View>
 
-				{/* Location Section */}
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Delivered to:</Text>
-					<TouchableOpacity style={styles.locationContainer}>
-						<Ionicons
-							name="location-outline"
-							size={20}
-							color="#000"
-							style={styles.locationIcon}
-						/>
-						<View style={styles.locationTextContainer}>
-							<Text style={styles.locationTitle}>
-								General (Current location)
-							</Text>
-							<Text style={styles.locationAddress}>
-								Rosebud, Oke Ila, Ado Ekiti
-							</Text>
-						</View>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.changeLocationButton}>
-						<Image source={require("../../assets/images/orderSummary/location-mark.png")} style={{ width: 20, height: 20 }} />
-						<Text style={styles.changeLocationText}>Change Location</Text>
-					</TouchableOpacity>
-				</View>
+        {/* Location Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Delivered to:</Text>
+          <TouchableOpacity style={styles.locationContainer}>
+            <Ionicons
+              name="location-outline"
+              size={20}
+              color="#000"
+              style={styles.locationIcon}
+            />
+            <View style={styles.locationTextContainer}>
+              <Text style={styles.locationTitle}>
+                General (Current location)
+              </Text>
+              <Text style={styles.locationAddress}>
+                Rosebud, Oke Ila, Ado Ekiti
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.changeLocationButton}>
+            <Image
+              source={require("../../assets/images/orderSummary/location-mark.png")}
+              style={{ width: 20, height: 20 }}
+            />
+            <Text style={styles.changeLocationText}>Change Location</Text>
+          </TouchableOpacity>
+        </View>
 
-				{/* Delivery Time */}
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Delivery time:</Text>
-					<TouchableOpacity
-						style={[
-							styles.timeOption,
-							deliveryTime === "now" && styles.timeOptionSelected,
-						]}
-						onPress={() => setDeliveryTime("now")}>
-						<View style={styles.radioContainer}>
-							<View
-								style={[
-									styles.radioOuter,
-									deliveryTime === "now" && styles.radioOuterSelected,
-								]}>
-								{deliveryTime === "now" && <View style={styles.radioInner} />}
-							</View>
-							<Text style={styles.timeOptionText}>Now</Text>
-						</View>
-					</TouchableOpacity>
+        {/* Delivery Time */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Delivery time:</Text>
+          <TouchableOpacity
+            style={[
+              styles.timeOption,
+              deliveryTime === "now" && styles.timeOptionSelected,
+            ]}
+            onPress={() => setDeliveryTime("now")}
+          >
+            <View style={styles.radioContainer}>
+              <View
+                style={[
+                  styles.radioOuter,
+                  deliveryTime === "now" && styles.radioOuterSelected,
+                ]}
+              >
+                {deliveryTime === "now" && <View style={styles.radioInner} />}
+              </View>
+              <Text style={styles.timeOptionText}>Now</Text>
+            </View>
+          </TouchableOpacity>
 
-					<TouchableOpacity
-						style={[
-							styles.timeOption,
-							deliveryTime === "schedule" && styles.timeOptionSelected,
-						]}
-						onPress={handleOpenDateTimePicker}>
-						<View style={styles.radioContainer}>
-							<View
-								style={[
-									styles.radioOuter,
-									deliveryTime === "schedule" && styles.radioOuterSelected,
-								]}>
-								{deliveryTime === "schedule" && (
-									<View style={styles.radioInner} />
-								)}
-							</View>
-							<Text style={styles.timeOptionText}>Schedule</Text>
-						</View>
-						<View style={styles.scheduleContainer}>
-							<Text style={styles.scheduleText}>{selectedTime}</Text>
-							<MaterialIcons
-								name="chevron-right"
-								size={20}
-								color="#000"
-							/>
-						</View>
-					</TouchableOpacity>
-				</View>
+          <TouchableOpacity
+            style={[
+              styles.timeOption,
+              deliveryTime === "schedule" && styles.timeOptionSelected,
+            ]}
+            onPress={handleOpenDateTimePicker}
+          >
+            <View style={styles.radioContainer}>
+              <View
+                style={[
+                  styles.radioOuter,
+                  deliveryTime === "schedule" && styles.radioOuterSelected,
+                ]}
+              >
+                {deliveryTime === "schedule" && (
+                  <View style={styles.radioInner} />
+                )}
+              </View>
+              <Text style={styles.timeOptionText}>Schedule</Text>
+            </View>
+            <View style={styles.scheduleContainer}>
+              <Text style={styles.scheduleText}>{selectedTime}</Text>
+              <MaterialIcons name="chevron-right" size={20} color="#000" />
+            </View>
+          </TouchableOpacity>
+        </View>
 
-				{/* Instructions */}
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Instructions</Text>
-					<View style={styles.divider} />
-					<TouchableOpacity
-						style={styles.instructionOption}
-						onPress={() => setNotesModalVisible(true)}
-					>
-						<MaterialCommunityIcons name="storefront-outline" size={20} color="#000" />
-						<Text style={styles.instructionText}>Notes to Restaurants</Text>
-						<MaterialIcons
-							name="chevron-right"
-							size={20}
-							color="#000"
-						/>
-					</TouchableOpacity>
+        {/* Instructions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Instructions</Text>
+          <View style={styles.divider} />
+          <TouchableOpacity
+            style={styles.instructionOption}
+            onPress={() => setNotesModalVisible(true)}
+          >
+            <MaterialCommunityIcons
+              name="storefront-outline"
+              size={20}
+              color="#000"
+            />
+            <Text style={styles.instructionText}>Notes to Restaurants</Text>
+            <MaterialIcons name="chevron-right" size={20} color="#000" />
+          </TouchableOpacity>
 
-					<View style={styles.divider} />
-					
-					<TouchableOpacity
-						style={styles.instructionOption}
-						onPress={() => setRidersModalVisible(true)}
-					>
-						<Image source={require("../../assets/images/orderSummary/rider.png")} style={{ width: 17, height: 17 }} />
-						<View style={styles.divider} />
-						<Text style={styles.instructionText}>Riders Instruction</Text>
-						<MaterialIcons
-							name="chevron-right"
-							size={20}
-							color="#000"
-						/>
-					</TouchableOpacity>
-					<View style={styles.divider} />
+          <View style={styles.divider} />
 
-				</View>
+          <TouchableOpacity
+            style={styles.instructionOption}
+            onPress={() => setRidersModalVisible(true)}
+          >
+            <Image
+              source={require("../../assets/images/orderSummary/rider.png")}
+              style={{ width: 17, height: 17 }}
+            />
+            <View style={styles.divider} />
+            <Text style={styles.instructionText}>Riders Instruction</Text>
+            <MaterialIcons name="chevron-right" size={20} color="#000" />
+          </TouchableOpacity>
+          <View style={styles.divider} />
+        </View>
 
-				{/* Contact Info */}
-				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Contact Info:</Text>
-					<View style={styles.divider} />
-					<View style={styles.contactInfo}>
-						<Feather name="phone-call" size={18} color="#000" style={{paddingRight: 15}}/>
-						<Text style={styles.contactName}>{user?.fullName}</Text>
-						<Text style={styles.contactDot}>•</Text>
-						<Text style={styles.contactPhone}>
-							{user?.phoneNumbers?.[0]?.phoneNumber ?? "Phone not available"}
-						</Text>
-						<TouchableOpacity style={styles.editButton}>
-							<Feather
-								name="edit-2"
-								size={20}
-								color="#000"
-							/>
-						</TouchableOpacity>
-					</View>
-					<View style={styles.divider} />
-				</View>
+        {/* Contact Info */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Contact Info:</Text>
+          <View style={styles.divider} />
+          <View style={styles.contactInfo}>
+            <Feather
+              name="phone-call"
+              size={18}
+              color="#000"
+              style={{ paddingRight: 15 }}
+            />
+            <Text style={styles.contactName}>{user?.name}</Text>
+            <Text style={styles.contactDot}>•</Text>
+            <Text style={styles.contactPhone}>
+              {user?.phone ?? "Phone not available"}
+            </Text>
+            <TouchableOpacity style={styles.editButton}>
+              <Feather name="edit-2" size={20} color="#000" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider} />
+        </View>
 
-				{/* Billing */}
-				<View style={styles.section}>
-				<Text style={styles.sectionTitle}>Billings:</Text>
-				<View style={{ borderWidth: 1, backgroundColor: "#fff", borderColor: "#eee", padding: 12, borderRadius: 8 }}>
-					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
-						<Image source={require("../../assets/images/orderSummary/food.png")} style={{ width: 20, height: 20 }} />
-						<Text style={styles.instructionText}>Food</Text>
-						<Text style={styles.billingAmount}>₦{foodAmount.toLocaleString()}</Text>
-						<MaterialIcons name="chevron-right" size={20} color="#000" />
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
-						<MaterialCommunityIcons name="bicycle" size={20} color="#000" />
-						<Text style={styles.instructionText}>Delivery Fee</Text>
-						<Text style={styles.billingAmount}>₦{deliveryFee.toLocaleString()}</Text>
-						<MaterialIcons name="chevron-right" size={20} color="#000" />
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
-						<MaterialCommunityIcons name="bicycle" size={20} color="#000" />
-						<Text style={styles.instructionText}>Service Fee</Text>
-						<Text style={styles.billingAmount}>₦{serviceFee.toLocaleString()}</Text>
-						<MaterialIcons name="chevron-right" size={20} color="#000" />
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.instructionOption} activeOpacity={1}>
-						<MaterialCommunityIcons name="note-text-outline" size={20} color="#000" />
-						<Text style={[styles.instructionText, { fontWeight: "bold" }]}>Total</Text>
-						<Text style={[styles.totalAmount, { flex: 1, textAlign: "right" }]}>₦{totalAmount.toLocaleString()}</Text>
-						<MaterialIcons name="chevron-right" size={20} color="#000" />
-					</TouchableOpacity>
-				</View>
-				</View>
+        {/* Billing */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Billings:</Text>
+          <View
+            style={{
+              borderWidth: 1,
+              backgroundColor: "#fff",
+              borderColor: "#eee",
+              padding: 12,
+              borderRadius: 8,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.instructionOption}
+              activeOpacity={1}
+            >
+              <Image
+                source={require("../../assets/images/orderSummary/food.png")}
+                style={{ width: 20, height: 20 }}
+              />
+              <Text style={styles.instructionText}>Food</Text>
+              <Text style={styles.billingAmount}>
+                ₦{foodAmount.toLocaleString()}
+              </Text>
+              <MaterialIcons name="chevron-right" size={20} color="#000" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.instructionOption}
+              activeOpacity={1}
+            >
+              <MaterialCommunityIcons name="bicycle" size={20} color="#000" />
+              <Text style={styles.instructionText}>Delivery Fee</Text>
+              <Text style={styles.billingAmount}>
+                ₦{deliveryFee.toLocaleString()}
+              </Text>
+              <MaterialIcons name="chevron-right" size={20} color="#000" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.instructionOption}
+              activeOpacity={1}
+            >
+              <MaterialCommunityIcons name="bicycle" size={20} color="#000" />
+              <Text style={styles.instructionText}>Service Fee</Text>
+              <Text style={styles.billingAmount}>
+                ₦{serviceFee.toLocaleString()}
+              </Text>
+              <MaterialIcons name="chevron-right" size={20} color="#000" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.instructionOption}
+              activeOpacity={1}
+            >
+              <MaterialCommunityIcons
+                name="note-text-outline"
+                size={20}
+                color="#000"
+              />
+              <Text style={[styles.instructionText, { fontWeight: "bold" }]}>
+                Total
+              </Text>
+              <Text
+                style={[styles.totalAmount, { flex: 1, textAlign: "right" }]}
+              >
+                ₦{totalAmount.toLocaleString()}
+              </Text>
+              <MaterialIcons name="chevron-right" size={20} color="#000" />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-				{/* Proceed Button */}
-				<TouchableOpacity
-					style={styles.paymentButton}
-					onPress={handleSave}>
-					<Text style={styles.paymentButtonText}>Proceed to payment</Text>
-				</TouchableOpacity>
-			</ScrollView>
+        {/* Proceed Button */}
+        <TouchableOpacity style={styles.paymentButton} onPress={handleSave}>
+          <Text style={styles.paymentButtonText}>Proceed to payment</Text>
+        </TouchableOpacity>
+      </ScrollView>
 
-			{/* Modals */}
-			<NotesToRestaurantsModal
-				visible={notesModalVisible}
-				onClose={() => setNotesModalVisible(false)}
-				onSave={setNotesToRestaurant}
-				initialNote={notesToRestaurant}
-			/>
-			<RidersInstructionModal
-				visible={ridersModalVisible}
-				onClose={() => setRidersModalVisible(false)}
-				onSave={setRidersInstruction}
-				initialInstruction={ridersInstruction}
-			/>
-			<DateTimePickerModal
-				visible={dateTimeModalVisible}
-				onClose={() => setDateTimeModalVisible(false)}
-				onSave={handleSaveDateTime}
-				initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
-			/>
+      {/* Modals */}
+      <NotesToRestaurantsModal
+        visible={notesModalVisible}
+        onClose={() => setNotesModalVisible(false)}
+        onSave={setNotesToRestaurant}
+        initialNote={notesToRestaurant}
+      />
+      <RidersInstructionModal
+        visible={ridersModalVisible}
+        onClose={() => setRidersModalVisible(false)}
+        onSave={setRidersInstruction}
+        initialInstruction={ridersInstruction}
+      />
+      <DateTimePickerModal
+        visible={dateTimeModalVisible}
+        onClose={() => setDateTimeModalVisible(false)}
+        onSave={handleSaveDateTime}
+        initialDate={selectedDateTime ? selectedDateTime.date : new Date()}
+      />
 
-			{/* Error Message */}
-			{errorType && (
-				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>
-						Oops! You haven't selected a delivery time.
-					</Text>
-					<Text style={styles.errorSubText}>Set time and date</Text>
-				</View>
-			)}
-		</SafeAreaView>
-	);
+      {/* Error Message */}
+      {errorType && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>
+            Oops! You haven't selected a delivery time.
+          </Text>
+          <Text style={styles.errorSubText}>Set time and date</Text>
+        </View>
+      )}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({

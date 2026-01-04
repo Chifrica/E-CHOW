@@ -43,107 +43,139 @@ const OnboardingScreen = () => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<ScrollView>
-				<ScrollView
-					onScroll={onchange}
-					showsHorizontalScrollIndicator={false}
-					pagingEnabled
-					horizontal
-					ref={scrollViewRef}
-					scrollEventThrottle={16}>
-					{slides.map((slide, index) => (
-						<View
-							key={index}
-							style={{ width }}>
-							<Image
-								key={index}
-								resizeMode="contain"
-								source={slide.image}
-								style={{
-									width: width,
-									height: 500,
-								}}
-							/>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
+        <ScrollView
+          onScroll={onchange}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          horizontal
+          ref={scrollViewRef}
+          scrollEventThrottle={16}
+          style={{ flex: 1 }}
+        >
+          {slides.map((slide, index) => (
+            <View
+              key={index}
+              style={{
+                width,
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                key={index}
+                resizeMode="contain"
+                source={slide.image}
+                style={styles.slideImage}
+              />
 
-							<View style={styles.dotContainer}>
-								{slides.map((slide, index) => (
-									<Text
-										key={index}
-										style={
-											imgActive == index ? styles.dotActive : styles.dotInActive
-										}>
-										{/* { imgActive == index ? '⬬' : '●' } */}●
-									</Text>
-								))}
-							</View>
+              <View style={styles.dotContainer}>
+                {slides.map((_, dotIndex) => (
+                  <Text
+                    key={dotIndex}
+                    style={
+                      imgActive == dotIndex
+                        ? styles.dotActive
+                        : styles.dotInActive
+                    }
+                  >
+                    ●
+                  </Text>
+                ))}
+              </View>
 
-							<View style={{ marginTop: 2 }}>
-								<Text
-									style={{
-										fontWeight: "700",
-										fontSize: 30,
-										fontFamily: "sans",
-										padding: 10,
-									}}>
-									{typeof slide.title == "string" ? (
-										slide.title
-									) : (
-										<>{slide.title}</>
-									)}
-								</Text>
-								<Text style={{ fontSize: 18, color: "#667085", padding: 10 }}>
-									{Array.isArray(slide.description)
-										? slide.description.map((part, index) =>
-												typeof part === "string" ? (
-													part
-												) : (
-													<Text
-														key={index}
-														style={{
-															color: part.highlight ? "#E58945" : "#667085",
-														}}>
-														{part.text}
-													</Text>
-												)
-										  )
-										: slide.description}
-								</Text>
-							</View>
-						</View>
-					))}
-				</ScrollView>
+              <View style={styles.textContainer}>
+                <Text style={styles.titleText}>
+                  {typeof slide.title == "string" ? (
+                    slide.title
+                  ) : (
+                    <>{slide.title}</>
+                  )}
+                </Text>
+                <Text style={styles.descriptionText}>
+                  {Array.isArray(slide.description)
+                    ? slide.description.map((part, index) =>
+                        typeof part === "string" ? (
+                          part
+                        ) : (
+                          <Text
+                            key={index}
+                            style={{
+                              color: part.highlight ? "#E58945" : "#667085",
+                            }}
+                          >
+                            {part.text}
+                          </Text>
+                        )
+                      )
+                    : slide.description}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
 
-				{/* <GlobalProvider> */}
-				<SignInOutCard />
-				{/* </GlobalProvider> */}
-			</ScrollView>
-		</SafeAreaView>
-	);
+      <View style={styles.bottomContainer}>
+        <SignInOutCard />
+      </View>
+    </SafeAreaView>
+  );
 };
 
 export default OnboardingScreen;
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#F9FAFB",
-	},
-	dotContainer: {
-		position: "relative",
-		bottom: 0,
-		flexDirection: "row",
-		alignSelf: "center",
-	},
-	dotActive: {
-		margin: 3,
-		color: "#E58945",
-		fontSize: 20,
-		borderRadius: 10,
-	},
-	dotInActive: {
-		margin: 3,
-		color: "#D6D6D6",
-		fontSize: 20,
-	},
+  container: {
+    flex: 1,
+    backgroundColor: "#F9FAFB",
+  },
+  contentContainer: {
+    flex: 3, // Takes 3/4 of the screen space
+  },
+  bottomContainer: {
+    flex: 1, // Takes 1/4 of the screen space
+    justifyContent: "flex-end",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  slideImage: {
+    width: width * 0.8,
+    height: "50%", // Responsive height relative to slide container
+    marginBottom: 20,
+  },
+  dotContainer: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginBottom: 15,
+  },
+  dotActive: {
+    margin: 3,
+    color: "#E58945",
+    fontSize: 20,
+  },
+  dotInActive: {
+    margin: 3,
+    color: "#D6D6D6",
+    fontSize: 20,
+  },
+  textContainer: {
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  titleText: {
+    fontWeight: "700",
+    fontSize: 28,
+    fontFamily: "sans",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  descriptionText: {
+    fontSize: 16,
+    color: "#667085",
+    textAlign: "center",
+    lineHeight: 24,
+  },
 });
