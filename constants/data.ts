@@ -6,27 +6,26 @@ export const slides = [
         image: images.onboarding,
         title: 'All Restaurants in One Place',
         description: [
-            'Discover ',
-            { text: 'all your favorite restaurants', highlight: true },
-            ' in one place—easy \n browsing, quick orders, and a variety of options to satisfy \n every craving!'
+            'Find your favorite meals from the ',
+            { text: 'best restuarants', highlight: true },
+            ' \n around you.'
         ]
     },
     {
         image: images.onboarding2,
         title: 'Top Rated Delicacies',
         description: [
-            'Enjoy the ',
-            { text: 'best dishes, loved by everyone!', highlight: true },
-            ' Discover top- \n rated meals for a delicious experience.'
+            'Discover and enjoy ',
+            { text: 'top-rated meals', highlight: true },
+            ' \neveryones loves.'
         ]
     },
     {
         image: images.onboarding3,
         title: 'Schedule Food Delivery',
         description: [
-            'Get food delivered when you want, and enjoy fresh, tasty \n meals on time—',
-            { text: 'no more last-minute stress!', highlight: true },
-            ' Just set it up, \n relax, and enjoy!'
+            'Plan ahead, set your meals, relax, and enjoy \n',
+            { text: 'timely food delivery', highlight: true },
         ]
     },
     
