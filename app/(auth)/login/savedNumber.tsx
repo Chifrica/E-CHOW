@@ -18,6 +18,8 @@ import * as LocalAuthentication from "expo-local-authentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { supabase } from "../../../lib/supabase";
+import GoogleSignup from "@/components/googleAppleSignup";
+import GoogleSignin from "@/components/googleSignin";
 
 const { width } = Dimensions.get("window");
 type MessageType = "SUCCESS" | "FAILED" | "WARNING";
@@ -276,14 +278,8 @@ const SavedNumber = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Enter your email address</Text>
-          {/* <TextInput
-						style={styles.input}
-						placeholder="e.g 08139684024"
-						value={phoneNumber}
-						onChangeText={setPhoneNumber}
-						keyboardType="phone-pad"
-					/> */}
+          <Text style={styles.label}>Enter your email</Text>
+
           <TextInput
             style={styles.input}
             placeholder="e.g Email"
@@ -292,7 +288,7 @@ const SavedNumber = () => {
             keyboardType="email-address"
           />
 
-          <Text style={styles.label}>Enter your Password</Text>
+          <Text style={styles.label}>Password</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -302,25 +298,6 @@ const SavedNumber = () => {
           />
         </View>
 
-        <View style={styles.checkboxContainer}>
-          <Checkbox
-            value={isChecked}
-            onValueChange={setIsChecked}
-            style={[
-              styles.checkbox,
-              { backgroundColor: isChecked ? "blue" : "white" },
-            ]}
-          />
-          <Text style={styles.checkboxLabel}>Save Email</Text>
-        </View>
-
-        <TouchableOpacity
-          onPress={handleBiometric}
-          style={{ alignSelf: "center", marginTop: "50%", marginBottom: 40 }}
-        >
-          <Entypo name="fingerprint" size={50} color="#E58945" />
-        </TouchableOpacity>
-
         <TouchableOpacity
           style={[styles.button, !isChecked && styles.buttonDisabled]}
           onPress={() => handleLogin({ email, password })}
@@ -329,8 +306,21 @@ const SavedNumber = () => {
           {isLoading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>Continue</Text>
+            <Text style={styles.buttonText}>Log in</Text>
           )}
+        </TouchableOpacity>
+
+        <GoogleSignin />
+
+        <TouchableOpacity
+          onPress={handleBiometric}
+          style={{ alignSelf: "center", marginBottom: 40 }}
+        >
+          {/* <Entypo name="fingerprint" size={50} color="#E58945" /> */}
+          {/* <Image
+            source={require(".../../../assets/icons/fingerprint.png")}
+            // size={24}
+          /> */}
         </TouchableOpacity>
 
         <View style={styles.signupContainer}>
@@ -378,7 +368,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#D1D5DB",
-    borderRadius: 50,
+    borderRadius: 10,
     padding: 12,
     fontSize: 16,
     marginBottom: 10,
@@ -404,6 +394,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
+    marginTop: "10%",
+    marginBottom: "5%",
   },
   buttonDisabled: {
     backgroundColor: "#ccc",

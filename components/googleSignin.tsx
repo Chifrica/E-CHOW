@@ -16,7 +16,7 @@ import { supabase } from "../lib/supabase";
 // Add this to handle WebAuthSession redirect
 WebBrowser.maybeCompleteAuthSession();
 
-const GoogleSignup = () => {
+const GoogleSignin = () => {
   const { refetch, loading, isLoggedIn } = useGlobalContext();
 
   if (!loading && isLoggedIn) return <Redirect href="/home/homePage" />;
@@ -60,7 +60,7 @@ const GoogleSignup = () => {
     <View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={styles.horizontalLine} />
-        <Text style={styles.horizontalLineText}>Or sign up with</Text>
+        <Text style={styles.horizontalLineText}>Or Continue with</Text>
         <View style={styles.horizontalLine} />
       </View>
 
@@ -73,10 +73,9 @@ const GoogleSignup = () => {
           borderWidth: 1,
           alignItems: "center",
           borderColor: "#D6D6D6",
-          marginBottom: 10
+          marginBottom: 40
         }}
         onPress={handleGoogleLogin}
-
       >
         {/* Google Sign In */}
         <View
@@ -95,7 +94,7 @@ const GoogleSignup = () => {
   );
 };
 
-export default GoogleSignup;
+export default GoogleSignin;
 
 const styles = StyleSheet.create({
   horizontalLine: {

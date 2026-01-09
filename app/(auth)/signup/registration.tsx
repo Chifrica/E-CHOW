@@ -1,4 +1,3 @@
-import GoogleAppleSignup from "../../../components/googleAppleSignup";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -14,13 +13,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { supabase } from "../../../lib/supabase";
+import GoogleSignup from "@/components/googleAppleSignup";
 
 const Registration = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [referral, setReferral] = useState("");
   const [otp, setOtp] = useState("");
   const [otpModalVisible, setOtpModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +36,7 @@ const Registration = () => {
       return;
     }
 
-    if (!email || !fullName || !password || !phoneNumber) {
+    if (!email || !firstName || lastName || !password || !phoneNumber) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
@@ -46,7 +48,7 @@ const Registration = () => {
         password: password,
         options: {
           data: {
-            full_name: fullName,
+            full_name: firstName || lastName,
             phone_number: phoneNumber,
           },
         },
@@ -105,6 +107,10 @@ const Registration = () => {
     router.push("/login/savedNumber");
   };
 
+  const handleWelcomePage = () => {
+    router.push("/(auth)/signup/welcomePage")
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -118,15 +124,28 @@ const Registration = () => {
           </Text>
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Phone number</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="e.g 08139684024"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            keyboardType="phone-pad"
-          />
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>First name</Text>
+            <TextInput
+              style={styles.firstLastNameInput}
+              placeholder="e.g first name"
+              value={firstName}
+              onChangeText={setFirstName}
+              keyboardType="default"
+            />
+          </View>
+
+          <View style={[styles.inputContainer, styles.inputLastNameContainer]}>
+            <Text style={styles.label}>Last name</Text>
+            <TextInput
+              style={styles.firstLastNameInput}
+              placeholder="e.g last name"
+              value={lastName}
+              onChangeText={setLastName}
+              keyboardType="default"
+            />
+          </View>
         </View>
 
         <View style={styles.inputContainer}>
@@ -137,6 +156,17 @@ const Registration = () => {
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Phone number</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g 08139684024"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            keyboardType="phone-pad"
           />
         </View>
 
@@ -163,17 +193,14 @@ const Registration = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Full name</Text>
+          <Text style={styles.label}>Referral code (Optional)</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g Promise Isreal"
-            value={fullName}
-            onChangeText={setFullName}
-            keyboardType="default"
+            value={referral}
+            onChangeText={setReferral}
+            keyboardType="email-address"
           />
         </View>
-
-        <GoogleAppleSignup />
 
         <TouchableOpacity
           style={styles.button}
@@ -186,6 +213,8 @@ const Registration = () => {
             <Text style={styles.buttonText}>Continue</Text>
           )}
         </TouchableOpacity>
+
+        <GoogleSignup />
 
         <View style={styles.signupContainer}>
           <Text style={styles.signupText}>Already have an account?</Text>
@@ -230,6 +259,10 @@ const Registration = () => {
           </View>
         </View>
       </Modal>
+
+      <TouchableOpacity onPress={handleWelcomePage}>
+        <Text>Welcome Page</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -252,13 +285,18 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     fontWeight: "bold",
+    textAlign: "center"
   },
   subHeaderText: {
     fontSize: 18,
     color: "#666",
+    textAlign: "center"
   },
   inputContainer: {
     marginBottom: 24,
+  },
+  inputLastNameContainer: {
+    marginLeft: 20
   },
   label: {
     fontSize: 16,
@@ -271,7 +309,14 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#D1D5DB",
-    borderRadius: 50,
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 16,
+  },
+  firstLastNameInput: {
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    borderRadius: 10,
     padding: 12,
     fontSize: 16,
   },
@@ -280,7 +325,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 10,
+    marginBottom: 20
   },
   buttonText: {
     color: "#fff",
