@@ -62,40 +62,39 @@ export const SignInOutCard = () => {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		height: height,
-		width: width,
-	},
-	getStarted: {
-		backgroundColor: "#E58945",
-		marginTop: 20,
-		marginLeft: 10,
-		marginRight: 10,
-		borderRadius: 8,
-	},
-	getStartedTxt: {
-		fontWeight: "500",
-		fontFamily: "sans",
-		textAlign: "center",
-		fontSize: 25,
-		padding: 10,
-		color: "#FFFFFF",
-	},
-	signin: {
-		margin: 10,
-		marginTop: 20,
-		borderRadius: 8,
-		borderWidth: 1,
-		borderColor: "#FFFFFF",
-		backgroundColor: "#FFFFFF",
-		elevation: 0.5,
-	},
-	signinTxt: {
-		fontWeight: "500",
-		fontFamily: "sans",
-		textAlign: "center",
-		color: "#667085",
-		fontSize: 25,
-		padding: 10,
-	},
+  container: {
+    width: "100%",
+  },
+  getStarted: {
+    backgroundColor: "#E58945",
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 8,
+  },
+  getStartedTxt: {
+    fontWeight: "500",
+    fontFamily: "sans",
+    textAlign: "center",
+    fontSize: 25,
+    padding: 10,
+    color: "#FFFFFF",
+  },
+  signin: {
+    margin: 10,
+    marginTop: 20,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF",
+    elevation: 0.5,
+  },
+  signinTxt: {
+    fontWeight: "500",
+    fontFamily: "sans",
+    textAlign: "center",
+    color: "#667085",
+    fontSize: 25,
+    padding: 10,
+  },
 });

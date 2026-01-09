@@ -3,7 +3,7 @@ import { Redirect } from "expo-router";
 import { ActivityIndicator, Text, View } from "react-native";
 
 export default function Index() {
-	const { isLoggedIn, loading } = useGlobalContext();
+	const { isLoggedIn, loading, user } = useGlobalContext();
 
 	if (loading) {
 		return (
@@ -14,6 +14,9 @@ export default function Index() {
 	}
 
 	if (isLoggedIn) {
+        if (!user?.role) {
+          return <Redirect href="/complete-profile" />;
+        }
 		return <Redirect href="/home/homePage" />;
 	}
 
