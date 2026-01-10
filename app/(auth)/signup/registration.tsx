@@ -124,8 +124,8 @@ const Registration = () => {
           </Text>
         </View>
 
-        <View style={{ flexDirection: "row" }}>
-          <View style={styles.inputContainer}>
+        <View style={{ flexDirection: "row", gap: 12 }}>
+          <View style={[styles.inputContainer, { flex: 1 }]}>
             <Text style={styles.label}>First name</Text>
             <TextInput
               style={styles.firstLastNameInput}
@@ -136,7 +136,7 @@ const Registration = () => {
             />
           </View>
 
-          <View style={[styles.inputContainer, styles.inputLastNameContainer]}>
+          <View style={[styles.inputContainer, { flex: 1 }]}>
             <Text style={styles.label}>Last name</Text>
             <TextInput
               style={styles.firstLastNameInput}
@@ -294,9 +294,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 24,
-  },
-  inputLastNameContainer: {
-    marginLeft: 20
   },
   label: {
     fontSize: 16,

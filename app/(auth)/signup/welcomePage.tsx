@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F9FAFB",
     },
     contentContainer: {
-        flex: 3, // Takes 3/4 of the screen space
+        flex: 3, 
     },
     icon1: {
         marginTop: 50,
