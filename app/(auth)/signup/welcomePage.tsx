@@ -3,49 +3,47 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const WelcomePage = () => {
+    const icon1 = require("../../../assets/icons/icon1.png");
+    const icon2 = require("../../../assets/icons/icon2.png");
+    const icon3 = require("../../../assets/icons/icon3.png");
+    const icon4 = require("../../../assets/icons/icon4.png");
     return (
         <SafeAreaView style={styles.container}>
-            <View>
-                <Image
-                    source={require("../../assets/icons/icon1.png")}
-                    style={styles.icon1}
-                />
+            <View style={styles.contentContainer}>
+                <View>
+                    <Image
+                        source={icon1}
+                        style={styles.icon1}
+                    />
 
-                <Image
-                    source={require("../../assets/icons/icon2.png")}
-                    style={styles.icon2}
-                />
+                    <Image
+                        source={icon2}
+                        style={styles.icon2}
+                    />
+                </View>
 
-                {/* <Text style={styles.icon1}>Goat</Text>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerTxt}>Welcome to E-Chow</Text>
+                    <Text style={styles.headerSubTxt}>{`Start Ordering Your Favorite Meal \n right away!`}</Text>
 
-                <Text style={styles.icon2}>Cow</Text> */}
-            </View>
+                    <TouchableOpacity
+                        style={styles.btn}
+                    >
+                        <Text style={styles.btnTxt}>Get Started</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerTxt}>Welcome to E-Chow</Text>
-                <Text style={styles.headerSubTxt}>{`Start Ordering Your Favorite Meal \n right away!`}</Text>
+                <View>
+                    <Image
+                        source={icon3}
+                        style={styles.icon3}
+                    />
 
-                <TouchableOpacity
-                    style={styles.btn}
-                >
-                    <Text style={styles.btnTxt}>Get Started</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View>
-                <Image
-                    source={require("../../assets/icons/icon3.png")}
-                    style={styles.icon3}
-                />
-
-                <Image
-                    source={require("../../assets/icons/icon4.png")}
-                    style={styles.icon4}
-                />
-
-                {/* <Text style={styles.icon3}>Goat</Text>
-
-                <Text style={styles.icon4}>Cow</Text> */}
+                    <Image
+                        source={icon4}
+                        style={styles.icon4}
+                    />
+                </View>
             </View>
         </SafeAreaView>
     )
@@ -59,8 +57,11 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: "#F9FAFB",
     },
+    contentContainer: {
+        flex: 3, // Takes 3/4 of the screen space
+    },
     icon1: {
-        marginTop: 110,
+        marginTop: 50,
         left: 54
     },
     icon2: {
