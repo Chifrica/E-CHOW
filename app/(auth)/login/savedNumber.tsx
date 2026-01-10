@@ -317,10 +317,11 @@ const SavedNumber = () => {
           style={{ alignSelf: "center", marginBottom: 40 }}
         >
           {/* <Entypo name="fingerprint" size={50} color="#E58945" /> */}
-          {/* <Image
-            source={require(".../../../assets/icons/fingerprint.png")}
-            // size={24}
-          /> */}
+          <Image
+            source={require("../../../assets/icons/fingerprint.png")}
+            height={48}
+            width={48}
+          />
         </TouchableOpacity>
 
         <View style={styles.signupContainer}>
