@@ -32,12 +32,12 @@ const Registration = () => {
   const handleContinue = async () => {
     // Password confirmation check
     if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match. Please try again.");
+      Alert.alert("Password mismatch", "Passwords do not match. Please try again.");
       return;
     }
 
     if (!email || !firstName || !lastName || !password || !phoneNumber) {
-      Alert.alert("Error", "Please fill in all fields.");
+      Alert.alert("Missing Credentials", "Please fill in all fields.");
       return;
     }
 
@@ -106,10 +106,6 @@ const Registration = () => {
   const handleSignIn = () => {
     router.push("/login/savedNumber");
   };
-
-  const handleWelcomePage = () => {
-    router.push("/(auth)/signup/welcomePage")
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -259,10 +255,6 @@ const Registration = () => {
           </View>
         </View>
       </Modal>
-
-      <TouchableOpacity onPress={handleWelcomePage}>
-        <Text>Welcome Page</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
