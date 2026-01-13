@@ -1,12 +1,20 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router';
 
 const WelcomePage = () => {
-    const icon1 = require("../../../assets/icons/icon1.png");
-    const icon2 = require("../../../assets/icons/icon2.png");
-    const icon3 = require("../../../assets/icons/icon3.png");
-    const icon4 = require("../../../assets/icons/icon4.png");
+    const icon1 = require("../assets/icons/icon1.png");
+    const icon2 = require("../assets/icons/icon2.png");
+    const icon3 = require("../assets/icons/icon3.png");
+    const icon4 = require("../assets/icons/icon4.png");
+
+
+    const router = useRouter();
+
+    const handleGetStarted = () => {
+        router.replace("/(tabs)/home/homePage")
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.contentContainer}>
@@ -28,6 +36,7 @@ const WelcomePage = () => {
 
                     <TouchableOpacity
                         style={styles.btn}
+                        onPress={handleGetStarted}
                     >
                         <Text style={styles.btnTxt}>Get Started</Text>
                     </TouchableOpacity>

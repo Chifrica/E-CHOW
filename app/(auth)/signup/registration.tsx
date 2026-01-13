@@ -36,7 +36,7 @@ const Registration = () => {
       return;
     }
 
-    if (!email || !firstName || lastName || !password || !phoneNumber) {
+    if (!email || !firstName || !lastName || !password || !phoneNumber) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }

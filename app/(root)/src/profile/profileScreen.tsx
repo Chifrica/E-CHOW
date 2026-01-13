@@ -204,7 +204,7 @@ const ProfileScreen: React.FC = () => {
                     style: "cancel",
                   },
                   {
-                    text: "OK",
+                    text: "Yes",
                     onPress: handleSignOut,
                   },
                 ],

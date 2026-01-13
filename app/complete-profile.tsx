@@ -146,7 +146,7 @@ const CompleteProfile = () => {
       await refetch();
 
       Alert.alert("Success", "Profile completed successfully!");
-      router.replace("/(tabs)/home/homePage");
+      router.replace("/welcomePage");
 
     } catch (error: any) {
       console.error("Error saving profile:", error);

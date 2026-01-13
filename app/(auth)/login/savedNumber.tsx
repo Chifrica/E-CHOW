@@ -51,6 +51,7 @@ const SavedNumber = () => {
     }
 
     setIsLoading(true);
+    setIsChecked(false);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: credentials.email,
