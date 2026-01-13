@@ -33,7 +33,7 @@ const SavedNumber = () => {
   // const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<MessageType>("FAILED");
@@ -51,7 +51,7 @@ const SavedNumber = () => {
     }
 
     setIsLoading(true);
-    setIsChecked(false);
+    // setIsChecked(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: credentials.email,
@@ -300,9 +300,9 @@ const SavedNumber = () => {
         </View>
 
         <TouchableOpacity
-          style={[styles.button, !isChecked && styles.buttonDisabled]}
+          style={[styles.button, (!password || !email || isLoading) && styles.buttonDisabled]}
           onPress={() => handleLogin({ email, password })}
-          disabled={!isChecked || isLoading}
+          disabled={!email || !password || isLoading}
         >
           {isLoading ? (
             <ActivityIndicator color="#fff" />
